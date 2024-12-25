@@ -2,9 +2,9 @@
 const { SlashCommandBuilder } = require("discord.js");
 const fs = require('node:fs');
 
-const token = "MTMwNzcwMTY2MTQ0NzM2MDU5NQ.Gnrt1o.1lMDt9K1HkNfHDPOXXgzLTJ8pR8blhaMkf-We0";
-const clientId = "1307701661447360595";
-const guildId = "1265637138247057428";
+const token = "token";
+const clientId = "id";
+const guildId = "id";
 
 const ping = new SlashCommandBuilder()
 .setName('ping')
