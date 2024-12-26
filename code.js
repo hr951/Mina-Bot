@@ -194,6 +194,40 @@ client.on('interactionCreate', async interaction => {
 }
 });
 
+client.on('messageCreate', async message => {
+  if (message.author.id === client.user.id) return;
+
+  if (message.author.bot) return;
+  const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
+  const matches = MESSAGE_URL_REGEX.exec(message.content);
+  if (matches) {
+    const [_, guildId, channelId, messageId] = matches;
+    const guild = await client.guilds.fetch(guildId);
+    const channel = await client.channels.fetch(channelId);
+    const fetchedMessage = await channel.messages.fetch(messageId);
+
+    if (!fetchedMessage.embeds[0] && fetchedMessage.attachments.size === 0){
+
+    const Embed = new EmbedBuilder()
+      .setColor('#ffffff')
+      .setAuthor({ name: fetchedMessage.author.username, iconURL: fetchedMessage.author.displayAvatarURL() })
+      .setDescription(fetchedMessage.content)
+      .setTimestamp(fetchedMessage.createdTimestamp);
+
+    message.channel.send({ embeds: [Embed] });
+  } else if (fetchedMessage.attachments.size === 0 && fetchedMessage.embeds[0]){
+    message.channel.send({ embeds: [fetchedMessage.embeds[0]] });
+  } else if (!fetchedMessage.content){
+    const files = await fetchedMessage.attachments.map(a=>a.attachment);
+    message.channel.send({ files: files });
+  } else {
+    const files = await fetchedMessage.attachments.map(a=>a.attachment);
+    const texts = await fetchedMessage.content;
+    message.channel.send({ content: texts,files: files });
+  }
+  }
+});
+
 /*client.on('messageCreate', async message => {
   const thumbnail = message.client.user.displayAvatarURL();
   if(message.content === "report"){
