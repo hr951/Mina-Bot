@@ -201,9 +201,17 @@ client.on('messageCreate', async message => {
   const matches = MESSAGE_URL_REGEX.exec(message.content);
   if (matches) {
     const [_, guildId, channelId, messageId] = matches;
-    const guild = await client.guilds.fetch(guildId);
-    const channel = await client.channels.fetch(channelId);
-    const fetchedMessage = await channel.messages.fetch(messageId);
+    try {
+    var guild = await client.guilds.fetch(guildId);
+    var channel = await client.channels.fetch(channelId);
+    var fetchedMessage = await channel.messages.fetch(messageId);
+    } catch(error){
+      const reply = await message.reply({ content:"Botがサーバーに加入していない可能性があります。" ,allowedMentions: { repliedUser: false }});
+      setTimeout(() => {
+        reply.delete();
+      },2000);
+      return;
+    }
 
     if (!fetchedMessage.embeds[0] && fetchedMessage.attachments.size === 0){
 
