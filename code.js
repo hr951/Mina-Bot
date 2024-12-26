@@ -213,16 +213,16 @@ client.on('messageCreate', async message => {
       .setDescription(fetchedMessage.content)
       .setTimestamp(fetchedMessage.createdTimestamp);
 
-    message.channel.reply({ embeds: [Embed] ,allowedMentions: { repliedUser: false }});
+    message.reply({ embeds: [Embed] ,allowedMentions: { repliedUser: false }});
   } else if (fetchedMessage.attachments.size === 0 && fetchedMessage.embeds[0]){
-    message.channel.reply({ embeds: [fetchedMessage.embeds[0]] ,allowedMentions: { repliedUser: false }});
+    message.reply({ embeds: [fetchedMessage.embeds[0]] ,allowedMentions: { repliedUser: false }});
   } else if (!fetchedMessage.content){
     const files = await fetchedMessage.attachments.map(a=>a.attachment);
-    message.channel.reply({ files: files ,allowedMentions: { repliedUser: false }});
+    message.reply({ files: files ,allowedMentions: { repliedUser: false }});
   } else {
     const files = await fetchedMessage.attachments.map(a=>a.attachment);
     const texts = await fetchedMessage.content;
-    message.channel.reply({ content: texts,files: files ,allowedMentions: { repliedUser: false }});
+    message.reply({ content: texts,files: files ,allowedMentions: { repliedUser: false }});
   }
   }
 });
