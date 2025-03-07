@@ -64,6 +64,18 @@ client.on('guildMemberAdd', async member => {
      } catch(error) {
        console.log("IN Minaメンフォトナクラブ\nMinachanの広場 参加なし")
      }
+       } else if(member.guild.id === "1040937611390353408") {
+         console.log(member)
+         const welcome_embed = new EmbedBuilder()
+               .setTitle(`Welcome to ${member.guild.name}`)
+               .setDescription(`**${member.user.globalName}**さん、参加ありがとうございます。\n分からないことなどはお気軽にお尋ねください。`)
+               .setColor(color)
+               .setFooter({
+                 text: "Made by Mina鯖 Bot",
+                          })
+               .setTimestamp();
+         
+         member.guild.channels.cache.get("1321763166614716457").send({ embeds: [welcome_embed] });
        }
   });
 
