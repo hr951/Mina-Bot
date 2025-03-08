@@ -64,7 +64,7 @@ client.on('guildMemberAdd', async member => {
      } catch(error) {
        console.log("IN Minaメンフォトナクラブ\nMinachanの広場 参加なし")
      }
-       } else if(member.guild.id === "1040937611390353408") {
+       } else if(member.guild.id === "1265637138247057428") {
          console.log(member)
          const welcome_embed = new EmbedBuilder()
                .setTitle(`Welcome to ${member.guild.name}`)
@@ -75,7 +75,7 @@ client.on('guildMemberAdd', async member => {
                           })
                .setTimestamp();
          
-         member.guild.channels.cache.get("1321763166614716457").send({ embeds: [welcome_embed] });
+         member.guild.channels.cache.get("1315627090233790495").send({ embeds: [welcome_embed] });
        }
   });
 
