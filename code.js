@@ -31,6 +31,7 @@ client.on('ready', () => {
       activities: [
         {
           name: `Minachanの広場`,
+          //name: "メンテナンス",
           type: ActivityType.Competing
         }
       ],
@@ -65,17 +66,25 @@ client.on('guildMemberAdd', async member => {
        console.log("IN Minaメンフォトナクラブ\nMinachanの広場 参加なし")
      }
        } else if(member.guild.id === "1265637138247057428") {
-         console.log(member)
+         console.log(member.guild.memberCount)
+         const role_1 = await member.guild.roles.fetch('1265668863597740225');
+         const role_2 = await member.guild.roles.fetch('1265668095427612703');
+         const role_3 = await member.guild.roles.fetch('1268835638686257203');
          const welcome_embed = new EmbedBuilder()
                .setTitle(`Welcome to ${member.guild.name}`)
-               .setDescription(`**${member.user.globalName}**さん、参加ありがとうございます。\n分からないことなどはお気軽にお尋ねください。`)
+               .setDescription(`**${member.user.globalName}**さん、参加ありがとうございます。\nあなたは${member.guild.memberCount}人目のメンバーです！\n分からないことなどはお気軽にお尋ねください。`)
+               .addFields({
+                          name: "参加する勢力が決まってない方へ",
+                          value: `**${role_1.name}**、**${role_2.name}**、**${role_3.name}**のうちから1つ選択してください。`,
+                          inline: true
+                          })
                .setColor(color)
                .setFooter({
                  text: "Made by Mina鯖 Bot",
                           })
                .setTimestamp();
          
-         member.guild.channels.cache.get("1315627090233790495").send({ embeds: [welcome_embed] });
+         member.guild.channels.cache.get("1315627090233790495").send({content:`<@${member.user.id}>`, embeds: [welcome_embed] });
        }
   });
 
