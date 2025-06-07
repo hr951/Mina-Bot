@@ -220,6 +220,9 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async message => {
     if (message.author.id === client.user.id) return;
     if (message.author.bot) return;
+    if (message.content.match(/🖕/)) {
+      message.delete();
+    }
     const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
     const matches = MESSAGE_URL_REGEX.exec(message.content);
     if (matches) {
@@ -257,6 +260,13 @@ client.on('messageCreate', async message => {
         }
     }
 });
+
+client.on('messageReactionAdd', (reaction, user) => {  
+  const react_message = reaction.message;
+  if (reaction.emoji.name === '🖕') {
+    react_message.reactions.cache.get('🖕').remove();
+  } 
+})
 
 /*client.on('messageCreate', async message => {
   const thumbnail = message.client.user.displayAvatarURL();
