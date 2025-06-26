@@ -1,4 +1,9 @@
+global.ReadableStream = require('stream/web').ReadableStream;
+global.crypto = require('crypto');
+
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, Permissions, PermissionFlagsBits, PermissionsBitField, AttachmentBuilder } = require("discord.js");
+const { Player } = require('discord-player');
+const { DefaultExtractors } = require('@discord-player/extractor');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -23,7 +28,11 @@ const client = new Client({
 
 const token = process.env.DISCORD_BOT_TOKEN;
 const color = "#FFFFFF";
-//const player = new Player(client);
+
+const player = new Player(client);
+(async () => {
+    await player.extractors.loadMulti(DefaultExtractors);
+})();
 
 client.on('ready', () => {
     setInterval(() => {
@@ -221,9 +230,9 @@ client.on('messageCreate', async message => {
     if (message.author.id === client.user.id) return;
     if (message.author.bot) return;
     if (message.content.match(/🖕/)) {
-      //if(message.author.id === "962670040795201557") return;
-      message.delete();
-      client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
+        //if(message.author.id === "962670040795201557") return;
+        message.delete();
+        client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
     }
     const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
     const matches = MESSAGE_URL_REGEX.exec(message.content);
@@ -263,14 +272,14 @@ client.on('messageCreate', async message => {
     }
 });
 
-client.on('messageReactionAdd', (reaction, user) => {  
-  const react_message = reaction.message;
-  const react_member = react_message.guild.members.resolve(user);
-  //console.log(`${reaction.message.guild} で ${user.tag} が ${reaction.emoji.name} をリアクションしました`)
-  if (reaction.emoji.name === '🖕') {
-    react_message.reactions.cache.get('🖕').remove();
-    client.channels.cache.get("1380894393611059241").send(`${user.tag} が https://discord.com/channels/${reaction.message.guild.id}/${react_message.channel.id}/${react_message.id} に ${reaction.emoji.name} を リアクションしました。`);
-  } 
+client.on('messageReactionAdd', (reaction, user) => {
+    const react_message = reaction.message;
+    const react_member = react_message.guild.members.resolve(user);
+    //console.log(`${reaction.message.guild} で ${user.tag} が ${reaction.emoji.name} をリアクションしました`)
+    if (reaction.emoji.name === '🖕') {
+        react_message.reactions.cache.get('🖕').remove();
+        client.channels.cache.get("1380894393611059241").send(`${user.tag} が https://discord.com/channels/${reaction.message.guild.id}/${react_message.channel.id}/${react_message.id} に ${reaction.emoji.name} を リアクションしました。`);
+    }
 })
 
 /*client.on('messageCreate', async message => {
