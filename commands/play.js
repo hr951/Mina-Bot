@@ -1,102 +1,121 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
-const { entersState, AudioPlayerStatus, createAudioPlayer, createAudioResource, joinVoiceChannel,  StreamType } = require('@discordjs/voice');
-const ytdl = require("@distube/ytdl-core");
+const { createReadStream } = require('node:fs');
+const { request } = require('node:http'); // or `https` if using https URL
+const { Readable } = require('node:stream');
+
+const { useMainPlayer, QueueRepeatMode } = require('discord-player');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { stream } = require('play-dl'); // ※代替も可能
+
+const musicList = require('../musics.json');
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("play")
-    .setDescription("音楽を再生します")
-    .addStringOption((option) =>
-      option.setName("url")
-            .setDescription("YouTube URL")
+    data: new SlashCommandBuilder()
+        .setName('play')
+        .setDescription('指定されたMP3 URLを再生します')
+        .addStringOption(option => option
+            .setName("record")
+            .setDescription("レコード名を選択してください")
             .setRequired(true)
-    ),
+            .addChoices(
+                { name: "13", value: "1" },
+                { name: "cat", value: "2" },
+                { name: "blocks", value: "3" },
+                { name: "chirp", value: "4" },
+                { name: "far", value: "5" },
+                { name: "mall", value: "6" },
+                { name: "mellohi", value: "7" },
+                { name: "stal", value: "8" },
+                { name: "strad", value: "9" },
+                { name: "ward", value: "10" },
+                { name: "11", value: "11" },
+                { name: "wait", value: "12" },
+                { name: "otherside", value: "13" },
+                { name: "Pigstep", value: "14" },
+                { name: "Creator", value: "15" },
+                { name: "Creator (オルゴール)", value: "16" },
+                { name: "Relic", value: "17" },
+                { name: "Precipice", value: "18" },
+                { name: "5", value: "19" },
+                { name: "Tears", value: "20" },
+                { name: "Lava Chicken", value: "21" }
+            )
+        ),
 
-  async execute(interaction) {
+    async execute(interaction) {
+        const thumbnail = interaction.client.user.displayAvatarURL();
+        const color = "#ffffff";
 
-    const url = interaction.options.getString('url');
-    const thumbnail = interaction.client.user.displayAvatarURL();
-    const color = "#ffffff";
-    const request_user = interaction.user.id;
+        const number = interaction.options.getString('record');
+        const url = `https://cdn.glitch.global/7ca78b4a-80bf-4fc9-90bf-9493ef66ec25/${musicList[number - 1].id}.mp3`
+        const memberVoiceChannel = interaction.member.voice.channel;
 
-    if (!interaction.guild) {
-        return;
-      }
-      // メッセージから動画URLだけを取り出す
-      if (!ytdl.validateURL(url)) return interaction.reply({content:`${url}は処理できません。`, ephemeral: true});
+        if (!memberVoiceChannel) {
+            return interaction.reply({ content: '❌ ボイスチャンネルに参加してください。', ephemeral: true });
+        }
 
-      // コマンドを実行したメンバーがいるボイスチャンネルを取得
-      const channel = interaction.member.voice.channel;
-      // コマンドを実行したメンバーがボイスチャンネルに入ってなければ処理を止める
-      if (!channel) return interaction.reply({content:'先にVCに参加してください。', ephemeral: true});
-      // チャンネルに参加
-      global.connection = joinVoiceChannel({
-       adapterCreator: channel.guild.voiceAdapterCreator,
-       channelId: channel.id,
-       guildId: channel.guild.id,
-       selfDeaf: true,
-       selfMute: false,
-      });
-      const player = createAudioPlayer();
-      global.connection.subscribe(player);
-      // 動画の音源を取得
-      const stream = ytdl(ytdl.getURLVideoID(url), {
-        filter: format => format.audioCodec === 'opus' && format.container === 'webm', //webm opus
-        quality: 'highest',
-        highWaterMark: 32 * 1024 * 1024, // https://github.com/fent/node-ytdl-core/issues/902
-      });
-      //再生リソースを作成
-      const resource = createAudioResource(stream, {
-        inputType: StreamType.WebmOpus
-      });
-      // 再生
-      player.play(resource);
-      //動画の情報を取得
-      ytdl.getBasicInfo(url).then(info => {
-        var title = info.videoDetails.title;
-        var time = info.videoDetails.lengthSeconds;
-        var video_url = info.videoDetails.video_url;
-        var thumbnail_url = info.videoDetails.thumbnails[3].url;
+        await interaction.deferReply();
 
-      let hour = Math.floor(time / 3600);
-      let min = Math.floor(time % 3600 / 60);
-      let rem = time % 60;
+        const player = useMainPlayer();
+        const queue = player.nodes.get(interaction.guildId);
 
-      console.log(`${interaction.user.username} が ${title} をリクエストしました。`)
+        try {
+            queue.delete(); // 停止して切断
+        } catch (error) {
+            console.log(error);
+        }
 
-      const embed_play = new EmbedBuilder()
-          .setTitle(title)
-          .setURL(video_url)
-          .setDescription(`長さ：**${hour}時間${min}分${rem}秒**`)
-          .addFields(
-            {
-              name: "リクエストしたユーザー",
-              value: `<@${request_user}>`,
-              inline: false
-            },
-          )
-          .setImage(thumbnail_url)
-          .setColor(color)
-          .setFooter({
-            text: "Made by Mina鯖 Bot",
-            iconURL: thumbnail,
-          })
-          .setTimestamp();
-      
-      const Button = new ButtonBuilder()
-		      .setCustomId(`stop`)
-		      .setStyle(ButtonStyle.Danger)
-		      .setLabel("停止する")
-		      .setEmoji("🛑");
+        try {
+            const { track, queue: currentQueue } = await player.play(memberVoiceChannel, url, {
+                nodeOptions: {
+                    metadata: interaction,
+                    bufferingTimeout: 30_000,
+                    onBeforeCreateStream: async (track, source, _queue) => {
+                        return await fetchMp3Stream(track.url);
+                    }
+                }
+            });
 
-      interaction.channel.send({ embeds: [embed_play], components: [new ActionRowBuilder() .setComponents(Button)]});
-        });
-      interaction.reply({content:"音楽を再生します。", ephemeral:true});
+            currentQueue.setRepeatMode(QueueRepeatMode.TRACK);
 
-      await entersState(player,AudioPlayerStatus.Playing, 10 * 1000);
-      await entersState(player,AudioPlayerStatus.Idle, 24 * 60 * 60 * 1000);
-      // 再生が終了したら抜ける
-      global.connection.destroy();
-      interaction.editReply({content:"音楽の再生を終了しました。"})
-    },
-  };
+            const embed = new EmbedBuilder()
+                .setTitle(musicList[number - 1].name)
+                .addFields(
+                    {
+                        name: `作曲者`,
+                        value: musicList[number - 1].author,
+                        inline: true
+                    },
+                    {
+                        name: `再生時間`,
+                        value: Math.floor(musicList[number - 1].second / 60) + "分" + Math.floor(musicList[number - 1].second / 60) + "秒",
+                        inline: true
+                    },
+                )
+                .setColor(color)
+                .setFooter({
+                    text: "Made by Mina鯖 Bot",
+                    iconURL: thumbnail,
+                })
+                .setTimestamp();
+
+            return interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
+        } catch (error) {
+            console.error('再生エラー:', error);
+            return interaction.editReply('❌ 再生に失敗しました。URLがMP3でないか、読み込みに失敗しました。');
+        }
+    }
+};
+
+// MP3ストリームを取得する関数
+async function fetchMp3Stream(url) {
+    return new Promise((resolve, reject) => {
+        const protocol = url.startsWith('https') ? require('https') : require('http');
+        protocol.get(url, res => {
+            if (res.statusCode !== 200) {
+                reject(new Error(`Stream status: ${res.statusCode}`));
+            } else {
+                resolve(res);
+            }
+        }).on('error', reject);
+    });
+}
