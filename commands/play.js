@@ -47,9 +47,7 @@ module.exports = {
 	     await interaction.deferReply();
       
         const number = interaction.options.getString('record');
-        //const url = `https://cdn.glitch.global/7ca78b4a-80bf-4fc9-90bf-9493ef66ec25/${musicList[number-1].id}.mp3`
-	    const fileId = "1p9sJygUig52or6N_7D-_0OUJ0dWi0WQb";
-	    const url = "https://drive.google.com/uc?export=download&id=${fileId}";
+        const url = `https://vercel-52db8uq86-hr951s-projects.vercel.app/${musicList[number-1].id}.mp3`
 	    
         const memberVoiceChannel = interaction.member.voice.channel;
 
