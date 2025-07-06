@@ -13,7 +13,7 @@
     "play-dl": "^1.9.7"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/discord-js-v14-template-glitch"
