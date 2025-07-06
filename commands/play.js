@@ -98,10 +98,10 @@ module.exports = {
                 })
                 .setTimestamp();
 
-            return interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
+            return await interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
         } catch (error) {
             console.error('再生エラー:', error);
-            return interaction.editReply('❌ 再生に失敗しました。URLがMP3でないか、読み込みに失敗しました。');
+            return await interaction.editReply('❌ 再生に失敗しました。URLがMP3でないか、読み込みに失敗しました。');
         }
     }
 };
