@@ -59,7 +59,7 @@ module.exports = {
         const queue = player.nodes.get(interaction.guildId);
 
         try {
-            queue.delete(); // 停止して切断
+            queue?.delete(); // 停止して切断
         } catch (error) {
             console.log(error);
         }
