@@ -103,7 +103,7 @@ const remainSeconds = seconds % 60;
                     iconURL: thumbnail,
                 })
                 .setTimestamp();
-                    await console.log("再生成功、embedを送信します");
+                　console.log("再生成功、embedを送信します");
             await interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
         } catch (error) {
             console.error('再生エラー:', error);
