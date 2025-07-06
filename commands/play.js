@@ -75,22 +75,15 @@ module.exports = {
 
     try {
       // player.play にURL文字列ではなく曲情報オブジェクトを渡すのがコツ
-      const { track, queue: currentQueue } = await player.play(
-        memberVoiceChannel,
-        {
-          title: musicList[number - 1].name,
-          url: url
-        },
-        {
-          nodeOptions: {
-            metadata: interaction,
-            bufferingTimeout: 30_000,
-            onBeforeCreateStream: async (track, source, _queue) => {
-              return await fetchMp3Stream(track.url);
-            }
-          }
-        }
-      );
+      const { track, queue: currentQueue } = await player.play(memberVoiceChannel, url, {
+  nodeOptions: {
+    metadata: interaction,
+    bufferingTimeout: 30000,
+    onBeforeCreateStream: async (track, source, _queue) => {
+      return await fetchMp3Stream(track.url);
+    }
+  }
+});
 
       currentQueue.setRepeatMode(QueueRepeatMode.TRACK);
 
