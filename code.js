@@ -1,6 +1,8 @@
 global.ReadableStream = require('stream/web').ReadableStream;
 global.crypto = require('crypto');
 
+require("./server.js");
+
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, Permissions, PermissionFlagsBits, PermissionsBitField, AttachmentBuilder } = require("discord.js");
 const { Player } = require('discord-player');
 const { DefaultExtractors } = require('@discord-player/extractor');
