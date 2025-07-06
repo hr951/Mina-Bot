@@ -103,8 +103,9 @@ const remainSeconds = seconds % 60;
                     iconURL: thumbnail,
                 })
                 .setTimestamp();
-                　console.log(embed.toJSON());
+                　
             await interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
+            console.log("editReply 成功！");
         } catch (error) {
             console.error('再生エラー:', error);
             await interaction.editReply('❌ 再生に失敗しました。URLがMP3でないか、読み込みに失敗しました。');
