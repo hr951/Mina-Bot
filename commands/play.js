@@ -44,6 +44,7 @@ module.exports = {
     async execute(interaction) {
       const thumbnail = interaction.client.user.displayAvatarURL();
       const color = "#ffffff";
+	     await interaction.deferReply();
       
         const number = interaction.options.getString('record');
         //const url = `https://cdn.glitch.global/7ca78b4a-80bf-4fc9-90bf-9493ef66ec25/${musicList[number-1].id}.mp3`
@@ -51,10 +52,8 @@ module.exports = {
         const memberVoiceChannel = interaction.member.voice.channel;
 
         if (!memberVoiceChannel) {
-            return interaction.reply({ content: '❌ ボイスチャンネルに参加してください。', ephemeral: true });
+            return interaction.editReply({ content: '❌ ボイスチャンネルに参加してください。', ephemeral: true });
         }
-
-        await interaction.deferReply();
 
         const player = useMainPlayer();
       const queue = player.nodes.get(interaction.guildId);
