@@ -1,21 +1,8 @@
 const { useMainPlayer, QueueRepeatMode } = require('discord-player');
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { stream } = require('play-dl');
 
 const musicList = require('../musics.json');
-
-// MP3ストリームを取得する関数
-async function fetchMp3Stream(url) {
-    return new Promise((resolve, reject) => {
-        const protocol = url.startsWith('https') ? require('https') : require('http');
-        protocol.get(url, res => {
-            if (res.statusCode !== 200) {
-                reject(new Error(`Stream status: ${res.statusCode}`));
-            } else {
-                resolve(res);
-            }
-        }).on('error', reject);
-    });
-}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -62,7 +49,7 @@ module.exports = {
         if (!music) {
             return interaction.reply({
                 content: "❌ 無効なレコード番号が指定されました。",
-                ephemeral: true,
+                ephemeral: true
             });
         }
 
@@ -82,9 +69,9 @@ module.exports = {
         const queue = player.nodes.get(interaction.guildId);
 
         try {
-            queue?.delete(); // null対応
-        } catch (error) {
-            console.log("queue delete error:", error);
+            queue?.delete();
+        } catch (err) {
+            console.log("❗ queue delete error:", err);
         }
 
         try {
@@ -92,8 +79,10 @@ module.exports = {
                 nodeOptions: {
                     metadata: interaction,
                     bufferingTimeout: 30_000,
-                    onBeforeCreateStream: async (track, source, _queue) => {
-                        return await fetchMp3Stream(track.url);
+                    onBeforeCreateStream: async (track) => {
+                        console.log("🎵 play-dl streaming start:", track.url);
+                        const playdlStream = await stream(track.url);
+                        return playdlStream.stream;
                     }
                 }
             });
@@ -116,11 +105,11 @@ module.exports = {
                 })
                 .setTimestamp();
 
-            console.log("✅ 再生成功、embed送信開始");
+            console.log("✅ 再生成功・embed送信");
             await interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
-        } catch (error) {
-            console.error("再生エラー:", error);
-            await interaction.editReply("❌ 再生に失敗しました。");
+        } catch (err) {
+            console.error("🔥 再生エラー:", err);
+            await interaction.editReply("❌ 再生に失敗しました。URLが無効か、ストリームの取得に失敗しました。");
         }
     }
 };
