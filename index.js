@@ -235,6 +235,7 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async message => {
     if (message.author.id === client.user.id) return;
     if (message.author.bot) return;
+    if (message.author.id === "1225452488237514763" || message.author.id === "962670040795201557") return;
     if (message.content.match(/🖕/)) {
         //if(message.author.id === "962670040795201557") return;
         message.delete();
@@ -282,7 +283,7 @@ client.on('messageReactionAdd', (reaction, user) => {
     const react_message = reaction.message;
     const react_member = react_message.guild.members.resolve(user);
     console.log(`${reaction.message.guild} で ${user.tag} が ${reaction.emoji.name} をリアクションしました`);
-    if (user.id !== "1225452488237514763" || user.id !== "962670040795201557") return;
+    if (user.id === "1225452488237514763" || user.id === "962670040795201557") return;
     if (reaction.emoji.name === '🖕') {
         react_message.reactions.cache.get('🖕').remove();
         client.channels.cache.get("1380894393611059241").send(`${user.tag} が https://discord.com/channels/${reaction.message.guild.id}/${react_message.channel.id}/${react_message.id} に ${reaction.emoji.name} を リアクションしました。`);
