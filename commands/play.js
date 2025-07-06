@@ -77,17 +77,23 @@ module.exports = {
 
             currentQueue.setRepeatMode(QueueRepeatMode.TRACK);
 
+            const index = Number(number) - 1;
+const seconds = musicList[index]?.second ?? 0;
+const minutes = Math.floor(seconds / 60);
+const remainSeconds = seconds % 60;
+
+
             const embed = new EmbedBuilder()
-                .setTitle(musicList[number - 1].name)
+                .setTitle(musicList[index].name)
                 .addFields(
                     {
                         name: `作曲者`,
-                        value: musicList[number - 1].author,
+                        value: musicList[index].author,
                         inline: true
                     },
                     {
                         name: `再生時間`,
-                        value: Math.floor(musicList[number - 1].second / 60) + "分" + Math.floor(musicList[number - 1].second / 60) + "秒",
+                        value: `${minutes}分${remainSeconds}秒`,
                         inline: true
                     },
                 )
@@ -97,11 +103,11 @@ module.exports = {
                     iconURL: thumbnail,
                 })
                 .setTimestamp();
-
-            return interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
+                    await console.log("再生成功、embedを送信します");
+            await interaction.editReply({ content: "✅ 再生開始", embeds: [embed] });
         } catch (error) {
             console.error('再生エラー:', error);
-            return interaction.editReply('❌ 再生に失敗しました。URLがMP3でないか、読み込みに失敗しました。');
+            await interaction.editReply('❌ 再生に失敗しました。URLがMP3でないか、読み込みに失敗しました。');
         }
     }
 };
