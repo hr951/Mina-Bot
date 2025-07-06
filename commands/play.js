@@ -47,7 +47,8 @@ module.exports = {
 	     await interaction.deferReply();
       
         const number = interaction.options.getString('record');
-        const url = `https://vercel-52db8uq86-hr951s-projects.vercel.app/${musicList[number-1].id}.mp3`
+        //const url = `https://vercel-52db8uq86-hr951s-projects.vercel.app/${musicList[number-1].id}.mp3`;
+	    const url = "https://vercel-52db8uq86-hr951s-projects.vercel.app/lavachicken.mp3";
 	    
         const memberVoiceChannel = interaction.member.voice.channel;
 
