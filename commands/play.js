@@ -51,8 +51,8 @@ module.exports = {
 
     const number = interaction.options.getString('record');
     // 今はURL固定だけど将来的にmusicListから取得可能
-    const url =
-      'https://vercel-52db8uq86-hr951s-projects.vercel.app/lavachicken.mp3';
+    //const url = 'https://vercel-52db8uq86-hr951s-projects.vercel.app/lavachicken.mp3';
+    const url = `https://cdn.glitch.global/7ca78b4a-80bf-4fc9-90bf-9493ef66ec25/${musicList[number-1].id}.mp3`
 
     const memberVoiceChannel = interaction.member.voice.channel;
     if (!memberVoiceChannel) {
@@ -76,14 +76,14 @@ module.exports = {
     try {
       // player.play にURL文字列ではなく曲情報オブジェクトを渡すのがコツ
       const { track, queue: currentQueue } = await player.play(memberVoiceChannel, url, {
-  nodeOptions: {
-    metadata: interaction,
-    bufferingTimeout: 30000,
-    onBeforeCreateStream: async (track, source, _queue) => {
-      return await fetchMp3Stream(track.url);
-    }
-  }
-});
+                nodeOptions: {
+                    metadata: interaction,
+                    bufferingTimeout: 30_000,
+                    onBeforeCreateStream: async (track, source, _queue) => {
+                        return await fetchMp3Stream(track.url);
+                    }
+                }
+            });
 
       currentQueue.setRepeatMode(QueueRepeatMode.TRACK);
 
