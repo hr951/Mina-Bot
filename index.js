@@ -128,8 +128,12 @@ client.on('interactionCreate', async interaction => {
         try {
             await command.execute(interaction);
         } catch (error) {
-            console.error(error);
+            try {
             await interaction.reply({ content: 'error', ephemeral: true });
+            console.error(error);
+            } catch (error) {
+            console.error(error);
+            }
         }
     };
 
