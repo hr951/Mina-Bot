@@ -67,18 +67,15 @@ module.exports = {
       }
 
         try {
-            const { track, queue: currentQueue } = await player.play(memberVoiceChannel, {
-  title: musicList[number - 1].name,
-  url: url // ← 本物のMP3 URL
-}, {
-  nodeOptions: {
-    metadata: interaction,
-    bufferingTimeout: 30_000,
-    onBeforeCreateStream: async (track, source, _queue) => {
-      return await fetchMp3Stream(track.url);
-    }
-  }
-});
+            const { track, queue: currentQueue } = await player.play(memberVoiceChannel, url, {
+                nodeOptions: {
+                    metadata: interaction,
+                    bufferingTimeout: 30_000,
+                    onBeforeCreateStream: async (track, source, _queue) => {
+                        return await fetchMp3Stream(track.url);
+                    }
+                }
+            });
           
           currentQueue.setRepeatMode(QueueRepeatMode.TRACK);
           
