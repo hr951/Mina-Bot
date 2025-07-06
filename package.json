@@ -4,7 +4,7 @@
   "description": "It is template of Discord.js v14.",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node code.js"
   },
   "dependencies": {
     "discord.js": "^14.13.0",
