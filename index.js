@@ -235,9 +235,8 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async message => {
     if (message.author.id === client.user.id) return;
     if (message.author.bot) return;
-    if (message.author.id === "1225452488237514763" || message.author.id === "962670040795201557") return;
     if (message.content.match(/🖕/)) {
-        //if(message.author.id === "962670040795201557") return;
+        if(message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
         message.delete();
         client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
     }
