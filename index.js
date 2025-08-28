@@ -53,7 +53,8 @@ async function check() {
         { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
         { name: "MOTD", value: result_be.motd.clean || "なし" }
       )
-      .setColor("Green");
+      .setColor("Green")
+      .setTimestamp();
 
     return embed;
 
@@ -62,6 +63,7 @@ async function check() {
       .setTitle(`🎮 ${ip}:${port}`)
       .setDescription("🔴 サーバーはオフラインです")
       .setColor("Red")
+      .setTimestamp();
 
     return embed;
   }
