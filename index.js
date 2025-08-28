@@ -8,6 +8,7 @@ const { Player } = require('discord-player');
 const { DefaultExtractors } = require('@discord-player/extractor');
 const fs = require('node:fs');
 const path = require('node:path');
+const util = require("minecraft-server-util");
 
 const client = new Client({
     intents: [
@@ -31,6 +32,42 @@ const client = new Client({
 const token = process.env.DISCORD_BOT_TOKEN;
 const color = "#FFFFFF";
 
+async function check() {
+  const ip = "147.185.221.30";
+  const port = 34283;
+  const ip_be = "162.43.85.205";
+  const port_be = 19132;
+  try {
+    const result = await util.status(ip, port);
+    const result_be = await util.statusBedrock(ip_be, port_be);
+
+    const embed = new EmbedBuilder()
+      .addFields(
+        { name: `**${ip}:${port}**`, value: " ", inline: false },
+        { name: "サーバー状態", value: "🟢 オンライン", inline: true },
+        { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
+        { name: "MOTD", value: result.motd.clean || "なし" },
+        { name: "\n \n", value: "\n \n" },
+        { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+        { name: "サーバー状態", value: "🟢 オンライン", inline: true },
+        { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
+        { name: "MOTD", value: result_be.motd.clean || "なし" }
+      )
+      .setColor("Green");
+
+    return embed;
+
+  } catch (error) {
+    const embed = new EmbedBuilder()
+      .setTitle(`🎮 ${ip}:${port}`)
+      .setDescription("🔴 サーバーはオフラインです")
+      .setColor("Red")
+
+    return embed;
+  }
+}
+
+
 const player = new Player(client);
 (async () => {
     await player.extractors.loadMulti(DefaultExtractors);
@@ -50,7 +87,13 @@ client.on('ready', () => {
         });
 
 
-    }, 1000)
+    }, 1000);
+    etInterval(async () => {
+    //const guild = await client.guilds.cache.get("1040937611390353408");
+    const channel = await client.channels.cache.get('1410517358459486308');
+    const msg = await channel.messages.fetch('1410517899122053281');
+    msg.edit({ embeds: [await check()] });
+  }, 60000);
 })
 
 //ここから
