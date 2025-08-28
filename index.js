@@ -88,7 +88,7 @@ client.on('ready', () => {
 
 
     }, 1000);
-    etInterval(async () => {
+    setInterval(async () => {
     //const guild = await client.guilds.cache.get("1040937611390353408");
     const channel = await client.channels.cache.get('1410517358459486308');
     const msg = await channel.messages.fetch('1410517899122053281');
