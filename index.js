@@ -33,40 +33,85 @@ const token = process.env.DISCORD_BOT_TOKEN;
 const color = "#FFFFFF";
 
 async function check() {
-  const ip = "147.185.221.30";
-  const port = 34283;
-  const ip_be = "162.43.85.205";
-  const port_be = 19132;
-  try {
-    const result = await util.status(ip, port);
-    const result_be = await util.statusBedrock(ip_be, port_be);
+    const ip = "147.185.221.30";
+    const port = 34283;
+    const ip_be = "162.43.85.205";
+    const port_be = 19132;
+    try {
+        const result = await util.status(ip, port);
+        const result_be = await util.statusBedrock(ip_be, port_be);
 
-    const embed = new EmbedBuilder()
-      .addFields(
-        { name: `**${ip}:${port}**`, value: " ", inline: false },
-        { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-        { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-        { name: "MOTD", value: result.motd.clean || "なし" },
-        { name: "\n \n", value: "\n \n" },
-        { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
-        { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-        { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
-        { name: "MOTD", value: result_be.motd.clean || "なし" }
-      )
-      .setColor("Green")
-      .setTimestamp();
+        const embed = new EmbedBuilder()
+            .addFields(
+                { name: `**${ip}:${port}**`, value: " ", inline: false },
+                { name: "サーバー状態", value: "🟢 オンライン", inline: true },
+                { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
+                { name: "MOTD", value: result.motd.clean || "なし" },
+                { name: "\n \n", value: "\n \n" },
+                { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                { name: "サーバー状態", value: "🟢 オンライン", inline: true },
+                { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
+                { name: "MOTD", value: result_be.motd.clean || "なし" }
+            )
+            .setColor("Green")
+            .setTimestamp();
 
-    return embed;
+        return embed;
 
-  } catch (error) {
-    const embed = new EmbedBuilder()
-      .setTitle(`🎮 ${ip}:${port}`)
-      .setDescription("🔴 サーバーはオフラインです")
-      .setColor("Red")
-      .setTimestamp();
+    } catch (error) {
+        try {
+            const result = await util.status(ip, port);
 
-    return embed;
-  }
+            const embed = new EmbedBuilder()
+                .addFields(
+                    { name: `**${ip}:${port}**`, value: " ", inline: false },
+                    { name: "サーバー状態", value: "🟢 オンライン", inline: true },
+                    { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
+                    { name: "MOTD", value: result.motd.clean || "なし" },
+                    { name: " ", value: " " },
+                    { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                    { name: "サーバー状態", value: "🔴 オフライン", inline: true }
+                )
+                .setColor("Orange")
+                .setTimestamp();
+
+            return embed;
+
+        } catch (error) {
+            try {
+                const result_be = await util.statusBedrock(ip_be, port_be);
+
+                const embed = new EmbedBuilder()
+                    .addFields(
+                        { name: `**${ip}:${port}**`, value: " ", inline: false },
+                        { name: "サーバー状態", value: "🔴 オフライン", inline: true },
+                        { name: "\n \n", value: "\n \n" },
+                        { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                        { name: "サーバー状態", value: "🟢 オンライン", inline: true },
+                        { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
+                        { name: "MOTD", value: result_be.motd.clean || "なし" }
+                    )
+                    .setColor("Orange")
+                    .setTimestamp();
+
+                return embed;
+
+            } catch (error) {
+                const embed = new EmbedBuilder()
+                    .addFields(
+                        { name: `**${ip}:${port}**`, value: " ", inline: false },
+                        { name: "サーバー状態", value: "🔴 オフライン", inline: true },
+                        { name: " ", value: " " },
+                        { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                        { name: "サーバー状態", value: "🔴 オフライン", inline: true }
+                    )
+                    .setColor("Red")
+                    .setTimestamp();
+
+                return embed;
+            }
+        }
+    }
 }
 
 
@@ -91,11 +136,11 @@ client.on('ready', () => {
 
     }, 1000);
     setInterval(async () => {
-    //const guild = await client.guilds.cache.get("1040937611390353408");
-    const channel = await client.channels.cache.get('1410517358459486308');
-    const msg = await channel.messages.fetch('1410517899122053281');
-    msg.edit({ embeds: [await check()] });
-  }, 60000);
+        //const guild = await client.guilds.cache.get("1040937611390353408");
+        const channel = await client.channels.cache.get('1410517358459486308');
+        const msg = await channel.messages.fetch('1410517899122053281');
+        msg.edit({ embeds: [await check()] });
+    }, 60000);
 })
 
 //ここから
@@ -174,10 +219,10 @@ client.on('interactionCreate', async interaction => {
             await command.execute(interaction);
         } catch (error) {
             try {
-            await interaction.reply({ content: 'error', ephemeral: true });
-            console.error(error);
+                await interaction.reply({ content: 'error', ephemeral: true });
+                console.error(error);
             } catch (error) {
-            console.error(error);
+                console.error(error);
             }
         }
     };
@@ -281,7 +326,7 @@ client.on('messageCreate', async message => {
     if (message.author.id === client.user.id) return;
     if (message.author.bot) return;
     if (message.content.match(/🖕/)) {
-        if(message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
+        if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
         message.delete();
         client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
     }
@@ -370,7 +415,7 @@ client.on('messageReactionAdd', (reaction, user) => {
     iconURL: thumbnail,
   })
   .setTimestamp();
-
+ 
       message.channel.send({ embeds: [games_emb]});
     } else if (message.content === "logs"){
       const logs_emb = new EmbedBuilder()
@@ -389,7 +434,7 @@ client.on('messageReactionAdd', (reaction, user) => {
     iconURL: thumbnail,
   })
   .setTimestamp();
-
+ 
       message.channel.send({ embeds: [logs_emb]});
     } else if (message.content === "invite"){
       const server_name = "Minachanの広場";
@@ -403,12 +448,12 @@ client.on('messageReactionAdd', (reaction, user) => {
     iconURL: thumbnail,
   })
   .setTimestamp();
-
+ 
   const invite_url = new ButtonBuilder()
     .setLabel(server_name+"に参加する")
     .setURL(server_link)
     .setStyle(ButtonStyle.Link);
-
+ 
       message.channel.send({ embeds: [invite_emb],components: [new ActionRowBuilder().addComponents(invite_url)]});
     }
 });*/
