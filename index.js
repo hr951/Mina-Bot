@@ -43,12 +43,12 @@ async function check() {
 
         const embed = new EmbedBuilder()
             .addFields(
-                { name: `**${ip}:${port}**`, value: " ", inline: false },
+                { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
                 { name: "MOTD", value: result.motd.clean || "なし" },
                 { name: "\n \n", value: "\n \n" },
-                { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
                 { name: "MOTD", value: result_be.motd.clean || "なし" }
@@ -64,12 +64,12 @@ async function check() {
 
             const embed = new EmbedBuilder()
                 .addFields(
-                    { name: `**${ip}:${port}**`, value: " ", inline: false },
+                    { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                     { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                     { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
                     { name: "MOTD", value: result.motd.clean || "なし" },
                     { name: " ", value: " " },
-                    { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                    { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                     { name: "サーバー状態", value: "🔴 オフライン", inline: true }
                 )
                 .setColor("Orange")
@@ -83,10 +83,10 @@ async function check() {
 
                 const embed = new EmbedBuilder()
                     .addFields(
-                        { name: `**${ip}:${port}**`, value: " ", inline: false },
+                        { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                         { name: "サーバー状態", value: "🔴 オフライン", inline: true },
                         { name: "\n \n", value: "\n \n" },
-                        { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                        { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                         { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                         { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
                         { name: "MOTD", value: result_be.motd.clean || "なし" }
@@ -99,10 +99,10 @@ async function check() {
             } catch (error) {
                 const embed = new EmbedBuilder()
                     .addFields(
-                        { name: `**${ip}:${port}**`, value: " ", inline: false },
+                        { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                         { name: "サーバー状態", value: "🔴 オフライン", inline: true },
                         { name: " ", value: " " },
-                        { name: `**${ip_be}:${port_be}**`, value: " ", inline: false },
+                        { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                         { name: "サーバー状態", value: "🔴 オフライン", inline: true }
                     )
                     .setColor("Red")
