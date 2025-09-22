@@ -46,12 +46,12 @@ async function check() {
                 { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-                { name: "MOTD", value: result.motd.clean || "なし" },
+                { name: "バージョン", value: result.version.name || "undefined" },
                 { name: "\n \n", value: "\n \n" },
                 { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
-                { name: "MOTD", value: result_be.motd.clean || "なし" }
+                { name: "バージョン", value: result_be.version.name || "undefined" }
             )
             .setColor("Green")
             .setTimestamp();
@@ -67,7 +67,7 @@ async function check() {
                     { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                     { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                     { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-                    { name: "MOTD", value: result.motd.clean || "なし" },
+                    { name: "バージョン", value: result.version.name || "undefined" },
                     { name: " ", value: " " },
                     { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                     { name: "サーバー状態", value: "🔴 オフライン", inline: true }
@@ -89,7 +89,7 @@ async function check() {
                         { name: `**Xserver (BE限定)**`, value: " ", inline: false },
                         { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                         { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
-                        { name: "MOTD", value: result_be.motd.clean || "なし" }
+                        { name: "バージョン", value: result_be.version.name || "undefined" },
                     )
                     .setColor("Orange")
                     .setTimestamp();
