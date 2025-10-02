@@ -38,17 +38,17 @@ module.exports = {
                 .addFields(
                     {
                         name: `所持ポイント`,
-                        value: msgData.point,
+                        value: `${msgData.point}`,
                         inline: true
                     },
                     {
                         name: `総ポイント`,
-                        value: msgData.all_point,
+                        value: `${msgData.all_point}`,
                         inline: true
                     },
                     {
                         name: `総送信メッセージ数`,
-                        value: msgData.msgcount,
+                        value: `${msgData.msgcount}`,
                         inline: true
                     },
                 )
