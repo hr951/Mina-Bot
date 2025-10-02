@@ -30,7 +30,7 @@ module.exports = {
          /*if (interaction.options.getString('user')) {
              user = interaction.options.getString('user');
          }*/
-        console.log(interaction.options.getString('user'));
+        console.log(interaction.options.getUser('user'));
         try {
             const msgData = await msgModel.findOne({ _id: user.id });
 
