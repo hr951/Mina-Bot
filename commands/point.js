@@ -26,15 +26,17 @@ module.exports = {
         ),
 
     async execute(interaction) {
+        const thumbnail = interaction.client.user.displayAvatarURL();
+        const color = "#ffffff";
         let user = interaction.user;
-         if (interaction.options.getUser('user')) {
-             user = interaction.options.getUser('user');
-         }
+        if (interaction.options.getUser('user')) {
+            user = interaction.options.getUser('user');
+        }
         try {
             const msgData = await msgModel.findOne({ _id: user.id });
 
             const embed = await new EmbedBuilder()
-                .setTitle("<@"+msgData._id+">" + "のポイント")
+                .setTitle("<@" + msgData._id + ">" + "のポイント")
                 .addFields(
                     {
                         name: `所持ポイント`,
