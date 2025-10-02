@@ -36,7 +36,7 @@ module.exports = {
             const msgData = await msgModel.findOne({ _id: user.id });
 
             const embed = await new EmbedBuilder()
-                .setTitle("<@" + msgData._id + ">" + "のポイント")
+                .setTitle(user.nickname || user.user.globalName + "のポイント")
                 .addFields(
                     {
                         name: `所持ポイント`,
