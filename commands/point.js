@@ -27,11 +27,9 @@ module.exports = {
 
     async execute(interaction) {
         let user = interaction.user;
-        try {
-         user = interaction.options.getString('user');
-        } catch(error) {
-            
-        }
+         if (interaction.options.getString('user')) {
+             user = interaction.options.getString('user');
+         }
         try {
             const msgData = await msgModel.findOne({ _id: user.id });
 
