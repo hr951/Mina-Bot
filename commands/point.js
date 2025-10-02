@@ -27,14 +27,15 @@ module.exports = {
 
     async execute(interaction) {
         let user = interaction.user;
-         if (interaction.options.getString('user')) {
+         /*if (interaction.options.getString('user')) {
              user = interaction.options.getString('user');
-         }
+         }*/
+        console.log(interaction.options.getString('user'));
         try {
             const msgData = await msgModel.findOne({ _id: user.id });
 
             const embed = await new EmbedBuilder()
-                .setTitle(user.nickname || user.user.globalName + "のポイント")
+                .setTitle("<@"+msgData._id+">" + "のポイント")
                 .addFields(
                     {
                         name: `所持ポイント`,
