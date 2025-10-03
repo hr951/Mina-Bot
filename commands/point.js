@@ -63,7 +63,7 @@ module.exports = {
 
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
-            interaction.reply({ content: "Cannot access to the DataBase.", ephemeral: true });
+            interaction.reply({ content: "Unable to access the database", ephemeral: true });
             console.error(error);
         }
     }
