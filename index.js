@@ -9,6 +9,10 @@ const { DefaultExtractors } = require('@discord-player/extractor');
 const fs = require('node:fs');
 const path = require('node:path');
 const util = require("minecraft-server-util");
+const mongoose = require('mongoose');
+const msgModel = require('./db/db');
+
+const uri = process.env.DB;
 
 const client = new Client({
     intents: [
@@ -31,6 +35,19 @@ const client = new Client({
 
 const token = process.env.DISCORD_BOT_TOKEN;
 const color = "#FFFFFF";
+
+const lastCountTime = new Map();
+
+mongoose
+    .connect(uri, {
+        useNewUrlParser: true, //任意
+    })
+    .then(() => {
+        console.log('Connected DataBase!');
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
 async function check() {
     const ip = "147.185.221.30";
@@ -323,8 +340,69 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
-    if (message.author.id === client.user.id) return;
     if (message.author.bot) return;
+
+    const userId = message.author.id;
+    const now = Date.now();
+
+    const lastTime = lastCountTime.get(userId) || 0;
+
+    const length = message.content.length;
+    const chance = Math.min(Math.sqrt(length / 40), 1);
+    let addpoint = Math.random() < chance ? 1 : 0;
+
+    if (now - lastTime < 2000) {
+        addpoint = 0;
+    } else {
+        lastCountTime.set(userId, now);
+    }
+
+    try {
+        let msgs = 0;
+        let points = 0;
+        let all_points = 0;
+        let bg = false;
+        try {
+            const msgPoint = await msgModel.findOne({ _id: message.author.id });
+            msgs = msgPoint.msgcount;
+            points = msgPoint.point;
+            all_points = msgPoint.all_point;
+            bg = msgPoint.bg_upgrade;
+        } catch (error) {
+            console.error(error);
+            if (isNaN(msgs)) {
+                msgs = 0;
+            }
+            if (isNaN(points)) {
+                points = 0;
+            }
+            if (isNaN(all_points)) {
+                all_points = 0;
+            }
+            if (!bg) {
+                bg = false;
+            }
+        }
+        const msgData = await msgModel.findOneAndUpdate(
+            { _id: message.author.id }, // 条件
+            {
+                $set: {
+                    name: message.author.username,
+                    content: message.cleanContent,
+                    msgcount: msgs + 1,
+                    point: points + addpoint,
+                    all_point: all_points + addpoint,
+                    bg_upgrade: bg,
+                },
+            },
+            { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+        );
+
+        //console.log("Update the DataBase:", msgData);
+    } catch (err) {
+        console.error("Update Error:", err);
+    }
+
     if (message.content.match(/🖕/)) {
         if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
         message.delete();
