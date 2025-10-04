@@ -207,6 +207,12 @@ client.on('guildMemberAdd', async member => {
     }
 });
 
+client.on('guildMemberRemove', async member => {
+    if (member.guild.id === "1265637138247057428") {
+        member.guild.channels.cache.get("1315627090233790495").send(`${member.user.globalName}さんが退出しました。`);
+    }
+});
+
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
