@@ -4,8 +4,6 @@ global.crypto = require('crypto');
 require("./server.js");
 
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, Permissions, PermissionFlagsBits, PermissionsBitField, AttachmentBuilder } = require("discord.js");
-const { Player } = require('discord-player');
-const { DefaultExtractors } = require('@discord-player/extractor');
 const fs = require('node:fs');
 const path = require('node:path');
 const util = require("minecraft-server-util");
@@ -130,12 +128,6 @@ async function check() {
         }
     }
 }
-
-
-const player = new Player(client);
-(async () => {
-    await player.extractors.loadMulti(DefaultExtractors);
-})();
 
 client.on('ready', () => {
     setInterval(() => {
@@ -291,13 +283,108 @@ client.on('interactionCreate', async interaction => {
                 client.channels.cache.get("1307705261544308807").send({ embeds: [delmsg] })
                 interaction.channel.delete();
             }
-        } else if (interaction.customId === "stop") {
-            /*try {
-              global.connection.destroy();
-              interaction.reply({content:"再生を停止しました。", ephemeral: false})
-              } catch (error) {
-                  interaction.reply({content:"VCに接続していません。", ephemeral: true})
-              }*/
+        } else if (interaction.customId === "bg_upgrade") {
+            let points = 0;
+            let bg = false;
+            try {
+                const msgPoint = await msgModel.findOne({ _id: interaction.user.id });
+                points = msgPoint.point;
+                bg = msgPoint.bg_upgrade;
+            } catch (error) {
+                console.error(error);
+                if (isNaN(points)) {
+                    points = 0;
+                }
+                if (!bg) {
+                    bg = false;
+                }
+            }
+            if (points < 50) {
+                await interaction.reply({ content: `**${50 - points}**ポイント分不足しています。`, ephemeral: true });
+                return;
+            } else if (bg) {
+                await interaction.reply({ content: `すでに有効化されています。`, ephemeral: true });
+                return;
+            }
+            try {
+                const msgData = await msgModel.findOneAndUpdate(
+                    { _id: interaction.user.id }, // 条件
+                    {
+                        $set: {
+                            name: interaction.user.username,
+                            point: points - 50,
+                            bg_upgrade: true,
+                        },
+                    },
+                    { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                );
+                interaction.reply({ content: `Profile Botの背景画像が変更されました。`, ephemeral: true });
+            } catch (err) {
+                console.error("Update Error:", err);
+            }
+        } else if (interaction.customId === "nitro") {
+            let points = 0;
+            try {
+                const msgPoint = await msgModel.findOne({ _id: interaction.user.id });
+                points = msgPoint.point;
+            } catch (error) {
+                console.error(error);
+                if (isNaN(points)) {
+                    points = 0;
+                }
+            }
+            if (points < 1000) {
+                await interaction.reply({ content: `**${1000 - points}**ポイント分不足しています。`, ephemeral: true });
+                return;
+            }
+            try {
+                const msgData = await msgModel.findOneAndUpdate(
+                    { _id: interaction.user.id }, // 条件
+                    {
+                        $set: {
+                            name: interaction.user.username,
+                            point: points - 1000,
+                        },
+                    },
+                    { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                );
+                const guild = await interaction.client.guilds.fetch("1265637138247057428");
+                const hr951 = await guild.members.fetch("962670040795201557");
+                hr951.send(`${interaction.user.username}がNitro Classic 1ヵ月分を要求しています。\n早急に対応して下さい。`);
+                interaction.reply({ content: `Nitro Classic 1ヵ月分を要求しました。\nえいちあーるからの返事をお待ちください。`, ephemeral: true });
+            } catch (err) {
+                console.error("Update Error:", err);
+            }
+        } else if (interaction.customId === "none") {
+            let points = 0;
+            try {
+                const msgPoint = await msgModel.findOne({ _id: interaction.user.id });
+                points = msgPoint.point;
+            } catch (error) {
+                console.error(error);
+                if (isNaN(points)) {
+                    points = 0;
+                }
+            }
+            if (points < 0) {
+                await interaction.reply({ content: `**${0 - points}**ポイント分不足しています。`, ephemeral: true });
+                return;
+            }
+            try {
+                const msgData = await msgModel.findOneAndUpdate(
+                    { _id: interaction.user.id }, // 条件
+                    {
+                        $set: {
+                            name: interaction.user.username,
+                            point: points - 0,
+                        },
+                    },
+                    { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                );
+                interaction.reply({ content: `Comming Soon!\n追加をお待ちください!`, ephemeral: true });
+            } catch (err) {
+                console.error("Update Error:", err);
+            }
         }
     } else if (interaction.isModalSubmit()) {
         if (interaction.customId == "report_submit") {
@@ -336,10 +423,10 @@ client.on('interactionCreate', async interaction => {
                     .setStyle(ButtonStyle.Danger)
                     .setLabel("チャンネルの削除")
                     .setEmoji("🗑️");
-                await channel.send({ content: `<@${id}>`, embeds: [embed_content], components: [new ActionRowBuilder().setComponents(Del_Button)] })
-                await interaction.reply({ content: `https://discord.com/channels/${channel.guildId}/${channel.id} を作成しました。`, ephemeral: true })
+                await channel.send({ content: `<@${id}>`, embeds: [embed_content], components: [new ActionRowBuilder().setComponents(Del_Button)] });
+                await interaction.reply({ content: `https://discord.com/channels/${channel.guildId}/${channel.id} を作成しました。`, ephemeral: true });
             } catch (error) {
-                await interaction.reply({ content: `キャッシュされていないユーザーの可能性があります。\n人力でチャンネルを作成してください。`, ephemeral: true })
+                await interaction.reply({ content: `キャッシュされていないユーザーの可能性があります。\n人力でチャンネルを作成してください。`, ephemeral: true });
             }
         }
     }
@@ -350,6 +437,59 @@ client.on('messageCreate', async message => {
 
     const userId = message.author.id;
     const now = Date.now();
+
+    if (userId === "962670040795201557" && message.content === "!debug") {
+        try {
+            const msgData = await msgModel.findOneAndUpdate(
+                { _id: message.author.id }, // 条件
+                {
+                    $set: {
+                        name: message.author.username,
+                        point: 999999,
+                    },
+                },
+                { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+            );
+            message.reply("Success")
+        } catch (error) {
+            message.reply("Failed")
+            console.error(error);
+        }
+    } else if (userId === "962670040795201557" && message.content === "!reset") {
+        try {
+            await msgModel.deleteMany({});
+            message.reply("Success");
+        } catch (error) {
+            console.error(error);
+            message.reply("Failed");
+        }
+    } else if (userId === "962670040795201557" && message.content === "!point_reset") {
+        let all_points = 0;
+        try {
+            const msgPoint = await msgModel.findOne({ _id: message.author.id });
+            all_points = msgPoint.all_point;
+        } catch (error) {
+            if (isNaN(all_points)) {
+                all_points = 0;
+            }
+        }
+        try {
+            const msgData = await msgModel.findOneAndUpdate(
+                { _id: message.author.id }, // 条件
+                {
+                    $set: {
+                        name: message.author.username,
+                        point: all_points,
+                    },
+                },
+                { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+            );
+            message.reply("Success");
+        } catch (error) {
+            console.error(error);
+            message.reply("Failed");
+        }
+    }
 
     const lastTime = lastCountTime.get(userId) || 0;
 
