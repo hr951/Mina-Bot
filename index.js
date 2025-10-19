@@ -516,6 +516,22 @@ client.on('messageCreate', async message => {
             all_points = msgPoint.all_point;
             msg_length = msgPoint.msglength;
             bg = msgPoint.bg_upgrade;
+
+            if (isNaN(msgs)) {
+                msgs = 0;
+            }
+            if (isNaN(points)) {
+                points = 0;
+            }
+            if (isNaN(msg_length)) {
+                msg_length = msgs * 5;
+            }
+            if (isNaN(all_points)) {
+                all_points = 0;
+            }
+            if (!bg) {
+                bg = false;
+            }
         } catch (error) {
             console.error(error);
             if (isNaN(msgs)) {
@@ -524,7 +540,7 @@ client.on('messageCreate', async message => {
             if (isNaN(points)) {
                 points = 0;
             }
-            if (!msg_length) {
+            if (isNaN(msg_length)) {
                 msg_length = msgs * 5;
             }
             if (isNaN(all_points)) {
