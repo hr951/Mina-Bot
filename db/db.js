@@ -5,6 +5,7 @@ const msgSchema = new mongoose.Schema({
 	name: { type: String }, //ユーザーネーム
 	content: { type: String }, //メッセ
     msgcount: { type: Number }, //メッセ数
+	msglength: { type: Number}, //メッセ総長さ
     point: { type: Number }, //所持ポイント
     all_point: { type: Number }, //累計ポイント
     bg_upgrade: { type: Boolean }, //背景変化
