@@ -513,8 +513,8 @@ client.on('messageCreate', async message => {
             const msgPoint = await msgModel.findOne({ _id: message.author.id });
             msgs = msgPoint.msgcount;
             points = msgPoint.point;
-            msg_length = msgPoint.msglength;
             all_points = msgPoint.all_point;
+            msg_length = msgPoint.msglength;
             bg = msgPoint.bg_upgrade;
         } catch (error) {
             console.error(error);
@@ -524,7 +524,7 @@ client.on('messageCreate', async message => {
             if (isNaN(points)) {
                 points = 0;
             }
-            if (isNaN(msg_length)) {
+            if (!msg_length) {
                 msg_length = msgs * 5;
             }
             if (isNaN(all_points)) {
