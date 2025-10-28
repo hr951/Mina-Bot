@@ -125,8 +125,8 @@ async function check() {
 
                 return embed;
             }
-        }
-    }
+        /*}
+    }*/
 }
 
 client.on('ready', () => {
