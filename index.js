@@ -572,7 +572,7 @@ client.on('messageReactionAdd', (reaction, user) => {
         react_message.reactions.cache.get('🖕').remove();
         client.channels.cache.get("1380894393611059241").send(`${user.tag} が https://discord.com/channels/${reaction.message.guild.id}/${react_message.channel.id}/${react_message.id} に ${reaction.emoji.name} を リアクションしました。`);
     }
-})
+});
 
 /*client.on('messageCreate', async message => {
   const thumbnail = message.client.user.displayAvatarURL();
