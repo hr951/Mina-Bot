@@ -50,11 +50,8 @@ mongoose
 async function check() {
     const ip = "147.185.221.30";
     const port = 34283;
-    const ip_be = "162.43.85.205";
-    const port_be = 19132;
     try {
         const result = await util.status(ip, port);
-        //const result_be = await util.statusBedrock(ip_be, port_be);
 
         const embed = new EmbedBuilder()
             .addFields(
