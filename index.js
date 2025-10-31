@@ -422,7 +422,12 @@ client.on('messageCreate', async message => {
             if (isNaN(all_points)) {
                 all_points = 0;
             }
+        } else if (userId === "962670040795201557" && message.content === "!update_status") {
+        const channel = await client.channels.cache.get('1410517358459486308');
+        const msg = await channel.messages.fetch('1410517899122053281');
+        msg.edit({ embeds: [await check()] });
         }
+    
         try {
             const msgData = await msgModel.findOneAndUpdate(
                 { _id: message.author.id }, // 条件
