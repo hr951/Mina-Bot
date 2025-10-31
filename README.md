@@ -1,5 +1,6 @@
 # Note
 ```js
+const result = await util.status(ip_be, port_be);
 const result_be = await util.statusBedrock(ip_be, port_be);
 { name: `**Xserver (BE限定)**`, value: " ", inline: false },
 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
