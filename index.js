@@ -66,6 +66,7 @@ async function check() {
         return embed;
 
     } catch (error) {
+        console.error(error);
                 const embed = new EmbedBuilder()
                     .addFields(
                         { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
