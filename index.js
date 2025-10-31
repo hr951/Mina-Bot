@@ -61,72 +61,24 @@ async function check() {
                 { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-                { name: "バージョン", value: result.version.name || "undefined" },
-                /*{ name: "\n \n", value: "\n \n" },
-                { name: `**Xserver (BE限定)**`, value: " ", inline: false },
-                { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-                { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
-                { name: "バージョン", value: result_be.version.name || "undefined" }*/
+                { name: "バージョン", value: result.version.name || "undefined" }
             )
             .setColor("Green")
             .setTimestamp();
 
         return embed;
 
-    } /*catch (error) {
-        try {
-            const result = await util.status(ip, port);
-
-            const embed = new EmbedBuilder()
-                .addFields(
-                    { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
-                    { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-                    { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-                    { name: "バージョン", value: result.version.name || "undefined" },
-                    { name: " ", value: " " },
-                    { name: `**Xserver (BE限定)**`, value: " ", inline: false },
-                    { name: "サーバー状態", value: "🔴 オフライン", inline: true }
-                )
-                .setColor("Orange")
-                .setTimestamp();
-
-            return embed;
-
-        } catch (error) {
-            try {
-                const result_be = await util.statusBedrock(ip_be, port_be);
-
+    } catch (error) {
                 const embed = new EmbedBuilder()
                     .addFields(
                         { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
-                        { name: "サーバー状態", value: "🔴 オフライン", inline: true },
-                        { name: "\n \n", value: "\n \n" },
-                        { name: `**Xserver (BE限定)**`, value: " ", inline: false },
-                        { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-                        { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
-                        { name: "バージョン", value: result_be.version.name || "undefined" },
-                    )
-                    .setColor("Orange")
-                    .setTimestamp();
-
-                return embed;
-
-            }*/ catch (error) {
-                const embed = new EmbedBuilder()
-                    .addFields(
-                        { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
-                        { name: "サーバー状態", value: "🔴 オフライン", inline: true },
-                        /*{ name: " ", value: " " },
-                        { name: `**Xserver (BE限定)**`, value: " ", inline: false },
-                        { name: "サーバー状態", value: "🔴 オフライン", inline: true }*/
+                        { name: "サーバー状態", value: "🔴 オフライン", inline: true }
                     )
                     .setColor("Red")
                     .setTimestamp();
 
                 return embed;
             }
-        /*}
-    }*/
 }
 
 client.on('ready', () => {
