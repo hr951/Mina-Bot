@@ -1,0 +1,7 @@
+# Note
+```js
+{ name: `**Xserver (BE限定)**`, value: " ", inline: false },
+{ name: "サーバー状態", value: "🟢 オンライン", inline: true },
+{ name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
+{ name: "バージョン", value: result_be.version.name || "undefined" }
+```
