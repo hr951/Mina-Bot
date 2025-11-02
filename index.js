@@ -48,17 +48,27 @@ mongoose
     });
 
 async function check() {
-    const ip = "147.185.221.26";
-    const port = 4387;
+    const ip =
+    {
+        "je": "162.43.75.189",
+        "be": "162.43.75.189"
+    };
+    const port =
+    {
+        "je": 25565,
+        "be": 19132
+    };
+
     try {
-        const result = await util.statusBedrock(ip, port);
+        const result = await util.status(ip.je, port.je);
+        const result_be = await util.statusBedrock(ip.be, port.be);
 
         const embed = new EmbedBuilder()
             .addFields(
                 { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-                { name: "バージョン", value: result.version.name || "undefined" }
+                { name: "バージョン", value: "JE: **" + result.version.name.replace("Velocity ", "") + "**\nBE: **" + result_be.version.name + "++" || "undefined" }
             )
             .setColor("Green")
             .setTimestamp();
