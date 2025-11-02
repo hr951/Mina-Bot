@@ -68,7 +68,7 @@ async function check() {
                 { name: `**HUBサーバー (JE・BE対応)**`, value: " ", inline: false },
                 { name: "サーバー状態", value: "🟢 オンライン", inline: true },
                 { name: "参加人数", value: `${result.players.online}/${result.players.max}`, inline: true },
-                { name: "バージョン", value: "JE: **" + result.version.name.replace("Velocity ", "") + "**\nBE: **" + result_be.version.name + "++" || "undefined" }
+                { name: "バージョン", value: "JE: **" + result.version.name.replace("Velocity ", "") + "**\nBE: **" + result_be.version.name + "**" || "undefined" }
             )
             .setColor("Green")
             .setTimestamp();
