@@ -396,145 +396,147 @@ client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
     const userId = message.author.id;
-    const now = Date.now();
 
-    if (userId === "962670040795201557" && message.content === "!debug") {
+    if (message.channel.type == 'DM') {
+        const now = Date.now();
+
+        if (userId === "962670040795201557" && message.content === "!debug") {
+            try {
+                const msgData = await msgModel.findOneAndUpdate(
+                    { _id: message.author.id }, // 条件
+                    {
+                        $set: {
+                            name: message.author.username,
+                            point: 999999,
+                        },
+                    },
+                    { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                );
+                message.reply("Success")
+            } catch (error) {
+                message.reply("Failed")
+                console.error(error);
+            }
+        } else if (userId === "962670040795201557" && message.content === "!reset") {
+            try {
+                await msgModel.deleteMany({});
+                message.reply("Success");
+            } catch (error) {
+                console.error(error);
+                message.reply("Failed");
+            }
+        } else if (userId === "962670040795201557" && message.content === "!point_reset") {
+            let all_points = 0;
+            try {
+                const msgPoint = await msgModel.findOne({ _id: message.author.id });
+                all_points = msgPoint.all_point;
+            } catch (error) {
+                if (isNaN(all_points)) {
+                    all_points = 0;
+                }
+            }
+            try {
+                const msgData = await msgModel.findOneAndUpdate(
+                    { _id: message.author.id }, // 条件
+                    {
+                        $set: {
+                            name: message.author.username,
+                            point: all_points,
+                        },
+                    },
+                    { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                );
+                message.reply("Success");
+            } catch (error) {
+                console.error(error);
+                message.reply("Failed");
+            }
+        } else if (userId === "962670040795201557" && message.content === "!update_status") {
+            const channel = await client.channels.cache.get('1410517358459486308');
+            const msg = await channel.messages.fetch('1410517899122053281');
+            msg.edit({ embeds: [await check()] });
+        }
+
+        const lastTime = lastCountTime.get(userId) || 0;
+
+        const length = message.content.length;
+        const chance = Math.min(Math.sqrt(length / 40), 1);
+        let addpoint = Math.random() < chance ? 1 : 0;
+
+        if (now - lastTime < 2000) {
+            addpoint = 0;
+        } else {
+            lastCountTime.set(userId, now);
+        }
+
         try {
+            let msgs = 0;
+            let points = 0;
+            let all_points = 0;
+            let msg_length = 0;
+            let bg = false;
+            try {
+                const msgPoint = await msgModel.findOne({ _id: message.author.id });
+                msgs = msgPoint.msgcount;
+                points = msgPoint.point;
+                all_points = msgPoint.all_point;
+                msg_length = msgPoint.msglength;
+                bg = msgPoint.bg_upgrade;
+
+                if (isNaN(msgs)) {
+                    msgs = 0;
+                }
+                if (isNaN(points)) {
+                    points = 0;
+                }
+                if (isNaN(msg_length)) {
+                    msg_length = msgs * 5;
+                }
+                if (isNaN(all_points)) {
+                    all_points = 0;
+                }
+                if (!bg) {
+                    bg = false;
+                }
+            } catch (error) {
+                console.error(error);
+                if (isNaN(msgs)) {
+                    msgs = 0;
+                }
+                if (isNaN(points)) {
+                    points = 0;
+                }
+                if (isNaN(msg_length)) {
+                    msg_length = msgs * 5;
+                }
+                if (isNaN(all_points)) {
+                    all_points = 0;
+                }
+                if (!bg) {
+                    bg = false;
+                }
+            }
             const msgData = await msgModel.findOneAndUpdate(
                 { _id: message.author.id }, // 条件
                 {
                     $set: {
                         name: message.author.username,
-                        point: 999999,
+                        content: message.cleanContent,
+                        msgcount: msgs + 1,
+                        msglength: msg_length + message.content.length,
+                        point: points + addpoint,
+                        all_point: all_points + addpoint,
+                        bg_upgrade: bg,
                     },
                 },
                 { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
             );
-            message.reply("Success")
-        } catch (error) {
-            message.reply("Failed")
-            console.error(error);
+
+            //console.log("Update the DataBase:", msgData);
+        } catch (err) {
+            console.error("Update Error:", err);
         }
-    } else if (userId === "962670040795201557" && message.content === "!reset") {
-        try {
-            await msgModel.deleteMany({});
-            message.reply("Success");
-        } catch (error) {
-            console.error(error);
-            message.reply("Failed");
-        }
-    } else if (userId === "962670040795201557" && message.content === "!point_reset") {
-        let all_points = 0;
-        try {
-            const msgPoint = await msgModel.findOne({ _id: message.author.id });
-            all_points = msgPoint.all_point;
-        } catch (error) {
-            if (isNaN(all_points)) {
-                all_points = 0;
-            }
-        }
-        try {
-            const msgData = await msgModel.findOneAndUpdate(
-                { _id: message.author.id }, // 条件
-                {
-                    $set: {
-                        name: message.author.username,
-                        point: all_points,
-                    },
-                },
-                { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
-            );
-            message.reply("Success");
-        } catch (error) {
-            console.error(error);
-            message.reply("Failed");
-        }
-    } else if (userId === "962670040795201557" && message.content === "!update_status") {
-        const channel = await client.channels.cache.get('1410517358459486308');
-        const msg = await channel.messages.fetch('1410517899122053281');
-        msg.edit({ embeds: [await check()] });
     }
-
-    const lastTime = lastCountTime.get(userId) || 0;
-
-    const length = message.content.length;
-    const chance = Math.min(Math.sqrt(length / 40), 1);
-    let addpoint = Math.random() < chance ? 1 : 0;
-
-    if (now - lastTime < 2000) {
-        addpoint = 0;
-    } else {
-        lastCountTime.set(userId, now);
-    }
-
-    try {
-        let msgs = 0;
-        let points = 0;
-        let all_points = 0;
-        let msg_length = 0;
-        let bg = false;
-        try {
-            const msgPoint = await msgModel.findOne({ _id: message.author.id });
-            msgs = msgPoint.msgcount;
-            points = msgPoint.point;
-            all_points = msgPoint.all_point;
-            msg_length = msgPoint.msglength;
-            bg = msgPoint.bg_upgrade;
-
-            if (isNaN(msgs)) {
-                msgs = 0;
-            }
-            if (isNaN(points)) {
-                points = 0;
-            }
-            if (isNaN(msg_length)) {
-                msg_length = msgs * 5;
-            }
-            if (isNaN(all_points)) {
-                all_points = 0;
-            }
-            if (!bg) {
-                bg = false;
-            }
-        } catch (error) {
-            console.error(error);
-            if (isNaN(msgs)) {
-                msgs = 0;
-            }
-            if (isNaN(points)) {
-                points = 0;
-            }
-            if (isNaN(msg_length)) {
-                msg_length = msgs * 5;
-            }
-            if (isNaN(all_points)) {
-                all_points = 0;
-            }
-            if (!bg) {
-                bg = false;
-            }
-        }
-        const msgData = await msgModel.findOneAndUpdate(
-            { _id: message.author.id }, // 条件
-            {
-                $set: {
-                    name: message.author.username,
-                    content: message.cleanContent,
-                    msgcount: msgs + 1,
-                    msglength: msg_length + message.content.length,
-                    point: points + addpoint,
-                    all_point: all_points + addpoint,
-                    bg_upgrade: bg,
-                },
-            },
-            { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
-        );
-
-        //console.log("Update the DataBase:", msgData);
-    } catch (err) {
-        console.error("Update Error:", err);
-    }
-
     if (message.content.match(/🖕/)) {
         if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
         message.delete();
