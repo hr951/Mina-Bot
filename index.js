@@ -397,7 +397,7 @@ client.on('messageCreate', async message => {
 
     const userId = message.author.id;
 
-    if (message.channel.type == 'DM') {
+    if (!message.channel.type == 1) {
         const now = Date.now();
 
         if (userId === "962670040795201557" && message.content === "!debug") {
@@ -537,6 +537,7 @@ client.on('messageCreate', async message => {
             console.error("Update Error:", err);
         }
     }
+
     if (message.content.match(/🖕/)) {
         if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
         message.delete();
