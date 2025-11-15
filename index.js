@@ -397,7 +397,7 @@ client.on('messageCreate', async message => {
 
     const userId = message.author.id;
 
-    if (!message.channel.type === 1) {
+    if (message.guildId) {
         const now = Date.now();
 
         if (userId === "962670040795201557" && message.content === "!debug") {
