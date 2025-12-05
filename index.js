@@ -6,7 +6,6 @@ require("./server.js");
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, Permissions, PermissionFlagsBits, PermissionsBitField, AttachmentBuilder, StringSelectMenuBuilder, InteractionResponse } = require("discord.js");
 const fs = require('node:fs');
 const path = require('node:path');
-const fetch = require("node-fetch");
 const util = require("minecraft-server-util");
 const mongoose = require('mongoose');
 const msgModel = require('./db/db');
