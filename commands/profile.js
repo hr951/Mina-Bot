@@ -125,9 +125,9 @@ module.exports = {
         const sc = await loadImage('./images/scratch_icon.png');
 
         if (bg_type == 0) {
-            url_bg = './images/bg-50.png';
-        } else if (bg_type == 1) {
             url_bg = './images/background.png';
+        } else if (bg_type == 1) {
+            url_bg = './images/bg-50.png';
         } else if (bg_type == 2) {
             url_bg = bg_url;
         }
