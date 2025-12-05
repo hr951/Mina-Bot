@@ -503,7 +503,12 @@ client.on('interactionCreate', async interaction => {
       } catch (err) {
         console.error("Update Error:", err);
       }
+    } else if(interaction.user.id === interaction.customId){
+      await interaction.message.delete();
+    } else {
+      await interaction.reply({content: "このプロフィールの作者ではありません。", ephemeral: true })
     }
+  }
 
     //modal
 
