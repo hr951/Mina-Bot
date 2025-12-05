@@ -2,9 +2,9 @@
   "name": "MinaServer-Bot",
   "version": "14",
   "description": "It is code of MinaServer Bot.",
-  "main": "code.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node code.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "discord.js": "^14.13.0",
