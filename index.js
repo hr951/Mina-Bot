@@ -503,15 +503,15 @@ client.on('interactionCreate', async interaction => {
       } catch (err) {
         console.error("Update Error:", err);
       }
-    } else if(interaction.user.id === interaction.customId){
+
+      //delete profile
+    } else if (interaction.user.id === interaction.customId) {
       await interaction.message.delete();
     } else {
-      await interaction.reply({content: "このプロフィールの作者ではありません。", ephemeral: true })
+      await interaction.reply({ content: "このプロフィールの作者ではありません。", ephemeral: true })
     }
-  }
 
     //modal
-
   } else if (interaction.isModalSubmit()) {
 
     //report
