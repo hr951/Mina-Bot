@@ -89,8 +89,7 @@ module.exports = {
                     points = msgPoint.point;
                     all_points = msgPoint.all_point;
                     bg = msgPoint.bg_upgrade;
-                } catch (error) {
-                    console.error(error);
+
                     if (isNaN(msgs)) {
                         msgs = 0;
                     }
@@ -103,6 +102,8 @@ module.exports = {
                     if (!bg) {
                         bg = false;
                     }
+                } catch (error) {
+                    console.error(error);
                 }
 
                 const embed = new EmbedBuilder()
@@ -110,30 +111,40 @@ module.exports = {
                     .setDescription(`ポイントを使用できるフォームです。\n基本的にMinachan鯖内でのみの特典です。\nあなたが所持しているポイント: **${points}**`)
                     .addFields(
                         {
-                            name: `1️⃣ Profile Bot背景アップグレード`,
-                            value: `必要ポイント: **50**`,
+                            name: `1️⃣ プロフィール背景アップグレード`,
+                            value: `必要ポイント: **200**`,
                             inline: true
                         },
                         {
-                            name: `2️⃣ Nitro Classic 1ヵ月分`,
-                            value: `必要ポイント: **1000**`,
+                            name: `2️⃣ 運用1周年記念ロール`,
+                            value: `必要ポイント: **1**`,
                             inline: true
                         },
                         {
-                            name: `3️⃣ Comming Soon!`,
-                            value: `必要ポイント: **xxx**`,
+                            name: `3️⃣ 進捗機能開放`,
+                            value: `必要ポイント: **100**`,
+                            inline: true
+                        },
+                        {
+                            name: `4️⃣ Mina鯖のおしゃべりロール`,
+                            value: `必要ポイント: **500**`,
+                            inline: true
+                        },
+                        {
+                            name: `5️⃣ Mina鯖の伝説話者ロール`,
+                            value: `必要ポイント: **10000**`,
                             inline: true
                         },
                     )
                     .setColor(color);
 
-                    /*
-                    Primary	青色
-                    Secondary	灰色
-                    Success	緑色
-                    Danger	赤色
-                    Link	外部リンク
-                    */
+                /*
+                Primary	青色
+                Secondary	灰色
+                Success	緑色
+                Danger	赤色
+                Link	外部リンク
+                */
 
                 const _1 = new ButtonBuilder()
                     .setCustomId(`bg_upgrade`)
@@ -141,7 +152,7 @@ module.exports = {
                     .setEmoji("1️⃣");
 
                 const _2 = new ButtonBuilder()
-                    .setCustomId(`nitro`)
+                    .setCustomId(`1st_anni`)
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji("2️⃣");
 
@@ -150,7 +161,17 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger)
                     .setEmoji("3️⃣");
 
-                await interaction.user.send({ embeds: [embed], components: [new ActionRowBuilder().addComponents(_1, _2, _3)] });
+                const _4 = new ButtonBuilder()
+                    .setCustomId(`osyaberi`)
+                    .setStyle(ButtonStyle.Primary)
+                    .setEmoji("4️⃣");
+
+                const _5 = new ButtonBuilder()
+                    .setCustomId(`densetu`)
+                    .setStyle(ButtonStyle.Primary)
+                    .setEmoji("5️⃣");
+
+                await interaction.user.send({ embeds: [embed], components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)] });
                 interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", ephemeral: true });
             } catch (error) {
                 interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", ephemeral: true });
