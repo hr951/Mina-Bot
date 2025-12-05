@@ -645,7 +645,7 @@ client.on('interactionCreate', async interaction => {
           },
           { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
         );
-        if (!value == 3) {
+        if (value != 3) {
           await interaction.reply(`プロフィール背景を**${name[value - 1]}**に設定しました`);
         }
         //console.log("Update the DataBase:", msgData);
