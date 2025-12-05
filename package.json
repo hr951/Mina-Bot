@@ -23,12 +23,10 @@
     "node": ">=18"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/discord-js-v14-template-glitch"
+    "url": "https://github.com/hr951/Mina-Bot"
   },
   "license": "MIT",
   "keywords": [
-    "node",
-    "glitch",
-    "template"
+    "node"
   ]
 }
