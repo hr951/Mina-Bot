@@ -105,7 +105,7 @@ module.exports = {
             console.error(error);
         }
 
-        await interaction.editReply({ content: "画像を生成しています...\nエラーが発生した場合は画像が生成されません。", ephemeral: true })
+        await interaction.editReply({ content: "画像を生成しています...\nエラーが発生した場合は画像が生成されません。", ephemeral: true });
 
         const interact = interaction.channel;
 
