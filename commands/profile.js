@@ -78,7 +78,7 @@ module.exports = {
 
     async execute(interaction) {
 
-        await interaction.deferReply({ ephemeral: false });
+        await interaction.deferReply({ ephemeral: true });
 
         let url_bg = "./images/background.png";
         let bg_upgrade = false;
