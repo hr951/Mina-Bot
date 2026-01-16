@@ -6,12 +6,13 @@ require("./server.js");
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, Permissions, PermissionFlagsBits, PermissionsBitField, AttachmentBuilder, StringSelectMenuBuilder, InteractionResponse } = require("discord.js");
 const fs = require('node:fs');
 const path = require('node:path');
+const { Connectors } = require('shoukaku');
+const { Kazagumo } = require('kazagumo');
 const util = require("minecraft-server-util");
 const mongoose = require('mongoose');
 const msgModel = require('./db/db');
 const sizeOf = require("image-size").default;
-
-const uri = process.env.DB;
+require("dotenv").config();
 
 const client = new Client({
     intents: [
@@ -33,7 +34,63 @@ const client = new Client({
 });
 
 const token = process.env.DISCORD_BOT_TOKEN;
+const uri = process.env.DB;
 const color = "#FFFFFF";
+
+const Nodes = [{
+    name: 'Render-Node',
+    url: process.env.LAVA_LINK_URL, // URL (PORT -> 443)
+    auth: process.env.LAVA_LINK_AUTH, // パスワード
+    secure: true // HTTPS(443) -> true
+}];
+
+// ----- Kazagumo初期化 -----
+const kazagumo = new Kazagumo({
+    defaultSearchEngine: "soundcloud",
+    send: (guildId, payload) => {
+        const guild = client.guilds.cache.get(guildId);
+        if (guild) guild.shard.send(payload);
+    }
+}, new Connectors.DiscordJS(client), Nodes);
+
+kazagumo.on("playerStart", (player, track) => {
+    const embed = new EmbedBuilder()
+        .setTitle(player.queue.current.title)
+        .setURL(player.queue.current.uri)
+        .addFields(
+            { name: "アーティスト: ", value: player.queue.current.author, inline: true },
+            { name: "長さ: ", value: `${Math.floor(player.queue.current.length / 60000)}:${Math.floor((player.queue.current.length % 60000) / 1000).toString().padStart(2, '0')}`, inline: true }
+        )
+        .setImage(player.queue.current.thumbnail)
+        .setColor(color);
+
+    player.data.get("textChannel").send({ content: "再生中", embeds: [embed] });
+});
+
+client.kazagumo = kazagumo;
+client.kazagumo.shoukaku.on('ready', (name) => console.log(`Lavalink Node: ${name} が接続されました！`));
+// ----- Kazagumo初期化終了 -----
+
+// ----- エラーハンドリング -----
+// Shoukaku (接続層) のエラーをキャッチ
+kazagumo.shoukaku.on('error', (name, error) => {
+    console.error(`Lavalink Node[${name}] でエラーが発生しました:`, error);
+});
+
+// Kazagumo (プレイヤー層) のエラーをキャッチ
+kazagumo.on('error', (name, error) => {
+    console.error(`Kazagumo[${name}] でエラーが発生しました:`, error);
+});
+
+// 予期せぬエラーでプロセスを落とさないための保険
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+// ----- エラーハンドリング終了 -----
 
 const lastCountTime = new Map();
 
@@ -903,6 +960,19 @@ client.on('messageReactionAdd', (reaction, user) => {
     if (reaction.emoji.name === '🖕') {
         react_message.reactions.cache.get('🖕').remove();
         client.channels.cache.get("1380894393611059241").send(`${user.tag} が https://discord.com/channels/${reaction.message.guild.id}/${react_message.channel.id}/${react_message.id} に ${reaction.emoji.name} を リアクションしました。`);
+    }
+});
+
+// 誰かがボイスチャンネルからいなくなった時の処理
+client.on("voiceStateUpdate", (oldState, newState) => {
+    const player = kazagumo.players.get(oldState.guild.id);
+    if (!player) return;
+
+    const voiceChannel = client.channels.cache.get(player.voiceId);
+    if (voiceChannel && voiceChannel.members.filter(m => !m.user.bot).size === 0) {
+        player.destroy();
+        const textChannel = client.channels.cache.get(player.textId);
+        if (textChannel) textChannel.send("誰もいなくなったので退出しました");
     }
 });
 
