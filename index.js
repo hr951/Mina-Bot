@@ -277,7 +277,6 @@ client.on('interactionCreate', async interaction => {
             }
         }
     };
-});
 // ---- コマンド読み込み処理終了 ----
 
     const thumbnail = interaction.client.user.displayAvatarURL();
@@ -308,7 +307,7 @@ client.on('interactionCreate', async interaction => {
             return interaction.showModal(modal);
         } else if (interaction.customId === "del") {
             if (!interaction.member.roles.cache.has('1307226905862340608')) {
-                interaction.reply({ content: "チャンネルを削除する権限がありません。", ephemeral: true });
+                await interaction.reply({ content: "チャンネルを削除する権限がありません。", ephemeral: true });
                 return;
             } else {
                 const delmsg = new EmbedBuilder()
