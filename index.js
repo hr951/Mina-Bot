@@ -235,6 +235,7 @@ client.on('guildMemberRemove', async member => {
     }
 });
 
+// ---- コマンド読み込み処理 ----
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
@@ -267,10 +268,17 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ content: 'error', ephemeral: true });
                 console.error(error);
             } catch (error) {
-                console.error(error);
+                try {
+                    await interaction.editReply({ content: 'error', ephemeral: true });
+                    console.error(error);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         }
     };
+});
+// ---- コマンド読み込み処理終了 ----
 
     const thumbnail = interaction.client.user.displayAvatarURL();
     if (interaction.isButton()) {
