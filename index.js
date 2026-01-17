@@ -1,8 +1,3 @@
-global.ReadableStream = require('stream/web').ReadableStream;
-global.crypto = require('crypto');
-
-require("./server.js");
-
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, Permissions, PermissionFlagsBits, PermissionsBitField, AttachmentBuilder, StringSelectMenuBuilder, InteractionResponse } = require("discord.js");
 const fs = require('node:fs');
 const path = require('node:path');
@@ -13,6 +8,8 @@ const mongoose = require('mongoose');
 const msgModel = require('./db/db');
 const sizeOf = require("image-size").default;
 require("dotenv").config();
+
+require("./server.js");
 
 const client = new Client({
     intents: [
