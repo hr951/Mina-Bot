@@ -1,6 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-
-const color = "#ffffff";
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -38,10 +36,6 @@ module.exports = {
             queue: "キュー"
         };
 
-        const embed = new EmbedBuilder()
-            .setTitle(`ループモードを **${ja[mode]}** に設定しました`)
-            .setColor(color);
-
-        return interaction.reply({ embeds: [embed] });
+        return interaction.reply({ content: `ループモードを **${ja[mode]}** に設定しました`, ephemeral: true });
     },
 };

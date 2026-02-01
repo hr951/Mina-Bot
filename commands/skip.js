@@ -1,6 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-
-const color = "#ffffff";
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,10 +19,6 @@ module.exports = {
         if (!player) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
         player.skip();
 
-        const embed = new EmbedBuilder()
-            .setTitle("曲をスキップしました")
-            .setColor(color);
-
-        return interaction.reply({ embeds: [embed] });
+        return interaction.reply({ content: "曲をスキップしました", ephemeral: true });
     },
 };

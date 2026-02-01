@@ -17,30 +17,30 @@ module.exports = {
 
         const role_1 = await interaction.guild.roles.fetch('1265668863597740225');
         if (role_1.members.size !== 0) {
-            var member_1 = await role_1.members.map(m => m.nickname || m.user.globalName).join('\n');
+            member_1 = await role_1.members.map(m => m.nickname || m.user.globalName).join('\n');
         } else {
-            var member_1 = "なし";
+            member_1 = "なし";
         };
 
         const role_2 = await interaction.guild.roles.fetch('1265668095427612703');
         if (role_2.members.size !== 0) {
-            var member_2 = await role_2.members.map(m => m.nickname || m.user.globalName).join('\n');
+            member_2 = await role_2.members.map(m => m.nickname || m.user.globalName).join('\n');
         } else {
-            var member_2 = "なし";
+            member_2 = "なし";
         };
 
         const role_3 = await interaction.guild.roles.fetch('1268835638686257203');
         if (role_3.members.size !== 0) {
-            var member_3 = await role_3.members.map(m => m.nickname || m.user.globalName).join('\n');
+            member_3 = await role_3.members.map(m => m.nickname || m.user.globalName).join('\n');
         } else {
-            var member_3 = "なし";
+            member_3 = "なし";
         };
 
         const role_4 = await interaction.guild.roles.fetch('1353728683357114369');
         if (role_4.members.size !== 0) {
-            var member_4 = await role_4.members.map(m => m.nickname || m.user.globalName).join('\n');
+            member_4 = await role_4.members.map(m => m.nickname || m.user.globalName).join('\n');
         } else {
-            var member_4 = "なし";
+            member_4 = "なし";
         };
 
         const embed = new EmbedBuilder()

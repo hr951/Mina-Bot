@@ -1,19 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
-const mongoose = require('mongoose');
+const { model } = require('../db/db');
 
-const uri = process.env.DB;
-const msgModel = require('../db/db');
-
-mongoose
-    .connect(uri, {
-        useNewUrlParser: true, //任意
-    })
-    .then(() => {
-        console.log('Connected DataBase!');
-    })
-    .catch((error) => {
-        console.log(error);
-    });
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -47,7 +34,7 @@ module.exports = {
                 user = interaction.options.getUser('user');
             }
             try {
-                const msgData = await msgModel.findOne({ _id: user.id });
+                const msgData = await model.findOne({ _id: user.id });
 
                 const embed = await new EmbedBuilder()
                     .setTitle(user.nickname || user.globalName + "のポイント")
@@ -84,7 +71,7 @@ module.exports = {
                 let all_points = 0;
                 let bg = false;
                 try {
-                    const msgPoint = await msgModel.findOne({ _id: user.id });
+                    const msgPoint = await model.findOne({ _id: user.id });
                     msgs = msgPoint.msgcount;
                     points = msgPoint.point;
                     all_points = msgPoint.all_point;
@@ -152,28 +139,28 @@ module.exports = {
                     .setEmoji("1️⃣");
 
                 const _2 = new ButtonBuilder()
-                    .setCustomId(`1st_anni`)
+                    .setCustomId(`role_1st_anni`)
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji("2️⃣");
 
                 const _3 = new ButtonBuilder()
-                    .setCustomId(`none`)
+                    .setCustomId(`coming_soon`)
                     .setStyle(ButtonStyle.Danger)
                     .setEmoji("3️⃣");
 
                 const _4 = new ButtonBuilder()
-                    .setCustomId(`osyaberi`)
+                    .setCustomId(`role_osyaberi`)
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji("4️⃣");
 
                 const _5 = new ButtonBuilder()
-                    .setCustomId(`densetu`)
+                    .setCustomId(`role_densetu`)
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji("5️⃣");
 
                 await interaction.user.send({ embeds: [embed], components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)] });
                 interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", ephemeral: true });
-            } catch (error) {
+            } catch {
                 interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", ephemeral: true });
             }
         }

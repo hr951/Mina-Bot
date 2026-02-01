@@ -1,19 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
-const mongoose = require('mongoose');
-
-const uri = process.env.DB;
-const msgModel = require('../db/db');
-
-mongoose
-    .connect(uri, {
-        useNewUrlParser: true, //任意
-    })
-    .then(() => {
-        console.log('Connected DataBase!');
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { model } = require('../db/db');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -57,7 +43,7 @@ module.exports = {
 
         if (subcommand === "all") {
 
-            const [result] = await msgModel.aggregate([
+            const [result] = await model.aggregate([
                 {
                     $addFields: {
                         avgLength: {
@@ -115,9 +101,10 @@ module.exports = {
         } else if (subcommand === "category") {
             const sort = interaction.options.getString('sort');
             const number = interaction.options.getString('number');
+            let topUsers;
 
             if (sort === 'averagemsg') {
-                topUsers = await msgModel.aggregate([
+                topUsers = await model.aggregate([
                     {
                         $addFields: {
                             avgLength: {
@@ -134,7 +121,7 @@ module.exports = {
                     { $project: { name: 1, avgLength: 1 } }
                 ]);
             } else {
-                topUsers = await msgModel.find({}, { name: 1, [sort]: 1 })
+                topUsers = await model.find({}, { name: 1, [sort]: 1 })
                     .sort({ [sort]: -1 })
                     .limit(number);
             }

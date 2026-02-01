@@ -15,6 +15,17 @@ const msgSchema = new mongoose.Schema({
     densetu_role: { type: Boolean }
 });
 
-const model = mongoose.model('Messages', msgSchema);
+const serverSchema = new mongoose.Schema({
+    _id: { type: String }, //サーバーID
+    ip_je: { type: String }, //サーバーIP (JE)
+    port_je: { type: Number }, //サーバーポート (JE)
+    ip_jb: { type: String }, //サーバーIP (JB)
+    port_jb: { type: Number }, //サーバーポート (JB)
+    ip_be: { type: String }, //サーバーIP (BE)
+    port_be: { type: Number } //サーバーポート (BE)
+});
 
-module.exports = model;
+const model = mongoose.model('Messages', msgSchema);
+const serverModel = mongoose.model('Servers', serverSchema);
+
+module.exports = { model, serverModel };

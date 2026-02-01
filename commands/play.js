@@ -19,23 +19,23 @@ module.exports = {
     const kazagumo = interaction.client.kazagumo;
     const query = interaction.options.getString('query');
 
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     const ytResult = await yts(query).catch(() => null);
     if (!ytResult || !ytResult.videos.length) {
-      return interaction.editReply("YouTubeで曲の情報が見つかりませんでした");
+      return interaction.editReply({ content: "YoutTubeで曲の情報が見つかりませんでした", ephemeral: true });
     }
     const video = ytResult.videos[0]; // 一番上の候補
 
-    if (!video) return interaction.editReply("曲が見つかりませんでした");
+    if (!video) return interaction.editReply({ content: "曲が見つかりませんでした", ephemeral: true });
 
     const searchTitle = `${video.title} ${video.author.name}`;
     var res = await kazagumo.search(searchTitle, { engine: "soundcloud" });
 
     if (!res.tracks.length) {
-      var res = await kazagumo.search(query, { engine: "soundcloud" });
+      res = await kazagumo.search(query, { engine: "soundcloud" });
       if (!res.tracks.length) {
-        return interaction.editReply("SoundCloudで音源が見つかりませんでした");
+        return interaction.editReply({ content: "SoundCloudで曲が見つかりませんでした", ephemeral: true });
       }
     }
 
@@ -66,6 +66,6 @@ module.exports = {
       .setImage(track.thumbnail)
       .setColor(color);
 
-    return interaction.editReply({ embeds: [embed] });
+    return interaction.editReply({ embeds: [embed], ephemeral: true });
   },
 };

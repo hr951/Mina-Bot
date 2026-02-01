@@ -30,6 +30,6 @@ module.exports = {
             .setImage(player.queue.current.thumbnail)
             .setColor(color);
 
-        return interaction.reply({ content: "再生中", embeds: [embed] });
+        return interaction.reply({ content: "再生中...", embeds: [embed] });
     },
 };

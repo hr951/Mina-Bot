@@ -1,22 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
-const fs = require('fs');
-const fetch = require("node-fetch");
+const { SlashCommandBuilder, AttachmentBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const { registerFont, createCanvas, loadImage } = require('canvas');
 registerFont('./font/Nosutaru-dotMPlusH-10-Regular.ttf', { family: 'mojang' });
-const mongoose = require('mongoose');
-const uri = process.env.DB;
-const msgModel = require('../db/db');
-
-mongoose
-    .connect(uri, {
-        useNewUrlParser: true, //任意
-    })
-    .then(() => {
-        console.log('Connected DataBase!');
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+const { model } = require('../db/db');
 
 
 module.exports = {
@@ -81,16 +66,14 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         let url_bg = "./images/background.png";
-        let bg_upgrade = false;
         let points = 0;
         let all_points = 0;
         let bg_type = 0;
         let bg_url = "undefined";
         try {
-            const msgPoint = await msgModel.findOne({ _id: interaction.user.id });
+            const msgPoint = await model.findOne({ _id: interaction.user.id });
             points = msgPoint.point;
             all_points = msgPoint.all_point;
-            bg_upgrade = msgPoint.bg_upgrade;
             bg_type = msgPoint.bg_type;
             bg_url = msgPoint.bg_url;
 
@@ -249,7 +232,7 @@ module.exports = {
                 const url_icon = interaction.user.avatarURL({ extension: 'jpg' }) + "?raw=true";
                 const iconImage = await loadImage(url_icon);
                 context.drawImage(iconImage, 37, 37, 300, 300);
-            } catch (error) {
+            } catch {
                 try {
                     const icon = await loadImage('./images/err-icon.png')
                     context.drawImage(icon, 30, 30, 200, 200);

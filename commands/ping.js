@@ -8,31 +8,31 @@ module.exports = {
 	async execute(interaction) {
 
 		const thumbnail = interaction.client.user.displayAvatarURL();
-    const color = "#ffffff";
+		const color = "#ffffff";
 
 		const embed = new EmbedBuilder()
-            .setDescription(`片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **...**ms`)
+			.setDescription(`片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **...**ms`)
 			.setColor(color)
-      		.setFooter({
-        			text: "Made by Mina鯖 Bot",
-        			iconURL: thumbnail,
-      					})
-			.setTimestamp();
-			
-	await interaction.reply({ embeds: [embed] })
-
-    let msg = await interaction.fetchReply();
-		
-	    const embed_2 = new EmbedBuilder()
-            .setDescription(`片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **${msg.createdTimestamp - interaction.createdTimestamp}**ms`)
-			.setColor(color)
-      		.setFooter({
-        			text: "Made by Mina鯖 Bot",
-        			iconURL: thumbnail,
-      					})
+			.setFooter({
+				text: "Made by Mina鯖 Bot",
+				iconURL: thumbnail,
+			})
 			.setTimestamp();
 
-			await interaction.editReply({ embeds: [embed_2] })
+		await interaction.reply({ embeds: [embed] });
+
+		let msg = await interaction.fetchReply();
+
+		const embed_2 = new EmbedBuilder()
+			.setDescription(`片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **${msg.createdTimestamp - interaction.createdTimestamp}**ms`)
+			.setColor(color)
+			.setFooter({
+				text: "Made by Mina鯖 Bot",
+				iconURL: thumbnail,
+			})
+			.setTimestamp();
+
+		await interaction.editReply({ embeds: [embed_2] });
 
 	},
 };
