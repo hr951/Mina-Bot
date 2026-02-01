@@ -1,11 +1,11 @@
-// コマンド設定部分
 const { SlashCommandBuilder } = require("discord.js");
 const fs = require('node:fs');
 
 const token = "token";
-const clientId = "clientId";
-const guildId = "guildId";
+const clientId = "id";
+const guildId = "id";
 
+// ----- グローバルコマンドここから-----
 const ping = new SlashCommandBuilder()
 	.setName('ping')
 	.setDescription('Pingを取得します');
@@ -33,42 +33,6 @@ const point = new SlashCommandBuilder()
 			.setName('use')
 			.setDescription('ポイントを利用します')
 	);
-
-const play = new SlashCommandBuilder()
-	.setName("play")
-	.setDescription("音楽を再生します")
-	.addStringOption(option => option
-		.setName("record")
-		.setDescription("レコード名を選択してください")
-		.setRequired(true)
-		.addChoices(
-			{ name: "13", value: "1" },
-			{ name: "cat", value: "2" },
-			{ name: "blocks", value: "3" },
-			{ name: "chirp", value: "4" },
-			{ name: "far", value: "5" },
-			{ name: "mall", value: "6" },
-			{ name: "mellohi", value: "7" },
-			{ name: "stal", value: "8" },
-			{ name: "strad", value: "9" },
-			{ name: "ward", value: "10" },
-			{ name: "11", value: "11" },
-			{ name: "wait", value: "12" },
-			{ name: "otherside", value: "13" },
-			{ name: "Pigstep", value: "14" },
-			{ name: "Creator", value: "15" },
-			{ name: "Creator (オルゴール)", value: "16" },
-			{ name: "Relic", value: "17" },
-			{ name: "Precipice", value: "18" },
-			{ name: "5", value: "19" },
-			{ name: "Tears", value: "20" },
-			{ name: "Lava Chicken", value: "21" }
-		)
-	);
-
-const stop = new SlashCommandBuilder()
-	.setName('stop')
-	.setDescription('音楽を停止します');
 
 const lb = new SlashCommandBuilder()
 	.setName('lb')
@@ -107,7 +71,7 @@ const lb = new SlashCommandBuilder()
 
 const profile = new SlashCommandBuilder()
 	.setName('profile')
-	.setDescription('create your profile')
+	.setDescription('プロフィール画像を作成します')
 	.addStringOption(option =>
 		option.setName('minecraft-id')
 			.setDescription('マイクラのIDを書いてください')
@@ -161,13 +125,58 @@ const profile = new SlashCommandBuilder()
 			)
 	);
 
-const commands = [ping, top, point, lb, profile]
+const play = new SlashCommandBuilder()
+	.setName("play")
+	.setDescription("曲を再生します")
+	.addStringOption(option =>
+		option
+			.setName("query")
+			.setDescription("URL または 検索ワード / 曲名の後ろに作者を入れると精度が上がります")
+			.setRequired(true)
+	);
 
+const nowplaying = new SlashCommandBuilder()
+	.setName("nowplaying")
+	.setDescription("現在再生中の曲を表示します");
+
+const queue = new SlashCommandBuilder()
+	.setName("queue")
+	.setDescription("再生キューを表示します");
+
+const skip = new SlashCommandBuilder()
+	.setName("skip")
+	.setDescription("曲をスキップします");
+
+const loop = new SlashCommandBuilder()
+	.setName("loop")
+	.setDescription("ループモードを設定します")
+	.addStringOption(option =>
+		option.setName("mode")
+			.setDescription("ループモード")
+			.setRequired(true)
+			.addChoices(
+				{ name: "off", value: "none" },
+				{ name: "track", value: "track" },
+				{ name: "queue", value: "queue" }
+			)
+	);
+
+const stop = new SlashCommandBuilder()
+	.setName("stop")
+	.setDescription("曲を停止し、VCから退出します");
+
+const commands = [ping, top, point, lb, profile, play, nowplaying, queue, skip, loop, stop];
+
+// ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()
 	.setName('member')
 	.setDescription('勢力ごとのメンバーを表示します');
 
-const commands_guild = [member]
+const update_server = new SlashCommandBuilder()
+	.setName('update-server')
+	.setDescription('サーバーステータスを最新の状態にします');
+
+const commands_guild = [update_server]
 
 //登録用関数
 const { REST, Routes } = require("discord.js")
