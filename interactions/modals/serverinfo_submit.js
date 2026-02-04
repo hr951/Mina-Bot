@@ -22,7 +22,10 @@ module.exports = {
                 },
                 { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
             );
-            interaction.reply({ content: `サーバー情報を更新しました`, ephemeral: true });
+            interaction.reply({ content: `サーバー情報を更新しました\nBotを再起動します...`, ephemeral: true });
+            setTimeout(() => {
+                process.exit(0);
+            }, 1000);
         } catch (error) {
             console.error(error);
             interaction.reply({ content: `サーバー情報の更新に失敗しました`, ephemeral: true });
