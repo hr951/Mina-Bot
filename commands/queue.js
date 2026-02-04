@@ -8,26 +8,25 @@ module.exports = {
         .setDescription("再生キューを表示します"),
 
     async execute(interaction) {
+        const queue = global.customQueue.get(interaction.guild.id);
+        const loopMode = global.loopSettings.get(interaction.guild.id) || "none";
 
-        const kazagumo = interaction.client.kazagumo;
-        const player = kazagumo.players.get(interaction.guild.id);
+        const ja = {
+            none: "オフ",
+            track: "1曲リピート",
+            queue: "全曲ループ"
+        };
 
-        console.log(player);
+        if (!queue || queue.length === 0) return interaction.reply({ content: "キューは空です", ephemeral: true });
 
-        if (!interaction.guild) return;
-
-        if (!kazagumo.shoukaku.nodes.size) {
-            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", ephemeral: true });
-        }
-
-        if (!player) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
-        const q = player.queue.map((t, i) => `${i + 1}. ${t.title}`).join("\n");
+        const list = queue.map((item, index) => `${index + 1}. **${item.query}**`).join("\n");
 
         const embed = new EmbedBuilder()
-            .setTitle("再生キュー")
-            .setDescription(q || "ありません")
+            .setTitle("再生キュー (1. は再生中)")
+            .setDescription(list)
+            .setFooter({ text: `ループモード: ${ja[loopMode]}` })
             .setColor(color);
-            
-        return interaction.reply({ embeds: [embed] });
+
+        return interaction.reply({ embeds: [embed], ephemeral: true });
     },
 };

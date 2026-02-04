@@ -18,7 +18,11 @@ module.exports = {
             return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", ephemeral: true });
         }
 
-        if (!player) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+        try {
+            if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+        } catch {
+            return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+        }
 
         const embed = new EmbedBuilder()
             .setTitle(player.queue.current.title)
@@ -28,6 +32,7 @@ module.exports = {
                 { name: "長さ: ", value: `${Math.floor(player.queue.current.length / 60000)}:${Math.floor((player.queue.current.length % 60000) / 1000).toString().padStart(2, '0')}`, inline: true }
             )
             .setImage(player.queue.current.thumbnail)
+            .setFooter({ text: `Source: ${player.queue.current.source ? "YouTube" : "SoundCloud"}` })
             .setColor(color);
 
         return interaction.reply({ content: "再生中...", embeds: [embed] });

@@ -16,24 +16,22 @@ module.exports = {
         ),
 
     async execute(interaction) {
-
         const kazagumo = interaction.client.kazagumo;
         const player = kazagumo.players.get(interaction.guild.id);
         const mode = interaction.options.getString('mode');
-
-        if (!interaction.guild) return;
-
-        if (!kazagumo.shoukaku.nodes.size) {
-            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", ephemeral: true });
+        
+        try {
+            if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+        } catch {
+            return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
         }
 
-        if (!player) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
-        player.setLoop(mode);
+        global.loopSettings.set(interaction.guild.id, mode);
 
         const ja = {
             none: "オフ",
-            track: "曲",
-            queue: "キュー"
+            track: "1曲リピート",
+            queue: "全曲ループ"
         };
 
         return interaction.reply({ content: `ループモードを **${ja[mode]}** に設定しました`, ephemeral: true });

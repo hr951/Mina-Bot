@@ -1,7 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const yts = require('yt-search');
-
-const color = "#ffffff";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,55 +15,105 @@ module.exports = {
   async execute(interaction) {
 
     const kazagumo = interaction.client.kazagumo;
+    const guildId = interaction.guild.id;
     const query = interaction.options.getString('query');
 
     await interaction.deferReply({ ephemeral: true });
 
-    const ytResult = await yts(query).catch(() => null);
-    if (!ytResult || !ytResult.videos.length) {
-      return interaction.editReply({ content: "YoutTubeで曲の情報が見つかりませんでした", ephemeral: true });
-    }
-    const video = ytResult.videos[0]; // 一番上の候補
+    const voiceChannel = interaction.member.voice.channel;
 
-    if (!video) return interaction.editReply({ content: "曲が見つかりませんでした", ephemeral: true });
-
-    const searchTitle = `${video.title} ${video.author.name}`;
-    var res = await kazagumo.search(searchTitle, { engine: "soundcloud" });
-
-    if (!res.tracks.length) {
-      res = await kazagumo.search(query, { engine: "soundcloud" });
-      if (!res.tracks.length) {
-        return interaction.editReply({ content: "SoundCloudで曲が見つかりませんでした", ephemeral: true });
-      }
+    if (!voiceChannel) {
+      return interaction.editReply({ content: "先にボイスチャンネルに入ってください", ephemeral: true });
     }
 
-    const track = res.tracks[0];
+    if (!global.customQueue.has(guildId)) global.customQueue.set(guildId, []);
+    const queue = global.customQueue.get(guildId);
 
-    track.title = video.title;
-    track.author = video.author.name;
-    track.thumbnail = video.thumbnail;
+    queue.push({
+      query: query,
+      requester: interaction.user.tag
+    });
 
     const player = await kazagumo.createPlayer({
-      guildId: interaction.guild.id,
+      guildId: guildId,
       textId: interaction.channel.id,
       voiceId: interaction.member.voice.channel.id,
       deaf: true
     });
 
-    player.data.set("textChannel", interaction.channel);
-    player.queue.add(track);
-    if (!player.playing && !player.paused) player.play();
+    if (!player.playing && !player.paused && queue.length === 1) {
+      await playNext(player, kazagumo);
+      return interaction.editReply({ content: `**${query}** を追加しました\n※サーバーの稼働状況によって取得先が変わります`, ephemeral: true });
+    }
 
-    const embed = new EmbedBuilder()
-      .setTitle("曲をキューに追加しました")
-      .setDescription(`[**${track.title}**](${track.uri})`)
-      .addFields(
-        { name: "アーティスト: ", value: track.author, inline: true },
-        { name: "長さ: ", value: `${Math.floor(track.length / 60000)}:${Math.floor((track.length % 60000) / 1000).toString().padStart(2, '0')}`, inline: true }
-      )
-      .setImage(track.thumbnail)
-      .setColor(color);
-
-    return interaction.editReply({ embeds: [embed], ephemeral: true });
+    return interaction.editReply({ content: `**${query}** を追加しました\n※サーバーの稼働状況によって取得先が変わります`, ephemeral: true });
   },
 };
+
+async function playNext(player, kazagumo) {
+
+  const queue = global.customQueue.get(player.guildId);
+  if (!queue || queue.length === 0) return;
+
+  const nextItem = queue[0]; // 先頭を取得
+  const query = nextItem.query;
+  const homeIp = process.env.HOME_API_URL;
+  const proxyUrl = `http://${homeIp}/stream?query=${encodeURIComponent(query)}`;
+
+  let track = null;
+
+  try {
+    const result = await kazagumo.search(proxyUrl, { engine: "http" });
+    if (result && result.tracks.length > 0) {
+      track = result.tracks[0];
+      const yt = await yts(query).catch(() => null);
+      if (yt && yt.videos[0]) {
+        track.title = yt.videos[0].title;
+        track.thumbnail = yt.videos[0].thumbnail;
+        track.author = yt.videos[0].author.name;
+        track.uri = yt.videos[0].url;
+        track.source = true;
+      }
+    }
+  } catch {
+    console.log(`[Home Server] 接続失敗、SoundCloudへ切り替えます: ${query}`);
+  }
+
+  if (!track) {
+    // --- Render Lava ---
+    // YouTubeから情報を取得
+    const ytResult = await yts(query).catch(() => null);
+
+    if (!ytResult || !ytResult.videos.length) {
+      console.log("YouTube情報なし");
+      queue.shift();
+      playNext(player, kazagumo);
+    }
+
+    const video = ytResult.videos[0];
+    const ytDurationMs = video.duration.seconds * 1000;
+
+    // SoundCloudで検索
+    const searchTitle = `${video.title}`;
+    const res = await kazagumo.search(searchTitle, { engine: "soundcloud" });
+
+    if (!res.tracks.length) {
+      console.log("SoundCloud情報なし");
+      queue.shift();
+      playNext(player, kazagumo);
+      return;
+    }
+
+    // カバー回避用フィルタ（秒数誤差15秒以内）
+    track = res.tracks.find(t => Math.abs(t.length - ytDurationMs) < 15000) || res.tracks[0];
+  }
+
+  if (track) {
+    player.play(track);
+  } else {
+    queue.shift();
+    playNext(player, kazagumo);
+  }
+}
+
+module.exports.playNext = playNext;

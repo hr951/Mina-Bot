@@ -10,15 +10,19 @@ module.exports = {
         const kazagumo = interaction.client.kazagumo;
         const player = kazagumo.players.get(interaction.guild.id);
 
-        if (!interaction.guild) return;
+        const queue = global.customQueue.get(interaction.guild.id);
 
-        if (!kazagumo.shoukaku.nodes.size) {
-            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", ephemeral: true });
+        if (!player || !queue || queue.length === 0) {
+            return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
         }
 
-        if (!player) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
-        player.skip();
-
-        return interaction.reply({ content: "曲をスキップしました", ephemeral: true });
+        if (queue.length > 1) {
+            player.skip();
+            return interaction.reply({ content: "曲をスキップしました", ephemeral: true });
+        } else {
+            queue.shift();
+            player.destroy();
+            return interaction.reply({ content: "最後の曲をスキップして停止しました", ephemeral: true });
+        }
     },
 };
