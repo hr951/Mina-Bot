@@ -86,17 +86,14 @@ kazagumo.on("playerException", async (player) => {
     }
 });
 
-// プレイヤーが破棄された（ボットが抜けた・切断された）時のイベント
 kazagumo.on("playerDestroy", (player) => {
     const guildId = player.guildId;
 
-    // 独自キューを削除
     if (global.customQueue && global.customQueue.has(guildId)) {
         global.customQueue.delete(guildId);
         console.log(`[Cleanup] Guild: ${guildId} - ボットが退出したためキューを削除しました。`);
     }
 
-    // ループ設定もリセット（必要であれば）
     if (global.loopSettings && global.loopSettings.has(guildId)) {
         global.loopSettings.delete(guildId);
     }
