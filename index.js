@@ -30,35 +30,77 @@ const client = new Client({
 const token = process.env.DISCORD_BOT_TOKEN;
 const uri = process.env.DB;
 
-const Nodes = [{
-    name: 'Render-Node',
-    url: process.env.LAVA_LINK_URL, // URL (PORT -> 443)
-    auth: process.env.LAVA_LINK_AUTH, // パスワード
-    secure: true // HTTPS(443) -> true
-}];
+if (!global.loopSettings) global.loopSettings = new Map();
+if (!global.customQueue) global.customQueue = new Map();
+
+const Nodes = [
+    {
+        name: 'Render-Node',
+        url: process.env.LAVA_LINK_URL, // URL (PORT -> 443)
+        auth: process.env.LAVA_LINK_AUTH, // パスワード
+        secure: true // HTTPS(443) -> true
+    }
+];
 
 // ----- Kazagumo初期化 -----
 const kazagumo = new Kazagumo({
-    defaultSearchEngine: "soundcloud",
+    defaultSearchEngine: "youtube",
     send: (guildId, payload) => {
         const guild = client.guilds.cache.get(guildId);
         if (guild) guild.shard.send(payload);
     }
 }, new Connectors.DiscordJS(client), Nodes);
 
-/*kazagumo.on("playerStart", (player, track) => {
-    const embed = new EmbedBuilder()
-        .setTitle(player.queue.current.title)
-        .setURL(player.queue.current.uri)
-        .addFields(
-            { name: "アーティスト: ", value: player.queue.current.author, inline: true },
-            { name: "長さ: ", value: `${Math.floor(player.queue.current.length / 60000)}:${Math.floor((player.queue.current.length % 60000) / 1000).toString().padStart(2, '0')}`, inline: true }
-        )
-        .setImage(player.queue.current.thumbnail)
-        .setColor(color);
+kazagumo.on("playerEnd", async (player) => {
+    const guildId = player.guildId;
+    const queue = global.customQueue.get(guildId);
+    const loopMode = global.loopSettings.get(guildId) || "none";
 
-    player.data.get("textChannel").send({ content: "再生中", embeds: [embed] });
-});*/
+    if (!queue || queue.length === 0) return;
+
+    // --- ループモードによる配列操作 ---
+    if (loopMode === "track") {
+        console.log(`[Loop] 1曲リピート中: ${queue[0].query}`);
+    }
+    else if (loopMode === "queue") {
+        const finishedItem = queue.shift();
+        queue.push(finishedItem);
+        console.log(`[Loop] 全曲ループ: ${finishedItem.query} を最後尾に移動`);
+    }
+    else {
+        queue.shift();
+    }
+
+    if (queue.length > 0) {
+        const { playNext } = require('./commands/play.js');
+        await playNext(player, kazagumo);
+    }
+});
+
+kazagumo.on("playerException", async (player) => {
+    const { playNext } = require('./commands/play.js');
+    const queue = global.customQueue.get(player.guildId);
+    if (queue) {
+        queue.shift(); // 失敗した曲を飛ばす
+        await playNext(player, kazagumo);
+    }
+});
+
+// プレイヤーが破棄された（ボットが抜けた・切断された）時のイベント
+kazagumo.on("playerDestroy", (player) => {
+    const guildId = player.guildId;
+
+    // 独自キューを削除
+    if (global.customQueue && global.customQueue.has(guildId)) {
+        global.customQueue.delete(guildId);
+        console.log(`[Cleanup] Guild: ${guildId} - ボットが退出したためキューを削除しました。`);
+    }
+
+    // ループ設定もリセット（必要であれば）
+    if (global.loopSettings && global.loopSettings.has(guildId)) {
+        global.loopSettings.delete(guildId);
+    }
+});
 
 client.kazagumo = kazagumo;
 client.kazagumo.shoukaku.on('ready', (name) => console.log(`Lavalink Node: ${name} が接続されました！`));
