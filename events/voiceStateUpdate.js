@@ -10,5 +10,14 @@ module.exports = {
         if (voiceChannel && voiceChannel.members.filter(m => !m.user.bot).size === 0) {
             player.destroy();
         }
+        
+        if (oldState.member.id === client.user.id && !newState.channelId) {
+            const guildId = oldState.guild.id;
+
+            if (global.customQueue && global.customQueue.has(guildId)) {
+                global.customQueue.delete(guildId);
+                console.log(`[VoiceState] ボットが切断されたため、キューを強制クリアしました。`);
+            }
+        }
     },
 };
