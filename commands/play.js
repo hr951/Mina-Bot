@@ -67,8 +67,6 @@ async function playNext(player, kazagumo) {
     if (infoRes.ok) {
       metadata = await infoRes.json();
 
-      console.log(result)
-
       if (await result.tracks.length > 0) {
         track = result.tracks[0];
         track.title = metadata.title;
@@ -78,8 +76,6 @@ async function playNext(player, kazagumo) {
         track.length = metadata.duration;
         track.source = true;
       }
-
-      console.log(track)
     }
   } catch (error) {
     console.error("自宅サーバーからの情報取得に失敗:", error.message);
