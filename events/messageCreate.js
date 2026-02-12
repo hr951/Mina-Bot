@@ -100,8 +100,6 @@ module.exports = {
                 const chance = length / 40 - fixed;
                 var addpoint = Math.random() < chance ? 1 : 0;
 
-                console.log(fixed + addpoint)
-
                 if (now - lastTime < 2000) {
                     addpoint = 0;
                     fixed = 0;
@@ -175,8 +173,6 @@ module.exports = {
                         },
                         { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
                     );
-
-                    //console.log("Update the DataBase:", msgData);
                 } catch (err) {
                     console.error("Update Error:", err);
                 }
