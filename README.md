@@ -7,3 +7,9 @@ const result_be = await util.statusBedrock(ip_be, port_be);
 { name: "参加人数", value: `${result_be.players.online}/${result_be.players.max}`, inline: true },
 { name: "バージョン", value: result_be.version.name || "undefined" }
 ```
+
+```
+npm init -y
+npm install --save-dev eslint
+npx eslint --init
+```

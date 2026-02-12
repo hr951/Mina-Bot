@@ -1,6 +1,5 @@
 {
-  "name": "MinaServer-Bot",
-  "version": "14",
+  "name": "minaserver-bot",
   "description": "It is code of MinaServer Bot.",
   "main": "index.js",
   "scripts": {
@@ -33,5 +32,10 @@
     "@eslint/js": "^9.39.2",
     "eslint": "^9.39.2",
     "globals": "^17.3.0"
+  },
+  "version": "1.0.0",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/hr951/Mina-Bot/issues"
   }
 }
