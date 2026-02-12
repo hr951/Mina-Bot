@@ -12,6 +12,5 @@ Thumbs.db
 *.swp
 
 # 環境設定関連
-.env
-.env.development.local
+.env*
 package-lock.json
