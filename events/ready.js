@@ -1,4 +1,4 @@
-const { ActivityType } = require("discord.js");
+const { ActivityType, PresenceUpdateStatus } = require("discord.js");
 require("dotenv").config();
 const { check } = require("../utils/server-status");
 
@@ -40,25 +40,20 @@ module.exports = {
         } catch (error) {
             console.error(error);
         }
-
-        setInterval(() => {
-            client.user.setPresence({
-                activities: [
-                    {
-                        name: `Minachanの広場`,
-                        //name: "メンテナンス",
-                        type: ActivityType.Competing
-                    }
-                ],
-                status: `online`//online : いつもの, dnd : 赤い奴, idle : 月のやつ, invisible : 表示なし
-            });
-
-
-        }, 1000);
+        client.user.setPresence({
+            activities: [
+                {
+                    //name: `Minachanの広場`,
+                    name: "エラー処理中……",
+                    type: ActivityType.Competing
+                }
+            ],
+            status: PresenceUpdateStatus.Idle // Online : いつもの, DoNotDisturb : 赤い奴, Idle : 月のやつ, Invisible : 表示なし
+        });
         setInterval(async () => {
             const channel = await client.channels.cache.get('1410517358459486308');
             const msg = await channel.messages.fetch('1410517899122053281');
             msg.edit({ embeds: [await check(ip, port)] });
-        }, 60000);
+        }, 60_000);
     },
 };
