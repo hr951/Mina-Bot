@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require("discord.js");
-const fs = require('node:fs');
+require('dotenv').config();
 
-const token = "token";
-const clientId = "id";
-const guildId = "id";
+const token = process.env.DISCORD_BOT_TOKEN;
+const clientId = "1307701661447360595";
+const guildId = "1265637138247057428";
 
 // ----- グローバルコマンドここから-----
 const ping = new SlashCommandBuilder()
@@ -165,7 +165,11 @@ const stop = new SlashCommandBuilder()
 	.setName("stop")
 	.setDescription("曲を停止し、VCから退出します");
 
-const commands = [ping, top, point, lb, profile, play, nowplaying, queue, skip, loop, stop];
+const info = new SlashCommandBuilder()
+	.setName("info")
+	.setDescription("Mina鯖 Botの情報を表示します");
+
+const commands = [ping, top, point, lb, profile, play, nowplaying, queue, skip, loop, stop, info];
 
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()
@@ -176,9 +180,9 @@ const update_server = new SlashCommandBuilder()
 	.setName('update-server')
 	.setDescription('サーバーステータスを最新の状態にします');
 
-const commands_guild = [update_server]
+const commands_guild = [update_server];
 
-//登録用関数
+// 登録用関数
 const { REST, Routes } = require("discord.js")
 const rest = new REST({ version: '10' }).setToken(token)
 async function main() {
@@ -192,4 +196,4 @@ async function main() {
 	);
 }
 
-main().catch(err => console.log(err))
+main().catch(err => console.log(err));

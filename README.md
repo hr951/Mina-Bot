@@ -1,4 +1,4 @@
-# Note
+# MinaServer Bot
 
 > [!Note]
 > ESLint Setting
