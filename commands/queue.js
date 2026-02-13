@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
 
 const color = "#ffffff";
 
@@ -17,7 +17,7 @@ module.exports = {
             queue: "全曲ループ"
         };
 
-        if (!queue || queue.length === 0) return interaction.reply({ content: "キューは空です", ephemeral: true });
+        if (!queue || queue.length === 0) return interaction.reply({ content: "キューは空です", flags: [MessageFlags.Ephemeral] });
 
         const list = queue.map((item, index) => `${index + 1}. **${item.query}**`).join("\n");
 
@@ -27,6 +27,6 @@ module.exports = {
             .setFooter({ text: `ループモード: ${ja[loopMode]}` })
             .setColor(color);
 
-        return interaction.reply({ embeds: [embed], ephemeral: true });
+        return interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
     },
 };

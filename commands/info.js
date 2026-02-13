@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -6,6 +6,6 @@ module.exports = {
         .setDescription("Mina鯖 Botの情報を表示します"),
 
     async execute(interaction) {
-        interaction.reply({ content: "開発中の機能です。", ephemeral: true });
+        interaction.reply({ content: "開発中の機能です。", flags: [MessageFlags.Ephemeral] });
     },
 };

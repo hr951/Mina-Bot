@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const yts = require('yt-search');
 
 module.exports = {
@@ -18,12 +18,12 @@ module.exports = {
     const guildId = interaction.guild.id;
     const query = interaction.options.getString('query');
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
     const voiceChannel = interaction.member.voice.channel;
 
     if (!voiceChannel) {
-      return interaction.editReply({ content: "先にボイスチャンネルに入ってください", ephemeral: true });
+      return interaction.editReply({ content: "先にボイスチャンネルに入ってください", flags: [MessageFlags.Ephemeral] });
     }
 
     if (!global.customQueue.has(guildId)) global.customQueue.set(guildId, []);
@@ -43,10 +43,10 @@ module.exports = {
 
     if (!player.playing && !player.paused && queue.length === 1) {
       await playNext(player, kazagumo);
-      return await interaction.editReply({ content: `**${query}** を追加しました\n※サーバーの稼働状況によって取得先が変わります`, ephemeral: true });
+      return await interaction.editReply({ content: `**${query}** を追加しました\n※サーバーの稼働状況によって取得先が変わります`, flags: [MessageFlags.Ephemeral] });
     }
 
-    return await interaction.editReply({ content: `**${query}** を追加しました\n※サーバーの稼働状況によって取得先が変わります`, ephemeral: true });
+    return await interaction.editReply({ content: `**${query}** を追加しました\n※サーバーの稼働状況によって取得先が変わります`, flags: [MessageFlags.Ephemeral] });
   },
 };
 

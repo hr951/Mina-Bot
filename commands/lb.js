@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
 const { model } = require('../db/db');
 
 module.exports = {
@@ -82,7 +82,7 @@ module.exports = {
             ]);
 
             if (!result) {
-                return interaction.reply({ content: 'データがありません。', ephemeral: true });
+                return interaction.reply({ content: 'データがありません。', flags: [MessageFlags.Ephemeral] });
             }
 
             const embed = new EmbedBuilder()
@@ -127,7 +127,7 @@ module.exports = {
             }
 
             if (!topUsers.length) {
-                return interaction.reply({ content: 'ランキングデータがまだありません。', ephemeral: true });
+                return interaction.reply({ content: 'ランキングデータがまだありません。', flags: [MessageFlags.Ephemeral] });
             }
 
             let desc = '';

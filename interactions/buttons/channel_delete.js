@@ -1,10 +1,10 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, MessageFlags } = require("discord.js");
 const color = "#FFFFFF";
 
 module.exports = {
     async execute(interaction, client) {
         if (!interaction.member.roles.cache.has('1307226905862340608')) {
-            await interaction.reply({ content: "チャンネルを削除する権限がありません。", ephemeral: true });
+            await interaction.reply({ content: "チャンネルを削除する権限がありません。", flags: [MessageFlags.Ephemeral] });
             return;
         } else {
             const delmsg = new EmbedBuilder()

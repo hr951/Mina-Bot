@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
 
 const color = "#ffffff";
 
@@ -15,13 +15,13 @@ module.exports = {
         if (!interaction.guild) return;
 
         if (!kazagumo.shoukaku.nodes.size) {
-            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", ephemeral: true });
+            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", flags: [MessageFlags.Ephemeral] });
         }
 
         try {
-            if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+            if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
         } catch {
-            return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+            return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
         }
 
         const embed = new EmbedBuilder()
@@ -35,6 +35,6 @@ module.exports = {
             .setFooter({ text: `Source: ${player.queue.current.source ? "YouTube" : "SoundCloud"}` })
             .setColor(color);
 
-        return interaction.reply({ content: "再生中...", embeds: [embed] });
+        return interaction.reply({ content: "再生中...", embeds: [embed], flags: [MessageFlags.Ephemeral] });
     },
 };

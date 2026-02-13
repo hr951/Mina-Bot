@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,9 +21,9 @@ module.exports = {
         const mode = interaction.options.getString('mode');
         
         try {
-            if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+            if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
         } catch {
-            return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+            return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
         }
 
         global.loopSettings.set(interaction.guild.id, mode);
@@ -34,6 +34,6 @@ module.exports = {
             queue: "全曲ループ"
         };
 
-        return interaction.reply({ content: `ループモードを **${ja[mode]}** に設定しました`, ephemeral: true });
+        return interaction.reply({ content: `ループモードを **${ja[mode]}** に設定しました`, flags: [MessageFlags.Ephemeral] });
     },
 };

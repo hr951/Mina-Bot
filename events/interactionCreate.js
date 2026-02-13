@@ -1,3 +1,4 @@
+const { MessageFlags } = require("discord.js");
 require("dotenv").config();
 
 module.exports = {
@@ -13,11 +14,11 @@ module.exports = {
                 await command.execute(interaction);
             } catch (error) {
                 try {
-                    await interaction.reply({ content: 'Error', ephemeral: true });
+                    await interaction.reply({ content: 'Error', flags: [MessageFlags.Ephemeral] });
                     console.error(error);
                 } catch (error) {
                     try {
-                        await interaction.editReply({ content: 'Error', ephemeral: true });
+                        await interaction.editReply({ content: 'Error', flags: [MessageFlags.Ephemeral] });
                         console.error(error);
                     } catch (error) {
                         console.error(error);
@@ -36,7 +37,7 @@ module.exports = {
                 await button.execute(interaction, client);
             } catch {
                 console.error(`${interaction.customId} が見つかりません`);
-                interaction.reply({ content: "Error", ephemeral: true });
+                interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }
         }
@@ -47,7 +48,7 @@ module.exports = {
                 await modal.execute(interaction, client);
             } catch {
                 console.error(`${interaction.customId} が見つかりません`);
-                interaction.reply({ content: "Error", ephemeral: true });
+                interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }
         }
@@ -58,7 +59,7 @@ module.exports = {
                 await selectmenu.execute(interaction, client);
             } catch {
                 console.error(`${interaction.customId} が見つかりません`);
-                interaction.reply({ content: "Error", ephemeral: true });
+                interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }
         }

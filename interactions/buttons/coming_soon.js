@@ -1,3 +1,4 @@
+const { MessageFlags } = require("discord.js");
 const { model } = require('../../db/db');
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
             }
         }
         if (points < 0) {
-            await interaction.reply({ content: `**${0 - points}**ポイント分不足しています。`, ephemeral: true });
+            await interaction.reply({ content: `**${0 - points}**ポイント分不足しています。`, flags: [MessageFlags.Ephemeral] });
             return;
         }
         try {
@@ -27,7 +28,7 @@ module.exports = {
                 },
                 { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
             );
-            interaction.reply({ content: `Coming Soon!\n更新をお待ちください!`, ephemeral: true });
+            interaction.reply({ content: `Coming Soon!\n更新をお待ちください!`, flags: [MessageFlags.Ephemeral] });
         } catch (err) {
             console.error("Update Error:", err);
         }

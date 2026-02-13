@@ -1,3 +1,4 @@
+const { MessageFlags } = require("discord.js");
 const { model } = require('../../db/db');
 
 module.exports = {
@@ -19,10 +20,10 @@ module.exports = {
             console.error(error);
         }
         if (osyaberi_role) {
-            await interaction.reply({ content: `すでに有効化されています。`, ephemeral: true });
+            await interaction.reply({ content: `すでに有効化されています。`, flags: [MessageFlags.Ephemeral] });
             return;
         } else if (points < 500) {
-            await interaction.reply({ content: `**${500 - points}**ポイント分不足しています。`, ephemeral: true });
+            await interaction.reply({ content: `**${500 - points}**ポイント分不足しています。`, flags: [MessageFlags.Ephemeral] });
             return;
         }
         try {
@@ -43,7 +44,7 @@ module.exports = {
             const member = await guild.members.fetch(interaction.user.id);
             await member.roles.add(role);
 
-            await interaction.reply({ content: `Mina鯖のおしゃべりロールを付与しました。`, ephemeral: true });
+            await interaction.reply({ content: `Mina鯖のおしゃべりロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
         } catch (err) {
             console.error("Update Error:", err);
         }

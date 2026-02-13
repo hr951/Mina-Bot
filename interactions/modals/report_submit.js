@@ -1,4 +1,4 @@
-const { ActionRowBuilder, PermissionFlagsBits, EmbedBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { ActionRowBuilder, PermissionFlagsBits, EmbedBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const color = "#FFFFFF";
 
 module.exports = {
@@ -40,9 +40,9 @@ module.exports = {
                 .setLabel("チャンネルの削除")
                 .setEmoji("🗑️");
             await channel.send({ content: `<@${id}>`, embeds: [embed_content], components: [new ActionRowBuilder().setComponents(Del_Button)] });
-            await interaction.reply({ content: `https://discord.com/channels/${channel.guildId}/${channel.id} を作成しました。`, ephemeral: true });
+            await interaction.reply({ content: `https://discord.com/channels/${channel.guildId}/${channel.id} を作成しました。`, flags: [MessageFlags.Ephemeral] });
         } catch {
-            await interaction.reply({ content: `キャッシュされていないユーザーの可能性があります。\n人力でチャンネルを作成してください。`, ephemeral: true });
+            await interaction.reply({ content: `キャッシュされていないユーザーの可能性があります。\n人力でチャンネルを作成してください。`, flags: [MessageFlags.Ephemeral] });
         }
     }
 };

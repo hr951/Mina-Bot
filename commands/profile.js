@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, AttachmentBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, AttachmentBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const { registerFont, createCanvas, loadImage } = require('canvas');
 registerFont('./font/Nosutaru-dotMPlusH-10-Regular.ttf', { family: 'mojang' });
 const { model } = require('../db/db');
@@ -63,7 +63,7 @@ module.exports = {
 
     async execute(interaction) {
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
         let url_bg = "./images/background.png";
         let points = 0;
@@ -88,7 +88,7 @@ module.exports = {
             console.error(error);
         }
 
-        await interaction.editReply({ content: "画像を生成しています...\nエラーが発生した場合は画像が生成されません。", ephemeral: true });
+        await interaction.editReply({ content: "画像を生成しています...\nエラーが発生した場合は画像が生成されません。", flags: [MessageFlags.Ephemeral] });
 
         const interact = interaction.channel;
 
@@ -120,7 +120,7 @@ module.exports = {
         const context = canvas.getContext('2d');
         context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
-        const make_img = await interact.send({ content: "画像を生成しています...", ephemeral: true });
+        const make_img = await interact.send({ content: "画像を生成しています...", flags: [MessageFlags.Ephemeral] });
 
 
         if (sns1) {

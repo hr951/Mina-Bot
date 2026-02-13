@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const { model } = require('../db/db');
 
 
@@ -60,7 +60,7 @@ module.exports = {
 
                 await interaction.reply({ embeds: [embed] });
             } catch (error) {
-                interaction.reply({ content: "Cannot access the DataBase", ephemeral: true });
+                interaction.reply({ content: "Cannot access the DataBase", flags: [MessageFlags.Ephemeral] });
                 console.error(error);
             }
         } else if (subcommand === "use") {
@@ -159,9 +159,9 @@ module.exports = {
                     .setEmoji("5️⃣");
 
                 await interaction.user.send({ embeds: [embed], components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)] });
-                interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", ephemeral: true });
+                interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", flags: [MessageFlags.Ephemeral] });
             } catch {
-                interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", ephemeral: true });
+                interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", flags: [MessageFlags.Ephemeral] });
             }
         }
     }

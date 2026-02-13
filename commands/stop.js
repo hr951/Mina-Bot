@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,12 +13,12 @@ module.exports = {
         if (!interaction.guild) return;
 
         if (!kazagumo.shoukaku.nodes.size) {
-            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", ephemeral: true });
+            return interaction.reply({ content: "再生サーバーに接続できていません。\n少し待ってからやり直してください。", flags: [MessageFlags.Ephemeral] });
         }
 
-        if (!player) return interaction.reply({ content: "再生中の曲がありません", ephemeral: true });
+        if (!player) return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
         player.destroy();
 
-        return interaction.reply({ content: "再生を停止し、退出しました", ephemeral: true });
+        return interaction.reply({ content: "再生を停止し、退出しました", flags: [MessageFlags.Ephemeral] });
     },
 };

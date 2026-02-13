@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
 const { model } = require('../../db/db');
 
 module.exports = {
@@ -41,12 +41,12 @@ module.exports = {
 
             await interaction.reply({
                 components: [row],
-                ephemeral: true
+                flags: [MessageFlags.Ephemeral]
             });
 
             return;
         } else if (points < 200) {
-            await interaction.reply({ content: `**${200 - points}**ポイント分不足しています。`, ephemeral: true });
+            await interaction.reply({ content: `**${200 - points}**ポイント分不足しています。`, flags: [MessageFlags.Ephemeral] });
             return;
         }
         try {
@@ -84,7 +84,7 @@ module.exports = {
 
             await interaction.reply({
                 components: [row],
-                ephemeral: true
+                flags: [MessageFlags.Ephemeral]
             });
 
         } catch (err) {
