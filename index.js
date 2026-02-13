@@ -100,18 +100,18 @@ kazagumo.on("playerDestroy", (player) => {
 });
 
 client.kazagumo = kazagumo;
-client.kazagumo.shoukaku.on('ready', (name) => console.log(`Lavalink Node: ${name} が接続されました！`));
+client.kazagumo.shoukaku.on('ready', (name) => console.log(`Connected Lavalink - ${name}`));
 // ----- Kazagumo初期化終了 -----
 
 // ----- エラーハンドリング -----
 // Shoukaku (接続層) のエラーをキャッチ
 kazagumo.shoukaku.on('error', (name, error) => {
-    console.error(`Lavalink Node[${name}] でエラーが発生しました:`, error);
+    console.error(`Lavalink [${name}] でエラーが発生しました:`, error);
 });
 
 // Kazagumo (プレイヤー層) のエラーをキャッチ
 kazagumo.on('error', (name, error) => {
-    console.error(`Kazagumo[${name}] でエラーが発生しました:`, error);
+    console.error(`Kazagumo [${name}] でエラーが発生しました:`, error);
 });
 
 // 予期せぬエラーでプロセスを落とさないための保険
@@ -125,11 +125,9 @@ process.on('uncaughtException', (err) => {
 // ----- エラーハンドリング終了 -----
 
 mongoose
-    .connect(uri, {
-        useNewUrlParser: true, //任意
-    })
+    .connect(uri)
     .then(() => {
-        console.log('Connected DataBase! - index.js');
+        console.log('Connected DataBase - index.js');
     })
     .catch((error) => {
         console.log(error);
