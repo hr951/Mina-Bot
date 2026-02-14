@@ -44,12 +44,12 @@ module.exports = {
         client.user.setPresence({
             activities: [
                 {
-                    //name: `Minachanの広場`,
-                    name: "エラー処理中……",
+                    name: `Minachanの広場`,
+                    //name: "エラー処理中……",
                     type: ActivityType.Competing
                 }
             ],
-            status: PresenceUpdateStatus.Idle // Online : いつもの, DoNotDisturb : 赤い奴, Idle : 月のやつ, Invisible : 表示なし
+            status: PresenceUpdateStatus.Online // Online : いつもの, DoNotDisturb : 赤い奴, Idle : 月のやつ, Invisible : 表示なし
         });
 
         console.log(`Logged in as ${client.user.tag}`);
