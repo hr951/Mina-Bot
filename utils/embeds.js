@@ -199,6 +199,45 @@ function five_field_embed(title, description, field1_name, field1_value, field2_
     }
 };
 
+function eight_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value, field4_name, field4_value, field5_name, field5_value, field6_name, field6_value, field7_name, field7_value, field8_name, field8_value) {
+    if (!description) {
+        const embed = new EmbedBuilder()
+            .setTitle(title)
+            .addFields(
+                { name: field1_name, value: field1_value, inline: true },
+                { name: field2_name, value: field2_value, inline: true },
+                { name: field3_name, value: field3_value, inline: true },
+                { name: field4_name, value: field4_value, inline: true },
+                { name: field5_name, value: field5_value, inline: true },
+                { name: field6_name, value: field6_value, inline: true },
+                { name: field7_name, value: field7_value, inline: true },
+                { name: field8_name, value: field8_value, inline: true }
+            )
+            .setColor(color)
+            .setTimestamp();
+
+        return embed;
+    } else {
+        const embed = new EmbedBuilder()
+            .setTitle(title)
+            .setDescription(description)
+            .addFields(
+                { name: field1_name, value: field1_value, inline: true },
+                { name: field2_name, value: field2_value, inline: true },
+                { name: field3_name, value: field3_value, inline: true },
+                { name: field4_name, value: field4_value, inline: true },
+                { name: field5_name, value: field5_value, inline: true },
+                { name: field6_name, value: field6_value, inline: true },
+                { name: field7_name, value: field7_value, inline: true },
+                { name: field8_name, value: field8_value, inline: true }
+            )
+            .setColor(color)
+            .setTimestamp();
+
+        return embed;
+    }
+};
+
 function np_embed(title, url, field1_name, field1_value, field2_name, field2_value, image, footer) {
     const embed = new EmbedBuilder()
         .setTitle(title)
@@ -243,6 +282,7 @@ module.exports = {
     three_field_embed,
     four_field_embed,
     five_field_embed,
+    eight_field_embed,
     np_embed,
     queue_embed,
     top_embed
