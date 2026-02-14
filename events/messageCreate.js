@@ -207,7 +207,7 @@ module.exports = {
             if (!fetchedMessage.embeds[0] && fetchedMessage.attachments.size === 0) {
 
                 const Embed = new EmbedBuilder()
-                    .setColor('#ffffff')
+                    .setColor(color)
                     .setAuthor({ name: fetchedMessage.author.username, iconURL: fetchedMessage.author.displayAvatarURL() })
                     .setDescription(fetchedMessage.content)
                     .setTimestamp(fetchedMessage.createdTimestamp);

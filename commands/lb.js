@@ -1,5 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { model } = require('../db/db');
+const { basic_embed } = require("../utils/embeds.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -38,7 +39,6 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        const color = "#ffffff";
         const subcommand = interaction.options.getSubcommand();
 
         if (subcommand === "all") {
@@ -85,18 +85,12 @@ module.exports = {
                 return interaction.reply({ content: 'データがありません。', flags: [MessageFlags.Ephemeral] });
             }
 
-            const embed = new EmbedBuilder()
-                .setTitle('各部門TOP')
-                .setColor(color)
-                .setDescription(
-                    `**AllPoint TOP:** ${result.top_allpoint[0]?.name || 'なし'}: **${result.top_allpoint[0]?.all_point || 0}**\n` +
-                    `**Point TOP:** ${result.top_point[0]?.name || 'なし'}: **${result.top_point[0]?.point || 0}**\n` +
-                    `**MSG数 TOP:** ${result.top_msgcount[0]?.name || 'なし'}: **${result.top_msgcount[0]?.msgcount || 0}**\n` +
-                    `**MSG平均長さ TOP:** ${result.top_avg[0]?.name || 'なし'}: **${result.top_avg[0]?.avgLength?.toFixed(2) || 0}**`
-                )
-                .setTimestamp();
+            const description = `**AllPoint TOP:** ${result.top_allpoint[0]?.name || 'なし'}: **${result.top_allpoint[0]?.all_point || 0}**\n` +
+                `**Point TOP:** ${result.top_point[0]?.name || 'なし'}: **${result.top_point[0]?.point || 0}**\n` +
+                `**MSG数 TOP:** ${result.top_msgcount[0]?.name || 'なし'}: **${result.top_msgcount[0]?.msgcount || 0}**\n` +
+                `**MSG平均長さ TOP:** ${result.top_avg[0]?.name || 'なし'}: **${result.top_avg[0]?.avgLength?.toFixed(2) || 0}**`;
 
-            await interaction.reply({ embeds: [embed] });
+            await interaction.reply({ embeds: [basic_embed("各部門TOP", description)] });
 
         } else if (subcommand === "category") {
             const sort = interaction.options.getString('sort');
@@ -130,22 +124,18 @@ module.exports = {
                 return interaction.reply({ content: 'ランキングデータがまだありません。', flags: [MessageFlags.Ephemeral] });
             }
 
-            let desc = '';
+            let description = '';
             topUsers.forEach((user, i) => {
                 const value =
                     sort === 'averagemsg'
                         ? user.avgLength.toFixed(2)
                         : user[sort]?.toLocaleString?.() ?? 0;
-                desc += `**${i + 1}.** ${user.name}: **${value}**\n`;
+                description += `**${i + 1}.** ${user.name}: **${value}**\n`;
             });
 
-            const embed = new EmbedBuilder()
-                .setTitle(`${sort === 'point' ? 'Point' : sort === 'all_point' ? 'AllPoint' : sort === 'msgcount' ? 'MSG数' : sort === 'averagemsg' ? 'MSG平均長さ' : "Undefined"}ランキング`)
-                .setColor(color)
-                .setDescription(desc)
-                .setTimestamp();
+            const title = `${sort === 'point' ? 'Point' : sort === 'all_point' ? 'AllPoint' : sort === 'msgcount' ? 'MSG数' : sort === 'averagemsg' ? 'MSG平均長さ' : "Undefined"}ランキング`;
 
-            await interaction.reply({ embeds: [embed] });
+            await interaction.reply({ embeds: [basic_embed(title, description)] });
 
         }
     }

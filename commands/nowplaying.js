@@ -1,6 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
-
-const color = "#ffffff";
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+const { np_embed } = require("../utils/embeds.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,17 +23,10 @@ module.exports = {
             return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
         }
 
-        const embed = new EmbedBuilder()
-            .setTitle(player.queue.current.title)
-            .setURL(player.queue.current.uri)
-            .addFields(
-                { name: "アーティスト: ", value: player.queue.current.author, inline: true },
-                { name: "長さ: ", value: `${Math.floor(player.queue.current.length / 60000)}:${Math.floor((player.queue.current.length % 60000) / 1000).toString().padStart(2, '0')}`, inline: true }
-            )
-            .setImage(player.queue.current.thumbnail)
-            .setFooter({ text: `Source: ${player.queue.current.source ? "YouTube" : "SoundCloud"}` })
-            .setColor(color);
-
-        return interaction.reply({ content: "再生中...", embeds: [embed], flags: [MessageFlags.Ephemeral] });
+        return interaction.reply({
+            content: "再生中...",
+            embeds: [np_embed(player.queue.current.title, player.queue.current.uri, "アーティスト: ", player.queue.current.author, "長さ: ", `${Math.floor(player.queue.current.length / 60000)}:${Math.floor((player.queue.current.length % 60000) / 1000).toString().padStart(2, '0')}`, player.queue.current.thumbnail, `Source: ${player.queue.current.source ? "YouTube" : "SoundCloud"}`)],
+            flags: [MessageFlags.Ephemeral]
+        });
     },
 };

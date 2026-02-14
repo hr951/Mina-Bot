@@ -1,6 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
-
-const color = "#ffffff";
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+const { queue_embed } = require('../utils/embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,12 +20,9 @@ module.exports = {
 
         const list = queue.map((item, index) => `${index + 1}. **${item.query}**`).join("\n");
 
-        const embed = new EmbedBuilder()
-            .setTitle("再生キュー (1. は再生中)")
-            .setDescription(list)
-            .setFooter({ text: `ループモード: ${ja[loopMode]}` })
-            .setColor(color);
-
-        return interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
+        return interaction.reply({
+            embeds: [queue_embed("再生キュー (1. は再生中)", list, `ループモード: ${ja[loopMode]}`)],
+            flags: [MessageFlags.Ephemeral]
+        });
     },
 };

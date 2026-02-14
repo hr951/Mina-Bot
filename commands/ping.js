@@ -1,38 +1,22 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { basic_embed } = require("../utils/embeds.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
-		.setDescription('Get Ping'),
+		.setDescription('Pingを取得します'),
 
 	async execute(interaction) {
 
-		const thumbnail = interaction.client.user.displayAvatarURL();
-		const color = "#ffffff";
-
-		const embed = new EmbedBuilder()
-			.setDescription(`片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **...**ms`)
-			.setColor(color)
-			.setFooter({
-				text: "Made by Mina鯖 Bot",
-				iconURL: thumbnail,
-			})
-			.setTimestamp();
-
-		await interaction.reply({ embeds: [embed] });
+		await interaction.reply({
+			embeds: [basic_embed("Ping", `片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **...**ms`)]
+		});
 
 		let msg = await interaction.fetchReply();
 
-		const embed_2 = new EmbedBuilder()
-			.setDescription(`片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **${msg.createdTimestamp - interaction.createdTimestamp}**ms`)
-			.setColor(color)
-			.setFooter({
-				text: "Made by Mina鯖 Bot",
-				iconURL: thumbnail,
-			})
-			.setTimestamp();
-
-		await interaction.editReply({ embeds: [embed_2] });
+		await interaction.editReply({
+			embeds: [basic_embed("Ping", `片道のPing : **${interaction.client.ws.ping}**ms\n往復のPing : **${msg.createdTimestamp - interaction.createdTimestamp}**ms`)]
+		});
 
 	},
 };

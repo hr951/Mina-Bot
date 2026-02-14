@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { top_embed } = require('../utils/embeds.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,12 +11,9 @@ module.exports = {
     const message = messages.first();
     const link = message.url;
 
-    // リンクを返信する    
-
-    const embed = new EmbedBuilder()
-      .setTitle("チャンネル最上部へ")
-      .setURL(link)
-      .setColor("#FFFFFF")
-    await interaction.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+    await interaction.reply({
+      embeds: [top_embed("チャンネル最上部へ", link)],
+      allowedMentions: { repliedUser: false }
+    });
   },
 };

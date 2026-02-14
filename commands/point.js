@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require("discord.js");
+const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const { model } = require('../db/db');
-
+const { three_field_embed, five_field_embed } = require('../utils/embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,7 +24,6 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        const color = "#ffffff";
         const subcommand = interaction.options.getSubcommand();
         let user = interaction.user;
 
@@ -36,29 +35,9 @@ module.exports = {
             try {
                 const msgData = await model.findOne({ _id: user.id });
 
-                const embed = await new EmbedBuilder()
-                    .setTitle(user.nickname || user.globalName + "のポイント")
-                    .addFields(
-                        {
-                            name: `所持ポイント`,
-                            value: `${msgData.point}`,
-                            inline: true
-                        },
-                        {
-                            name: `総ポイント`,
-                            value: `${msgData.all_point}`,
-                            inline: true
-                        },
-                        {
-                            name: `総送信メッセージ数`,
-                            value: `${msgData.msgcount}`,
-                            inline: true
-                        },
-                    )
-                    .setColor(color)
-                    .setTimestamp();
-
-                await interaction.reply({ embeds: [embed] });
+                await interaction.reply({
+                    embeds: [three_field_embed(user.nickname || user.globalName + "のポイント", null, "所持ポイント", `${msgData.point}`, "総ポイント", `${msgData.all_point}`, "総送信メッセージ数", `${msgData.msgcount}`)]
+                });
             } catch (error) {
                 interaction.reply({ content: "Cannot access the DataBase", flags: [MessageFlags.Ephemeral] });
                 console.error(error);
@@ -93,38 +72,6 @@ module.exports = {
                     console.error(error);
                 }
 
-                const embed = new EmbedBuilder()
-                    .setTitle("ポイント使用フォーム")
-                    .setDescription(`ポイントを使用できるフォームです。\n基本的にMinachan鯖内でのみの特典です。\nあなたが所持しているポイント: **${points}**`)
-                    .addFields(
-                        {
-                            name: `1️⃣ プロフィール背景アップグレード`,
-                            value: `必要ポイント: **200**`,
-                            inline: true
-                        },
-                        {
-                            name: `2️⃣ 運用1周年記念ロール`,
-                            value: `必要ポイント: **1**`,
-                            inline: true
-                        },
-                        {
-                            name: `3️⃣ 進捗機能開放`,
-                            value: `必要ポイント: **100**`,
-                            inline: true
-                        },
-                        {
-                            name: `4️⃣ Mina鯖のおしゃべりロール`,
-                            value: `必要ポイント: **500**`,
-                            inline: true
-                        },
-                        {
-                            name: `5️⃣ Mina鯖の伝説話者ロール`,
-                            value: `必要ポイント: **10000**`,
-                            inline: true
-                        },
-                    )
-                    .setColor(color);
-
                 /*
                 Primary	青色
                 Secondary	灰色
@@ -158,7 +105,10 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji("5️⃣");
 
-                await interaction.user.send({ embeds: [embed], components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)] });
+                await interaction.user.send({
+                    embeds: [five_field_embed("ポイント使用フォーム", `ポイントを使用できるフォームです。\n基本的にMinachan鯖内でのみの特典です。\nあなたが所持しているポイント: **${points}**`, "1️⃣ プロフィール背景アップグレード", `必要ポイント: **200**`, "2️⃣ 運用1周年記念ロール", `必要ポイント: **1**`, "3️⃣ 進捗機能開放", `必要ポイント: **100**`, "4️⃣ Mina鯖のおしゃべりロール", `必要ポイント: **500**`, "5️⃣ Mina鯖の伝説話者ロール", `必要ポイント: **10000**`)],
+                    components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)]
+                });
                 interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", flags: [MessageFlags.Ephemeral] });
             } catch {
                 interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", flags: [MessageFlags.Ephemeral] });
