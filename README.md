@@ -76,6 +76,9 @@ docker run -d --name 名前2(小文字英数字) --env-file .env 上で名付け
 > [!Note]
 > 各種Dockerコマンド
 > ```
+> # ※ssh でdockerに入ったのちに以下を実行
+> ssh -i "discord-bot-key.pem" ec2-user@あなたのパブリックIPv4アドレス
+>
 > # ログを表示
 > docker logs 上で名付けた名前2
 > 
