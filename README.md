@@ -69,8 +69,8 @@ nano .env
 # ※ここに DISCORD_BOT_TOKEN=あなたのトークン などを書き込んで保存（Ctrl+O -> Enter -> Ctrl+X）。
 
 # 3. Dockerビルドと実行
-docker build -t 名前(小文字英数字) .
-docker run -d --name 名前2(小文字英数字) --env-file .env 上で名付けた名前
+docker build -t 名前1(小文字英数字) .
+docker run -d --name 名前2(小文字英数字) --env-file .env 上で名付けた名前1
 ```
 
 > [!Note]
@@ -90,4 +90,12 @@ docker run -d --name 名前2(小文字英数字) --env-file .env 上で名付け
 >
 > # 再起動
 > docker restart 上で名付けた名前2
+> ```
+> 更新するには......
+> ```
+> docker stop 上で名付けた名前2
+> docker rm 上で名付けた名前2
+> git pull
+> docker build -t 上で名付けた名前1 .
+> docker run -d --name 上で名付けた名前2 --env-file .env 上で名付けた名前1
 > ```
