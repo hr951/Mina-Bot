@@ -12,6 +12,7 @@ Thumbs.db
 *.swp
 
 # 環境設定関連
-.env*
+.env
 package-lock.json
 *.bat
+test.js

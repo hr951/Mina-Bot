@@ -199,7 +199,7 @@ function five_field_embed(title, description, field1_name, field1_value, field2_
     }
 };
 
-function eight_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value, field4_name, field4_value, field5_name, field5_value, field6_name, field6_value, field7_name, field7_value, field8_name, field8_value) {
+function nine_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value, field4_name, field4_value, field5_name, field5_value, field6_name, field6_value, field7_name, field7_value, field8_name, field8_value, field9_name, field9_value) {
     if (!description) {
         const embed = new EmbedBuilder()
             .setTitle(title)
@@ -211,7 +211,8 @@ function eight_field_embed(title, description, field1_name, field1_value, field2
                 { name: field5_name, value: field5_value, inline: true },
                 { name: field6_name, value: field6_value, inline: true },
                 { name: field7_name, value: field7_value, inline: true },
-                { name: field8_name, value: field8_value, inline: true }
+                { name: field8_name, value: field8_value, inline: true },
+                { name: field9_name, value: field9_value, inline: true }
             )
             .setColor(color)
             .setTimestamp();
@@ -229,7 +230,8 @@ function eight_field_embed(title, description, field1_name, field1_value, field2
                 { name: field5_name, value: field5_value, inline: true },
                 { name: field6_name, value: field6_value, inline: true },
                 { name: field7_name, value: field7_value, inline: true },
-                { name: field8_name, value: field8_value, inline: true }
+                { name: field8_name, value: field8_value, inline: true },
+                { name: field9_name, value: field9_value, inline: true }
             )
             .setColor(color)
             .setTimestamp();
@@ -282,7 +284,7 @@ module.exports = {
     three_field_embed,
     four_field_embed,
     five_field_embed,
-    eight_field_embed,
+    nine_field_embed,
     np_embed,
     queue_embed,
     top_embed

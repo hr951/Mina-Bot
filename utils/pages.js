@@ -1,9 +1,9 @@
 const { version } = require('discord.js');
 const os = require('os');
-const { getCPUUsage, getRAMUsage } = require('./getUsage.js');
+const { getCPUUsage, getRAMUsage, getDBUsage } = require('./getUsage.js');
 const { ms2time } = require('./ms2time.js');
 const { portChecker } = require('./port_checker.js');
-const { basic_embed, eight_field_embed } = require('./embeds.js');
+const { basic_embed, nine_field_embed } = require('./embeds.js');
 require("dotenv").config();
 
 
@@ -40,8 +40,9 @@ async function page3(interaction) {
     const ping = await interaction.client.ws.ping;
     const cpuUsage = await getCPUUsage();
     const ramUsage = await getRAMUsage();
+    const dbUsage = await getDBUsage();
 
-    return eight_field_embed(
+    return nine_field_embed(
         `${interaction.client.user.username}の情報`,
         "### ステータス",
         "稼働時間", uptime,
@@ -49,6 +50,7 @@ async function page3(interaction) {
         "OS", osVer,
         "CPU使用率", `${cpuUsage}%`,
         "RAM使用率", `${ramUsage.percentage}%`,
+        "DB使用量", `${dbUsage.used}MB`,
         "再生ソース", playSource,
         "Discord.js", "v" + djsVer,
         "Node.js", nodeVer

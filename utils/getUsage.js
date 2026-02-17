@@ -1,4 +1,5 @@
 const os = require('os');
+const mongoose = require('mongoose');
 
 // ----- CPU -----
 function getCPUUsage() {
@@ -55,4 +56,20 @@ function getRAMUsage() {
 }
 // ----- RAM -----
 
-module.exports = { getCPUUsage, getRAMUsage };
+// ----- DB -----
+async function getDBUsage() {
+    // データベース全体の統計を取得
+    const stats = await mongoose.connection.db.command({ dbStats: 1 });
+
+    const dbUsage = {
+        name: stats.db,
+        size: (stats.dataSize / 1024 / 1024).toFixed(2),
+        used: (stats.storageSize / 1024 / 1024).toFixed(2),
+        collections: stats.collections,
+        indexes: stats.indexes 
+    };
+
+    return dbUsage;
+}
+
+module.exports = { getCPUUsage, getRAMUsage, getDBUsage };
