@@ -93,9 +93,10 @@ docker run -d --name 名前2(小文字英数字) --env-file .env 上で名付け
 > ```
 > 更新するには......
 > ```
+> cd リポジトリ名
 > docker stop 上で名付けた名前2
 > docker rm 上で名付けた名前2
-> git pull
+> git pull https://github.com/GitHubのユーザーネーム/リポジトリ名.git
 > docker build -t 上で名付けた名前1 .
 > docker run -d --name 上で名付けた名前2 --env-file .env 上で名付けた名前1
 > ```
