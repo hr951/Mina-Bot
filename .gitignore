@@ -14,5 +14,8 @@ Thumbs.db
 # 環境設定関連
 .env
 package-lock.json
-*.bat
+*.pem
+
+# 検証用ファイル
 test.js
+*.bat
