@@ -179,11 +179,11 @@ module.exports = {
             // ----- ポイント処理 終了 -----
         }
 
-        if (message.content.match(/🖕/)) {
+        /*if (message.content.match(/🖕/)) {
             if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
             message.delete();
             client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
-        }
+        }*/
 
         const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
         const matches = MESSAGE_URL_REGEX.exec(message.content);
