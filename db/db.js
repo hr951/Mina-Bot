@@ -12,7 +12,8 @@ const msgSchema = new mongoose.Schema({
     bg_url: { type: String },
     anni_role: { type: Boolean },
     osyaberi_role: { type: Boolean },
-    densetu_role: { type: Boolean }
+    densetu_role: { type: Boolean },
+    playlist: { type: String }
 });
 
 const serverSchema = new mongoose.Schema({

@@ -72,13 +72,13 @@ kazagumo.on("playerEnd", async (player) => {
     }
 
     if (queue.length > 0) {
-        const { playNext } = require('./commands/play.js');
+        const { playNext } = require('./commands/search.js');
         await playNext(player, kazagumo);
     }
 });
 
 kazagumo.on("playerException", async (player) => {
-    const { playNext } = require('./commands/play.js');
+    const { playNext } = require('./commands/search.js');
     const queue = global.customQueue.get(player.guildId);
     if (queue) {
         queue.shift(); // 失敗した曲を飛ばす

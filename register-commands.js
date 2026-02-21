@@ -125,9 +125,9 @@ const profile = new SlashCommandBuilder()
 			)
 	);
 
-const play = new SlashCommandBuilder()
-	.setName("play")
-	.setDescription("曲を再生します")
+const search = new SlashCommandBuilder()
+	.setName("search")
+	.setDescription("曲を検索して再生します")
 	.addStringOption(option =>
 		option
 			.setName("query")
@@ -169,7 +169,15 @@ const info = new SlashCommandBuilder()
 	.setName("info")
 	.setDescription("Mina鯖 Botの情報を表示します");
 
-const commands = [ping, top, point, lb, profile, play, nowplaying, queue, skip, loop, stop, info];
+const play = new SlashCommandBuilder()
+	.setName("play")
+	.setDescription("プレイリストから再生します");
+
+const playlist = new SlashCommandBuilder()
+	.setName("playlist")
+	.setDescription("ユーザープレイリストを編集・設定します");
+
+const commands = [ping, top, point, lb, profile, search, nowplaying, queue, skip, loop, stop, info, play, playlist];
 
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()
