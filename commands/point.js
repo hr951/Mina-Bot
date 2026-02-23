@@ -110,7 +110,8 @@ module.exports = {
                     components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)]
                 });
                 interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", flags: [MessageFlags.Ephemeral] });
-            } catch {
+            } catch (error) {
+                console.error(error);
                 interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", flags: [MessageFlags.Ephemeral] });
             }
         }

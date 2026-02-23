@@ -36,7 +36,8 @@ module.exports = {
                 components: [new ActionRowBuilder().setComponents(Del_Button)]
             });
             await interaction.reply({ content: `https://discord.com/channels/${channel.guildId}/${channel.id} を作成しました。`, flags: [MessageFlags.Ephemeral] });
-        } catch {
+        } catch (error) {
+            console.error(error);
             await interaction.reply({ content: `キャッシュされていないユーザーの可能性があります。\n人力でチャンネルを作成してください。`, flags: [MessageFlags.Ephemeral] });
         }
     }

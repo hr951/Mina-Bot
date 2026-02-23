@@ -97,8 +97,8 @@ module.exports = {
                 await interaction.reply(`プロフィール背景を**${name[value - 1]}**に設定しました`);
             }
             //console.log("Update the DataBase:", msgData);
-        } catch (err) {
-            console.error("Update Error:", err);
+        } catch (error) {
+            console.error("Update Error:", error);
         }
 
     }

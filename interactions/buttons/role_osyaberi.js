@@ -45,8 +45,8 @@ module.exports = {
             await member.roles.add(role);
 
             await interaction.reply({ content: `Mina鯖のおしゃべりロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
-        } catch (err) {
-            console.error("Update Error:", err);
+        } catch (error) {
+            console.error("Update Error:", error);
         }
     }
 };

@@ -45,8 +45,8 @@ module.exports = {
             await member.roles.add(role);
 
             interaction.reply({ content: `運用1周年記念ロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
-        } catch (err) {
-            console.error("Update Error:", err);
+        } catch (error) {
+            console.error("Update Error:", error);
         }
     }
 };

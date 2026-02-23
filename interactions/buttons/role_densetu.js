@@ -45,8 +45,8 @@ module.exports = {
             await member.roles.add(role);
 
             interaction.reply({ content: `Mina鯖の伝説話者ロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
-        } catch (err) {
-            console.error("Update Error:", err);
+        } catch (error) {
+            console.error("Update Error:", error);
         }
     }
 };

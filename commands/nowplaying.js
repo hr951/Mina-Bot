@@ -19,8 +19,10 @@ module.exports = {
 
         try {
             if (!player.queue.current) return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
-        } catch {
-            return interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
+        } catch(error) {
+            console.error(error);
+            interaction.reply({ content: "再生中の曲がありません", flags: [MessageFlags.Ephemeral] });
+            return;
         }
 
         return interaction.reply({

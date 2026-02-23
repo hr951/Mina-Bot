@@ -29,8 +29,8 @@ module.exports = {
                 { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
             );
             interaction.reply({ content: `Coming Soon!\n更新をお待ちください!`, flags: [MessageFlags.Ephemeral] });
-        } catch (err) {
-            console.error("Update Error:", err);
+        } catch (error) {
+            console.error("Update Error:", error);
         }
     }
 };

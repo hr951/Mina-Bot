@@ -135,7 +135,7 @@ mongoose
 
 // ---- ここまでBot設定 ----
 
-// ---- コマンド読み込み処理 ----
+// ---- コマンド&イベント読み込み処理 ----
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
@@ -164,6 +164,6 @@ for (const file of eventFiles) {
     }
 }
 
-// ---- コマンド読み込み処理終了 ----
+// ---- コマンド&イベント読み込み処理終了 ----
 
 client.login(token);

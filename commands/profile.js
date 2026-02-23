@@ -253,17 +253,15 @@ module.exports = {
             await make_img.edit({ content: "", files: [attachment], components: [new ActionRowBuilder().setComponents(Button)] });
 
         } catch (error) {
-            // エラーが発生したらコンソールに出力
             console.error(error);
 
             const Button = new ButtonBuilder()
                 .setCustomId(`${interaction.user.id}`)
                 .setStyle(ButtonStyle.Danger)
-                .setLabel("削除する")
+                .setLabel("削除する");
 
-            // エラーメッセージを返信
             //await interaction.editReply("画像の生成に失敗しました。");
-            await make_img.edit({ content: "画像の生成に失敗しました。", components: [new ActionRowBuilder().setComponents(Button)] })
+            await make_img.edit({ content: "画像の生成に失敗しました。", components: [new ActionRowBuilder().setComponents(Button)] });
         }
     },
 

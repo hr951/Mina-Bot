@@ -87,8 +87,8 @@ module.exports = {
                 flags: [MessageFlags.Ephemeral]
             });
 
-        } catch (err) {
-            console.error("Update Error:", err);
+        } catch (error) {
+            console.error("Update Error:", error);
         }
     }
 };
