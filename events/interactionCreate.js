@@ -35,8 +35,8 @@ module.exports = {
             try {
                 const button = require(`../interactions/buttons/${interaction.customId}.js`);
                 await button.execute(interaction, client);
-            } catch {
-                console.error(`${interaction.customId} が見つかりません`);
+            } catch (error) {
+                console.error(`${interaction.customId} が見つかりません\n` + error);
                 interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }
@@ -46,8 +46,8 @@ module.exports = {
             try {
                 const modal = require(`../interactions/modals/${interaction.customId}.js`);
                 await modal.execute(interaction, client);
-            } catch {
-                console.error(`${interaction.customId} が見つかりません`);
+            } catch (error) {
+                console.error(`${interaction.customId} が見つかりません\n` + error);
                 interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }
@@ -57,8 +57,8 @@ module.exports = {
             try {
                 const selectmenu = require(`../interactions/selectmenus/${interaction.customId}.js`);
                 await selectmenu.execute(interaction, client);
-            } catch {
-                console.error(`${interaction.customId} が見つかりません`);
+            } catch (error) {
+                console.error(`${interaction.customId} が見つかりません\n` + error);
                 interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }
