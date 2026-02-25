@@ -78,166 +78,26 @@ function basic_embed(title, description) {
     return embed;
 };
 
-function two_field_embed(title, description, field1_name, field1_value, field2_name, field2_value) {
-    if (!description) {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
+function fields_embed(title, description, fields) {
+    const embed = new EmbedBuilder()
+        .setTitle(title)
+        .setColor(color)
+        .setTimestamp();
 
-        return embed;
-    } else {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
+    if (description) {
+        embed.setDescription(description);
     }
-};
 
-function three_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value) {
-    if (!description) {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    } else {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
+    if (Array.isArray(fields)) {
+        const formattedFields = fields.map(f => ({
+            name: f.name,
+            value: f.value,
+            inline: true
+        }));
+        embed.addFields(formattedFields);
     }
-};
 
-function four_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value, field4_name, field4_value) {
-    if (!description) {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true },
-                { name: field4_name, value: field4_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    } else {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true },
-                { name: field4_name, value: field4_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    }
-};
-
-function five_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value, field4_name, field4_value, field5_name, field5_value) {
-    if (!description) {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true },
-                { name: field4_name, value: field4_value, inline: true },
-                { name: field5_name, value: field5_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    } else {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true },
-                { name: field4_name, value: field4_value, inline: true },
-                { name: field5_name, value: field5_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    }
-};
-
-function nine_field_embed(title, description, field1_name, field1_value, field2_name, field2_value, field3_name, field3_value, field4_name, field4_value, field5_name, field5_value, field6_name, field6_value, field7_name, field7_value, field8_name, field8_value, field9_name, field9_value) {
-    if (!description) {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true },
-                { name: field4_name, value: field4_value, inline: true },
-                { name: field5_name, value: field5_value, inline: true },
-                { name: field6_name, value: field6_value, inline: true },
-                { name: field7_name, value: field7_value, inline: true },
-                { name: field8_name, value: field8_value, inline: true },
-                { name: field9_name, value: field9_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    } else {
-        const embed = new EmbedBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .addFields(
-                { name: field1_name, value: field1_value, inline: true },
-                { name: field2_name, value: field2_value, inline: true },
-                { name: field3_name, value: field3_value, inline: true },
-                { name: field4_name, value: field4_value, inline: true },
-                { name: field5_name, value: field5_value, inline: true },
-                { name: field6_name, value: field6_value, inline: true },
-                { name: field7_name, value: field7_value, inline: true },
-                { name: field8_name, value: field8_value, inline: true },
-                { name: field9_name, value: field9_value, inline: true }
-            )
-            .setColor(color)
-            .setTimestamp();
-
-        return embed;
-    }
+    return embed;
 };
 
 function np_embed(title, url, field1_name, field1_value, field2_name, field2_value, image, footer) {
@@ -280,11 +140,7 @@ module.exports = {
     embed_check_be,
     embed_check_offline,
     basic_embed,
-    two_field_embed,
-    three_field_embed,
-    four_field_embed,
-    five_field_embed,
-    nine_field_embed,
+    fields_embed,
     np_embed,
     queue_embed,
     top_embed

@@ -3,18 +3,18 @@ const os = require('os');
 const { getCPUUsage, getRAMUsage, getDBUsage } = require('./getUsage.js');
 const { ms2time } = require('./ms2time.js');
 const { portChecker } = require('./port_checker.js');
-const { basic_embed, nine_field_embed } = require('./embeds.js');
+const { basic_embed, fields_embed } = require('./embeds.js');
 require("dotenv").config();
 
 
 function page1(interaction) {
-    return basic_embed(`${interaction.client.user.username}の情報`,
+    return basic_embed(`${interaction.client.user.username}の情報 (1/3)`,
         "### 各種ドキュメントリンク\n**利用規約:**\n__[🌐外部リンク](https://hr951.github.io/minachan/terms)__\n\n**プライバシーポリシー:**\n__[🌐外部リンク](https://hr951.github.io/minachan/privacypolicy)__");
 };
 
 function page2(interaction) {
     const commands = interaction.client.commands.map(cmd => ` - **/${cmd.data.name}**: ${cmd.data.description}`).join("\n");
-    return basic_embed(`${interaction.client.user.username}の情報`, "### コマンドリスト\n" + commands);
+    return basic_embed(`${interaction.client.user.username}の情報 (2/3)`, "### コマンドリスト\n" + commands);
 };
 
 async function page3(interaction) {
@@ -42,18 +42,22 @@ async function page3(interaction) {
     const ramUsage = await getRAMUsage();
     const dbUsage = await getDBUsage();
 
-    return nine_field_embed(
-        `${interaction.client.user.username}の情報`,
+    const fields = [
+        { name: "稼働時間", value: uptime },
+        { name: "Ping", value: `${ping}ms` },
+        { name: "OS", value: osVer },
+        { name: "CPU使用率", value: `${cpuUsage}%` },
+        { name: "RAM使用率", value: `${ramUsage.percentage}%` },
+        { name: "DB使用量", value: `${dbUsage.used}MB` },
+        { name: "再生ソース", value: playSource },
+        { name: "Discord.js", value: `v${djsVer}` },
+        { name: "Node.js", value: nodeVer }
+    ];
+
+    return fields_embed(
+        `${interaction.client.user.username}の情報 (3/3)`,
         "### ステータス",
-        "稼働時間", uptime,
-        "Ping", `${ping}ms`,
-        "OS", osVer,
-        "CPU使用率", `${cpuUsage}%`,
-        "RAM使用率", `${ramUsage.percentage}%`,
-        "DB使用量", `${dbUsage.used}MB`,
-        "再生ソース", playSource,
-        "Discord.js", "v" + djsVer,
-        "Node.js", nodeVer
+        fields
     );
 };
 
