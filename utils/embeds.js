@@ -78,6 +78,13 @@ function basic_embed(title, description) {
     return embed;
 };
 
+/*
+const fields = [
+    { name: "Name", value: "Value" },
+    { name: "Name", value: "Value" },
+    { name: "Name", value: "Value" }
+];
+*/
 function fields_embed(title, description, fields) {
     const embed = new EmbedBuilder()
         .setTitle(title)
