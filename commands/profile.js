@@ -7,7 +7,7 @@ const { model } = require('../db/db');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('profile')
-        .setDescription('create your profile')
+        .setDescription('プロフィール画像を作成します')
         .addStringOption(option =>
             option.setName('minecraft-id')
                 .setDescription('マイクラのIDを書いてください')
