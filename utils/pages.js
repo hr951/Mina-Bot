@@ -8,13 +8,13 @@ require("dotenv").config();
 
 
 function page1(interaction) {
-    return basic_embed(`${interaction.client.user.username}の情報 (1/3)`,
+    return basic_embed(`${interaction.client.user.username}の情報 (1/4)`,
         "### 各種ドキュメントリンク\n**利用規約:**\n__[🌐外部リンク](https://hr951.github.io/minachan/terms)__\n\n**プライバシーポリシー:**\n__[🌐外部リンク](https://hr951.github.io/minachan/privacypolicy)__");
 };
 
 function page2(interaction) {
     const commands = interaction.client.commands.map(cmd => ` - **/${cmd.data.name}**: ${cmd.data.description}`).join("\n");
-    return basic_embed(`${interaction.client.user.username}の情報 (2/3)`, "### コマンドリスト\n" + commands);
+    return basic_embed(`${interaction.client.user.username}の情報 (2/4)`, "### コマンドリスト\n" + commands);
 };
 
 async function page3(interaction) {
@@ -55,10 +55,14 @@ async function page3(interaction) {
     ];
 
     return fields_embed(
-        `${interaction.client.user.username}の情報 (3/3)`,
+        `${interaction.client.user.username}の情報 (3/4)`,
         "### ステータス",
         fields
     );
 };
 
-module.exports = { page1, page2, page3 };
+function page4(interaction) {
+    return basic_embed(`${interaction.client.user.username}の情報 (4/4)`, "### クレジット\nDeveloper: **えいちあーる**");
+};
+
+module.exports = { page1, page2, page3, page4 };

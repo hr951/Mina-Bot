@@ -6,36 +6,42 @@ const { serverModel } = require('../db/db');
 
 let ip = {};
 let port = {};
-let ip_je;
-let port_je;
-let ip_jb;
-let port_jb;
-let ip_be;
-let port_be;
+let ip_hub_1_je;
+let ip_hub_1_be;
+let ip_hub_2_je;
+let ip_hub_2_be;
+let port_hub_1_je;
+let port_hub_1_be;
+let port_hub_2_je;
+let port_hub_2_be;
 
 module.exports = {
     name: 'clientReady',
     async execute(client) {
         try {
             const server_config = await serverModel.findOne({ _id: "1265637138247057428" });
-            ip_je = server_config.ip_je;
-            port_je = server_config.port_je;
-            ip_jb = server_config.ip_jb;
-            port_jb = server_config.port_jb;
-            ip_be = server_config.ip_be;
-            port_be = server_config.port_be;
+            ip_hub_1_je = server_config.ip_hub_1_je;
+            port_hub_1_je = server_config.port_hub_1_je;
+            ip_hub_1_be = server_config.ip_hub_1_be;
+            port_hub_1_be = server_config.port_hub_1_be;
+            ip_hub_2_je = server_config.ip_hub_2_je;
+            port_hub_2_je = server_config.port_hub_2_je;
+            ip_hub_2_be = server_config.ip_hub_2_be;
+            port_hub_2_be = server_config.port_hub_2_be;
 
             ip =
             {
-                "je": ip_je,
-                "jb": ip_jb,
-                "be": ip_be
+                "hub_1_je": ip_hub_1_je,
+                "hub_1_be": ip_hub_1_be,
+                "hub_2_je": ip_hub_2_je,
+                "hub_2_be": ip_hub_2_be
             };
             port =
             {
-                "je": port_je,
-                "jb": port_jb,
-                "be": port_be
+                "hub_1_je": port_hub_1_je,
+                "hub_1_be": port_hub_1_be,
+                "hub_2_je": port_hub_2_je,
+                "hub_2_be": port_hub_2_be
             };
         } catch (error) {
             console.error(error);

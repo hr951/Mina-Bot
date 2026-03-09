@@ -73,9 +73,15 @@ module.exports = {
                 }
 
                 /*if (message.content === "setting") {
-                    const Button = new ButtonBuilder()
-                        .setCustomId(`update_serverinfo`)
-                        .setStyle(ButtonStyle.Primary)
+                    const Button1 = new ButtonBuilder()
+                        .setCustomId("update_serverinfo_1")
+                        .setStyle(ButtonStyle.Secondary)
+                        .setLabel("更新する")
+                        .setEmoji("⚙️");
+
+                    const Button2 = new ButtonBuilder()
+                        .setCustomId("update_serverinfo_2")
+                        .setStyle(ButtonStyle.Secondary)
                         .setLabel("更新する")
                         .setEmoji("⚙️");
 
@@ -83,12 +89,12 @@ module.exports = {
                         .addFields(
                             {
                                 name: "サーバー情報の更新",
-                                value: `ステータスに表示するサーバーの情報を更新できます。\n設定できる内容は以下の通りです。\n - HUBサーバーのIP(JE&BE)\n - HUBサーバーのポート(BE)\n - BEサーバーのIP\n - BEサーバーのポート\n※デフォルトで最新の情報が自動的に入力されています。`,
+                                value: `ステータスに表示するサーバーの情報を更新できます。\n設定できる内容は以下の通りです。\n - HUBサーバー ➀のIP(JE&BE)\n - HUBサーバー ➀のポート(JE&BE)\n - HUBサーバー ➁のIP(JE&BE)\n - HUBサーバー ➁のポート(JE&BE)\n※デフォルトで最新の情報が自動的に入力されています。`,
                                 inline: true
                             },
                         )
                         .setColor(color);
-                    message.channel.send({ embeds: [report_emb], components: [new ActionRowBuilder().setComponents(Button)] });
+                    message.channel.send({ embeds: [report_emb], components: [new ActionRowBuilder().setComponents(Button1, Button2)] });
                 }*/
             }
 

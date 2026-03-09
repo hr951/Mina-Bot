@@ -18,12 +18,14 @@ const msgSchema = new mongoose.Schema({
 
 const serverSchema = new mongoose.Schema({
     _id: { type: String }, //サーバーID
-    ip_je: { type: String }, //サーバーIP (JE)
-    port_je: { type: Number }, //サーバーポート (JE)
-    ip_jb: { type: String }, //サーバーIP (JB)
-    port_jb: { type: Number }, //サーバーポート (JB)
-    ip_be: { type: String }, //サーバーIP (BE)
-    port_be: { type: Number } //サーバーポート (BE)
+    ip_hub_1_je: { type: String }, //サーバーIP (HUB1 JE)
+    port_hub_1_je: { type: Number }, //サーバーポート (HUB1 JE)
+    ip_hub_1_be: { type: String }, //サーバーIP (HUB1 BE)
+    port_hub_1_be: { type: Number }, //サーバーポート (HUB1 BE)
+    ip_hub_2_je: { type: String }, //サーバーIP (HUB2 JE)
+    port_hub_2_je: { type: Number }, //サーバーポート (HUB2 JE)
+    ip_hub_2_be: { type: String }, //サーバーIP (HUB2 BE)
+    port_hub_2_be: { type: Number } //サーバーポート (HUB2 BE)
 });
 
 const model = mongoose.model('Messages', msgSchema);

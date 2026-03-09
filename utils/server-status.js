@@ -1,25 +1,27 @@
 const util = require("minecraft-server-util");
-const { embed_check_ac, embed_check_jb, embed_check_be, embed_check_offline } = require("./embeds.js");
+const { embed_check_ac, embed_check_hub_1, embed_check_hub_2, embed_check_offline } = require("./embeds.js");
 
 async function check(ip, port) {
 
     try {
-        const result = await util.status(ip.je, port.je);
-        const result_jb = await util.statusBedrock(ip.jb, port.jb);
-        const result_be = await util.statusBedrock(ip.be, port.be);
+        const hub_1_je = await util.status(ip.hub_1_je, port.hub_1_je);
+        const hub_1_be = await util.statusBedrock(ip.hub_1_be, port.hub_1_be);
+        const hub_2_je = await util.status(ip.hub_2_je, port.hub_2_je);
+        const hub_2_be = await util.statusBedrock(ip.hub_2_be, port.hub_2_be);
 
-        return embed_check_ac(result, result_jb, result_be);
+        return embed_check_ac(hub_1_je, hub_1_be, hub_2_je, hub_2_be);
     } catch {
         try {
-            const result = await util.status(ip.je, port.je);
-            const result_jb = await util.statusBedrock(ip.jb, port.jb);
+            const hub_1_je = await util.status(ip.hub_1_je, port.hub_1_je);
+            const hub_1_be = await util.statusBedrock(ip.hub_1_be, port.hub_1_be);
 
-            return embed_check_jb(result, result_jb);
+            return embed_check_hub_1(hub_1_je, hub_1_be);
         } catch {
             try {
-                const result_be = await util.statusBedrock(ip.be, port.be);
+                const hub_2_je = await util.status(ip.hub_2_je, port.hub_2_je);
+                const hub_2_be = await util.statusBedrock(ip.hub_2_be, port.hub_2_be);
 
-                return embed_check_be(result_be);
+                return embed_check_hub_2(hub_2_je, hub_2_be);
             } catch {
                 return embed_check_offline();
             }
