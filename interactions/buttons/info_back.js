@@ -5,13 +5,13 @@ module.exports = {
         await interaction.deferUpdate();
         let page;
         let newPage;
-        if (interaction.message.embeds[0].description.includes("1/")) {
+        if (interaction.message.embeds[0].title.includes("1/")) {
             page = 1;
-        } else if (interaction.message.embeds[0].description.includes("2/")) {
+        } else if (interaction.message.embeds[0].title.includes("2/")) {
             page = 2;
-        } else if (interaction.message.embeds[0].description.includes("3/")) {
+        } else if (interaction.message.embeds[0].title.includes("3/")) {
             page = 3;
-        } else if (interaction.message.embeds[0].description.includes("4/")) {
+        } else if (interaction.message.embeds[0].title.includes("4/")) {
             page = 4;
         }
         switch (page) {
