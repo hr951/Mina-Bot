@@ -62,7 +62,10 @@ async function page3(interaction) {
 };
 
 function page4(interaction) {
-    return basic_embed(`${interaction.client.user.username}の情報 (4/4)`, "### クレジット\nDeveloper: **えいちあーる**");
+    return basic_embed(
+        `${interaction.client.user.username}の情報 (4/4)`,
+        "### クレジット\nDeveloper: **えいちあーる**"
+    );
 };
 
 module.exports = { page1, page2, page3, page4 };
