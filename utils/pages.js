@@ -50,7 +50,7 @@ async function page3(interaction) {
         { name: "RAM使用率", value: `${ramUsage.percentage}%` },
         { name: "DB使用量", value: `${dbUsage.used}MB` },
         { name: "再生ソース", value: playSource },
-        { name: "Discord.js", value: `v${djsVer}` },
+        { name: "discord.js", value: `v${djsVer}` },
         { name: "Node.js", value: nodeVer }
     ];
 
@@ -61,10 +61,20 @@ async function page3(interaction) {
     );
 };
 
-function page4(interaction) {
-    return basic_embed(
+async function page4(interaction) {
+    const guild_name = await interaction.client.guilds.cache.get("1265637138247057428").name;
+    const fields = [
+        { name: "Developer", value: "えいちあーる" },
+        { name: "Libraries", value: "Node.js\ndiscord.js\nCanvas" },
+        { name: "Assets", value: "Icons: Flaticon\nFont: Nosutaru-dot\nImages: Minecraft" },
+        { name: "Special Thanks", value: `${guild_name}\nDebuggers` },
+        { name: "References", value: "Some GitHub Projects\nDiscord API Docs" }
+    ];
+
+    return fields_embed(
         `${interaction.client.user.username}の情報 (4/4)`,
-        "### クレジット\nDeveloper: **えいちあーる**"
+        "### クレジット",
+        fields
     );
 };
 
