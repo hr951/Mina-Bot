@@ -3,7 +3,8 @@ require("dotenv").config();
 const { model } = require('../db/db');
 const color = "#FFFFFF";
 
-const lastCountTime = new Map();
+const pointCT = new Map();
+const spamCT = new Map();
 
 module.exports = {
     name: 'messageCreate',
@@ -13,7 +14,8 @@ module.exports = {
         const userId = message.author.id;
 
         if (message.guildId) {
-            const now = Date.now();
+            const pointNow = Date.now();
+            const spamNow = Date.now();
             if (userId === "962670040795201557") {
                 if (message.content === "!debug") {
                     try {
@@ -99,18 +101,18 @@ module.exports = {
             }
 
             // ----- ポイント処理 -----
-            const lastTime = lastCountTime.get(userId) || 0;
+            const pointTime = pointCT.get(userId) || 0;
 
             const length = message.content.length;
-            var fixed = Math.floor(length / 40);
+            let fixed = Math.floor(length / 40);
             const chance = length / 40 - fixed;
-            var addpoint = Math.random() < chance ? 1 : 0;
+            let addpoint = Math.random() < chance ? 1 : 0;
 
-            if (now - lastTime < 2000) {
+            if (pointNow - pointTime < 2000) {
                 addpoint = 0;
                 fixed = 0;
             } else {
-                lastCountTime.set(userId, now);
+                pointCT.set(userId, pointNow);
             }
 
             try {
@@ -183,6 +185,16 @@ module.exports = {
                 console.error("Update Error:", error);
             }
             // ----- ポイント処理 終了 -----
+
+            // ----- セキュリティ処理 -----
+            const spamTime = spamCT.get(userId) || 0;
+
+            if (spamNow - spamTime < 1_000) {
+                message.channel.send("spam?");
+                // dbにwarn値追加
+            } else {
+                spamCT.set(userId, spamNow);
+            }
         }
 
         /*if (message.content.match(/🖕/)) {
@@ -190,6 +202,37 @@ module.exports = {
             message.delete();
             client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
         }*/
+
+        const filter = require("../data/blackWords.json");
+
+        if (message.guild) {
+
+            const content = message.content
+                .toLowerCase()
+                .normalize("NFKC");
+
+            const compact = content.replace(/\s+/g, "");
+
+            const exactMatch = filter.ExactMatch.some(w =>
+                content === w
+            );
+
+            const partialMatch = filter.PartialMatch.some(w =>
+                content.includes(w) || compact.includes(w.replace(/\s+/g, ""))
+            );
+
+            if (exactMatch || partialMatch) {
+                try {
+                    //await message.delete();
+                } catch (error) {
+                    console.error(error);
+                }
+
+                message.channel.send({
+                    content: `${message.author} NGワードが検出されました`
+                });
+            }
+        }
 
         const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
         const matches = MESSAGE_URL_REGEX.exec(message.content);

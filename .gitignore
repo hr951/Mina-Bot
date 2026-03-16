@@ -19,3 +19,4 @@ package-lock.json
 # 検証用ファイル
 test.js
 *.bat
+data/blackWords.json
