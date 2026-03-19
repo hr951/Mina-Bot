@@ -1,4 +1,5 @@
 const { MessageFlags } = require("discord.js");
+const { serverModel } = require("../db/db");
 require("dotenv").config();
 
 module.exports = {
@@ -9,6 +10,35 @@ module.exports = {
             if (!command) {
                 console.error(`${interaction.commandName} が見つかりません。`);
                 return;
+            }
+            try {
+                let useCmd = 0;
+                let useTotalCmd = 0;
+                try {
+                    const msgPoint = await serverModel.findOne({ _id: "1265637138247057428" });
+                    useCmd = msgPoint.commands_use[command.data.name];
+                    useTotalCmd = msgPoint.commands_use.total;
+                    if (!useCmd) {
+                        useCmd = 0;
+                    }
+                    if (!useTotalCmd) {
+                        useTotalCmd = 0;
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+                await serverModel.findOneAndUpdate(
+                    { _id: "1265637138247057428" },
+                    {
+                        $set: {
+                            [`commands_use.total`]: useTotalCmd + 1,
+                            [`commands_use.${command.data.name}`]: useCmd + 1
+                        },
+                    },
+                    { upsert: true, new: true }
+                );
+            } catch (error) {
+                console.error(error);
             }
             try {
                 await command.execute(interaction, client);

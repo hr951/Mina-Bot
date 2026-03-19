@@ -53,11 +53,6 @@ module.exports = {
 
                 const { width, height } = dimensions;
 
-                if (width > 1920 || height > 1080) {
-                    await interaction.followUp(`サイズが大きすぎます (${width}x${height})\n**__1920×1080__**以下にして送信してください`);
-                    return;
-                }
-
                 const image = await interaction.followUp({
                     content: `以下の画像を登録しました！(${width}x${height})`,
                     files: [attachment.url],

@@ -21,15 +21,16 @@ const msgSchema = new mongoose.Schema({
 });
 
 const serverSchema = new mongoose.Schema({
-    _id: { type: String }, //サーバーID
-    ip_hub_1_je: { type: String }, //サーバーIP (HUB1 JE)
-    port_hub_1_je: { type: Number }, //サーバーポート (HUB1 JE)
-    ip_hub_1_be: { type: String }, //サーバーIP (HUB1 BE)
-    port_hub_1_be: { type: Number }, //サーバーポート (HUB1 BE)
-    ip_hub_2_je: { type: String }, //サーバーIP (HUB2 JE)
-    port_hub_2_je: { type: Number }, //サーバーポート (HUB2 JE)
-    ip_hub_2_be: { type: String }, //サーバーIP (HUB2 BE)
-    port_hub_2_be: { type: Number }, //サーバーポート (HUB2 BE)
+    _id: { type: String }, // サーバーID
+    ip_hub_1_je: { type: String }, // サーバーIP (HUB1 JE)
+    port_hub_1_je: { type: Number }, // サーバーポート (HUB1 JE)
+    ip_hub_1_be: { type: String }, // サーバーIP (HUB1 BE)
+    port_hub_1_be: { type: Number }, // サーバーポート (HUB1 BE)
+    ip_hub_2_je: { type: String }, // サーバーIP (HUB2 JE)
+    port_hub_2_je: { type: Number }, // サーバーポート (HUB2 JE)
+    ip_hub_2_be: { type: String }, // サーバーIP (HUB2 BE)
+    port_hub_2_be: { type: Number }, // サーバーポート (HUB2 BE)
+    black_words: { type: String }, // ブラックワード
     commands_use: {
         total: { type: Number }, // 総使用数
         info: { type: Number },

@@ -1,6 +1,7 @@
-const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 require("dotenv").config();
-const { model } = require('../db/db');
+const { model, serverModel } = require('../db/db');
+const { createConfigBoard } = require('../utils/createConfigBoards');
 const color = "#FFFFFF";
 
 const pointCT = new Map();
@@ -74,30 +75,9 @@ module.exports = {
                     }
                 }
 
-                /*if (message.content === "setting") {
-                    const Button1 = new ButtonBuilder()
-                        .setCustomId("update_serverinfo_1")
-                        .setStyle(ButtonStyle.Secondary)
-                        .setLabel("更新する")
-                        .setEmoji("⚙️");
-
-                    const Button2 = new ButtonBuilder()
-                        .setCustomId("update_serverinfo_2")
-                        .setStyle(ButtonStyle.Secondary)
-                        .setLabel("更新する")
-                        .setEmoji("⚙️");
-
-                    const report_emb = new EmbedBuilder()
-                        .addFields(
-                            {
-                                name: "サーバー情報の更新",
-                                value: `ステータスに表示するサーバーの情報を更新できます。\n設定できる内容は以下の通りです。\n - HUBサーバー ➀のIP(JE&BE)\n - HUBサーバー ➀のポート(JE&BE)\n - HUBサーバー ➁のIP(JE&BE)\n - HUBサーバー ➁のポート(JE&BE)\n※デフォルトで最新の情報が自動的に入力されています。`,
-                                inline: true
-                            },
-                        )
-                        .setColor(color);
-                    message.channel.send({ embeds: [report_emb], components: [new ActionRowBuilder().setComponents(Button1, Button2)] });
-                }*/
+                if (message.content.startsWith("!setting")) {
+                    message.channel.send(createConfigBoard(message.content.substr(message.content.indexOf(' ') + 1)));
+                }
             }
 
             // ----- ポイント処理 -----
@@ -187,37 +167,71 @@ module.exports = {
             // ----- ポイント処理 終了 -----
 
             // ----- セキュリティ処理 -----
-            const spamTime = spamCT.get(userId) || 0;
-
-            if (spamNow - spamTime < 1_000) {
-                message.channel.send("spam?");
-                // dbにwarn値追加
-            } else {
-                spamCT.set(userId, spamNow);
+            if (!spamCT.has(userId)) {
+                spamCT.set(userId, { lastTimestamp: spamNow, spamCount: 1 });
+                return;
             }
-        }
 
-        /*if (message.content.match(/🖕/)) {
-            if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
-            message.delete();
-            client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
-        }*/
+            const data = spamCT.get(userId);
 
-        const filter = require("../data/blackWords.json");
+            if (spamNow - data.lastTimestamp <= 1000) {
+                data.spamCount++;
+            } else {
+                data.spamCount = 1;
+            }
 
-        if (message.guild) {
+            data.lastTimestamp = spamNow;
 
-            const content = message.content
-                .toLowerCase()
-                .normalize("NFKC");
+            if (data.spamCount > 3) {
+                client.channels.cache.get("1380894393611059241").send({ content: `${message.author.tag} が https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} (**${message.cleanContent}**) を起点にスパムの疑いがあります。\n${message.author.tag} にWarningPointを加算しました。\n取り消しは以下のボタンから行ってください。` });
+
+                try {
+                    let warnPoint = 0;
+                    try {
+                        const msgPoint = await model.findOne({ _id: message.author.id });
+                        warnPoint = msgPoint.warn;
+                        if (!warnPoint) {
+                            warnPoint = 0;
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                    await model.findOneAndUpdate(
+                        { _id: message.author.id },
+                        {
+                            $set: {
+                                warn: warnPoint + 1
+                            },
+                        },
+                        { upsert: true, new: true }
+                    );
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            spamCT.set(userId, data);
+
+            let blackWordsConfig = {};
+            try {
+                const serverConfig = await serverModel.findOne({ _id: "1265637138247057428" });
+                blackWordsConfig = JSON.parse(serverConfig.black_words);
+                if (!blackWordsConfig) {
+                    blackWordsConfig = null;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+            const content = message.content.toLowerCase().normalize("NFKC");
 
             const compact = content.replace(/\s+/g, "");
 
-            const exactMatch = filter.ExactMatch.some(w =>
+            const exactMatch = blackWordsConfig.ExactMatch.some(w =>
                 content === w
             );
 
-            const partialMatch = filter.PartialMatch.some(w =>
+            const partialMatch = blackWordsConfig.PartialMatch.some(w =>
                 content.includes(w) || compact.includes(w.replace(/\s+/g, ""))
             );
 
@@ -228,11 +242,41 @@ module.exports = {
                     console.error(error);
                 }
 
-                message.channel.send({
-                    content: `${message.author} NGワードが検出されました`
-                });
+                client.channels.cache.get("1380894393611059241").send({ content: `${message.author.tag} の https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} での発言からNGワード(${message.cleanContent})が検出されました。` });
+                
+                try {
+                    let warnPoint = 0;
+                    try {
+                        const msgPoint = await model.findOne({ _id: message.author.id });
+                        warnPoint = msgPoint.warn;
+                        if (!warnPoint) {
+                            warnPoint = 0;
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                    await model.findOneAndUpdate(
+                        { _id: message.author.id },
+                        {
+                            $set: {
+                                warn: warnPoint + 1
+                            },
+                        },
+                        { upsert: true, new: true }
+                    );
+                } catch (error) {
+                    console.error(error);
+                }
             }
+
+            // ----- セキュリティ処理 終了 -----
         }
+
+        /*if (message.content.match(/🖕/)) {
+            if (message.author.id === "962670040795201557" || message.author.id === "1225452488237514763") return;
+            message.delete();
+            client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
+        }*/
 
         const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
         const matches = MESSAGE_URL_REGEX.exec(message.content);
