@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
-const { model } = require('../db/db');
+const { model, serverModel } = require('../db/db');
 const { basic_embed } = require("../utils/embeds.js");
 
 module.exports = {
@@ -36,6 +36,11 @@ module.exports = {
                         { name: "TOP5", value: "5" }
                     )
                 )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('commands')
+                .setDescription('コマンドの使用率を表示します')
         ),
 
     async execute(interaction) {
@@ -137,6 +142,18 @@ module.exports = {
 
             await interaction.reply({ embeds: [basic_embed(title, description)] });
 
+        } else if (subcommand === "commands") {
+            let useCmd = {};
+            const serverConfig = await serverModel.findOne({ _id: "1265637138247057428" });
+            useCmd = serverConfig.commands_use;
+            const total = useCmd.total;
+
+            const rankCmd = Object.entries(useCmd).filter(([name]) => name !== "total").sort((a, b) => b[1] - a[1]);
+            const description = `**Total**: ${total}回\n` + rankCmd.map(([name, count], index) => `${index + 1}. **${name}**: ${count || 0}回 (${((count || 0) / total * 100).toFixed(1)}%)`).join('\n');
+
+            const title = `コマンド使用率ランキング`;
+
+            await interaction.reply({ embeds: [basic_embed(title, description)] });
         }
     }
 }

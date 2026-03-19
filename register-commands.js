@@ -67,6 +67,11 @@ const lb = new SlashCommandBuilder()
 					{ name: "TOP5", value: "5" }
 				)
 			)
+	)
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('commands')
+			.setDescription('コマンドの使用率を表示します')
 	);
 
 const profile = new SlashCommandBuilder()
