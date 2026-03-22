@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const { model } = require('../db/db');
 const { fields_embed } = require('../utils/embeds.js');
+const { ms2time } = require("../utils/ms2time.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,9 +37,12 @@ module.exports = {
                 const msgData = await model.findOne({ _id: user.id });
 
                 const fields = [
-                    { name: "所持ポイント", value: `${msgData.point}` },
-                    { name: "総ポイント", value: `${msgData.all_point}` },
-                    { name: "総送信メッセージ数", value: `${msgData.msgcount}` }
+                    { name: "MSGポイント", value: `${msgData.point}` },
+                    { name: "MSG総ポイント", value: `${msgData.all_point}` },
+                    { name: "総送信メッセージ数", value: `${msgData.msgcount}` },
+                    { name: "VCポイント", value: `${msgData.vc_point}` },
+                    { name: "VC総ポイント", value: `${msgData.vc_all_point}` },
+                    { name: "VC総滞在時間", value: `${ms2time(msgData.vc_time)}` }
                 ];
 
                 await interaction.reply({
