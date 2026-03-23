@@ -51,10 +51,13 @@ const lb = new SlashCommandBuilder()
 				.setDescription("ソートする内容を選択してください")
 				.setRequired(true)
 				.addChoices(
-					{ name: "Point", value: "point" },
+					{ name: "MSGPoint", value: "point" },
 					{ name: "MSGcount", value: "msgcount" },
-					{ name: "AllPoint", value: "all_point" },
-					{ name: "AvgMSGlength", value: "averagemsg" }
+					{ name: "AllMSGPoint", value: "all_point" },
+					{ name: "AvgMSGlength", value: "averagemsg" },
+					{ name: "VCPoint", value: "vc_point" },
+					{ name: "AllVCPoint", value: "vc_all_point" },
+					{ name: "VCStayTime", value: "vc_time" }
 				)
 			)
 			.addStringOption(option => option

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { model, serverModel } = require('../db/db');
 const { basic_embed } = require("../utils/embeds.js");
+const { ms2time } = require("../utils/ms2time.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,10 +21,13 @@ module.exports = {
                     .setDescription("ソートする内容を選択してください")
                     .setRequired(true)
                     .addChoices(
-                        { name: "Point", value: "point" },
+                        { name: "MSGPoint", value: "point" },
                         { name: "MSGcount", value: "msgcount" },
-                        { name: "AllPoint", value: "all_point" },
-                        { name: "AvgMSGlength", value: "averagemsg" }
+                        { name: "AllMSGPoint", value: "all_point" },
+                        { name: "AvgMSGlength", value: "averagemsg" },
+                        { name: "VCPoint", value: "vc_point" },
+                        { name: "AllVCPoint", value: "vc_all_point" },
+                        { name: "VCStayTime", value: "vc_time" }
                     )
                 )
                 .addStringOption(option => option
@@ -81,6 +85,21 @@ module.exports = {
                             { $sort: { point: -1 } },
                             { $limit: 1 },
                             { $project: { name: 1, point: 1, _id: 0 } }
+                        ],
+                        top_vcpoint: [
+                            { $sort: { vc_point: -1 } },
+                            { $limit: 1 },
+                            { $project: { name: 1, vc_point: 1, _id: 0 } }
+                        ],
+                        top_vc_all_point: [
+                            { $sort: { vc_all_point: -1 } },
+                            { $limit: 1 },
+                            { $project: { name: 1, vc_all_point: 1, _id: 0 } }
+                        ],
+                        top_vc_time: [
+                            { $sort: { vc_time: -1 } },
+                            { $limit: 1 },
+                            { $project: { name: 1, vc_time: 1, _id: 0 } }
                         ]
                     }
                 }
@@ -90,10 +109,13 @@ module.exports = {
                 return interaction.reply({ content: 'データがありません。', flags: [MessageFlags.Ephemeral] });
             }
 
-            const description = `**AllPoint TOP:** ${result.top_allpoint[0]?.name || 'なし'}: **${result.top_allpoint[0]?.all_point || 0}**\n` +
-                `**Point TOP:** ${result.top_point[0]?.name || 'なし'}: **${result.top_point[0]?.point || 0}**\n` +
+            const description = `**AllMSGPoint TOP:** ${result.top_allpoint[0]?.name || 'なし'}: **${result.top_allpoint[0]?.all_point || 0}**\n` +
+                `**MSGPoint TOP:** ${result.top_point[0]?.name || 'なし'}: **${result.top_point[0]?.point || 0}**\n` +
                 `**MSG数 TOP:** ${result.top_msgcount[0]?.name || 'なし'}: **${result.top_msgcount[0]?.msgcount || 0}**\n` +
-                `**MSG平均長さ TOP:** ${result.top_avg[0]?.name || 'なし'}: **${result.top_avg[0]?.avgLength?.toFixed(2) || 0}**`;
+                `**MSG平均長さ TOP:** ${result.top_avg[0]?.name || 'なし'}: **${result.top_avg[0]?.avgLength?.toFixed(2) || 0}**\n` +
+                `**AllVCPoint TOP:** ${result.top_vc_all_point[0]?.name || 'なし'}: **${result.top_vc_all_point[0]?.vc_all_point || 0}**\n` +
+                `**VCPoint TOP:** ${result.top_vcpoint[0]?.name || 'なし'}: **${result.top_vcpoint[0]?.vc_point || 0}**\n` +
+                `**VC滞在時間 TOP:** ${result.top_vc_time[0]?.name || 'なし'}: **${ms2time(result.top_vc_time[0]?.vc_time) || 0}**`;
 
             await interaction.reply({ embeds: [basic_embed("各部門TOP", description)] });
 
@@ -131,14 +153,18 @@ module.exports = {
 
             let description = '';
             topUsers.forEach((user, i) => {
-                const value =
-                    sort === 'averagemsg'
-                        ? user.avgLength.toFixed(2)
-                        : user[sort]?.toLocaleString?.() ?? 0;
+                let value;
+                if (sort === "averagemsg") {
+                    value = user.avgLength?.toFixed(2) || 0;
+                } else if (sort === "vc_time") {
+                    value = ms2time(user[sort] ?? 0);
+                } else {
+                    value = user[sort]?.toLocaleString?.() ?? 0;
+                }
                 description += `**${i + 1}.** ${user.name}: **${value}**\n`;
             });
 
-            const title = `${sort === 'point' ? 'Point' : sort === 'all_point' ? 'AllPoint' : sort === 'msgcount' ? 'MSG数' : sort === 'averagemsg' ? 'MSG平均長さ' : "Undefined"}ランキング`;
+            const title = `${sort === 'point' ? 'MSGPoint' : sort === 'all_point' ? 'AllMSGPoint' : sort === 'msgcount' ? 'MSG数' : sort === 'averagemsg' ? 'MSG平均長さ' : sort === 'vc_point' ? 'VCPoint' : sort === 'vc_all_point' ? 'AllVCPoint' : sort === 'vc_time' ? 'VC滞在時間' : "Undefined"}ランキング`;
 
             await interaction.reply({ embeds: [basic_embed(title, description)] });
 
