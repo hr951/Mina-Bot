@@ -3,7 +3,7 @@ const { model } = require("../db/db");
 
 const joinTimes = new Map();
 const muteTimes = new Map();
-let mutingTime = 0;
+const mutingTimes = new Map();
 
 module.exports = {
     name: 'voiceStateUpdate',
@@ -38,7 +38,7 @@ module.exports = {
             if (oldState.selfMute && !newState.selfMute) {
                 const muteTime = muteTimes.get(member.id);
                 if (muteTimes) {
-                    mutingTime = Date.now() - muteTime + mutingTime;
+                    mutingTimes.set(member.id, Date.now() - muteTime + (mutingTimes.get(member.id) || 0));
                     muteTimes.delete(member.id);
                 }
             }
@@ -51,11 +51,21 @@ module.exports = {
 
         if (!oldState.channelId && newState.channelId) {
             joinTimes.set(member.id, Date.now());
+            mutingTimes.set(member.id, 0);
         } else if (oldState.channelId && !newState.channelId) {
             const joinTime = joinTimes.get(member.id);
             if (joinTime) {
                 const stayTime = Date.now() - joinTime;
+
+                let mutingTime = mutingTimes.get(member.id) || 0;
+                const muteTime = muteTimes.get(member.id);
+                if (muteTime) {
+                    mutingTime += (Date.now() - muteTime);
+                }
+
                 joinTimes.delete(member.id);
+                muteTimes.delete(member.id);
+                mutingTimes.delete(member.id);
 
                 const tempTime = stayTime - mutingTime;
                 const tempPoint = Math.floor((tempTime / 300_000) + (mutingTime / 900_000));
