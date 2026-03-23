@@ -31,7 +31,7 @@ module.exports = {
 
         if (oldState.selfMute !== newState.selfMute) {
             const status = newState.selfMute ? "ミュート中" : "解除";
-            console.log(`${newState.member.tag} がマイクを ${status} にしました`);
+            console.log(`${newState.member.displayName} がマイクを ${status} にしました`);
             if (!oldState.selfMute && newState.selfMute) {
                 muteTimes.set(member.id, Date.now());
             }
@@ -46,7 +46,7 @@ module.exports = {
 
         if (oldState.selfDeaf !== newState.selfDeaf) {
             const status = newState.selfDeaf ? "OFF" : "ON";
-            console.log(`${newState.member.tag} がスピーカーを ${status} にしました`);
+            console.log(`${newState.member.displayName} がスピーカーを ${status} にしました`);
         }
 
         if (!oldState.channelId && newState.channelId) {
