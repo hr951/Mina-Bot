@@ -69,37 +69,37 @@ module.exports = {
                         top_avg: [
                             { $sort: { avgLength: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, avgLength: 1, _id: 0 } }
+                            { $project: { display_name: 1, avgLength: 1, _id: 0 } }
                         ],
                         top_msgcount: [
                             { $sort: { msgcount: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, msgcount: 1, _id: 0 } }
+                            { $project: { display_name: 1, msgcount: 1, _id: 0 } }
                         ],
                         top_allpoint: [
                             { $sort: { all_point: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, all_point: 1, _id: 0 } }
+                            { $project: { display_name: 1, all_point: 1, _id: 0 } }
                         ],
                         top_point: [
                             { $sort: { point: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, point: 1, _id: 0 } }
+                            { $project: { display_name: 1, point: 1, _id: 0 } }
                         ],
                         top_vcpoint: [
                             { $sort: { vc_point: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, vc_point: 1, _id: 0 } }
+                            { $project: { display_name: 1, vc_point: 1, _id: 0 } }
                         ],
                         top_vc_all_point: [
                             { $sort: { vc_all_point: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, vc_all_point: 1, _id: 0 } }
+                            { $project: { display_name: 1, vc_all_point: 1, _id: 0 } }
                         ],
                         top_vc_time: [
                             { $sort: { vc_time: -1 } },
                             { $limit: 1 },
-                            { $project: { name: 1, vc_time: 1, _id: 0 } }
+                            { $project: { display_name: 1, vc_time: 1, _id: 0 } }
                         ]
                     }
                 }
@@ -109,13 +109,13 @@ module.exports = {
                 return interaction.reply({ content: 'データがありません。', flags: [MessageFlags.Ephemeral] });
             }
 
-            const description = `**AllMSGPoint TOP:** ${result.top_allpoint[0]?.name || 'なし'}: **${result.top_allpoint[0]?.all_point || 0}**\n` +
-                `**MSGPoint TOP:** ${result.top_point[0]?.name || 'なし'}: **${result.top_point[0]?.point || 0}**\n` +
-                `**MSG数 TOP:** ${result.top_msgcount[0]?.name || 'なし'}: **${result.top_msgcount[0]?.msgcount || 0}**\n` +
-                `**MSG平均長さ TOP:** ${result.top_avg[0]?.name || 'なし'}: **${result.top_avg[0]?.avgLength?.toFixed(2) || 0}**\n` +
-                `**AllVCPoint TOP:** ${result.top_vc_all_point[0]?.name || 'なし'}: **${result.top_vc_all_point[0]?.vc_all_point || 0}**\n` +
-                `**VCPoint TOP:** ${result.top_vcpoint[0]?.name || 'なし'}: **${result.top_vcpoint[0]?.vc_point || 0}**\n` +
-                `**VC滞在時間 TOP:** ${result.top_vc_time[0]?.name || 'なし'}: **${ms2time(result.top_vc_time[0]?.vc_time) || 0}**`;
+            const description = `**AllMSGPoint TOP:** ${result.top_allpoint[0]?.display_name || '不明'}: **${result.top_allpoint[0]?.all_point || 0}**\n` +
+                `**MSGPoint TOP:** ${result.top_point[0]?.display_name || '不明'}: **${result.top_point[0]?.point || 0}**\n` +
+                `**MSG数 TOP:** ${result.top_msgcount[0]?.display_name || '不明'}: **${result.top_msgcount[0]?.msgcount || 0}**\n` +
+                `**MSG平均長さ TOP:** ${result.top_avg[0]?.display_name || '不明'}: **${result.top_avg[0]?.avgLength?.toFixed(2) || 0}**\n` +
+                `**AllVCPoint TOP:** ${result.top_vc_all_point[0]?.display_name || '不明'}: **${result.top_vc_all_point[0]?.vc_all_point || 0}**\n` +
+                `**VCPoint TOP:** ${result.top_vcpoint[0]?.display_name || '不明'}: **${result.top_vcpoint[0]?.vc_point || 0}**\n` +
+                `**VC滞在時間 TOP:** ${result.top_vc_time[0]?.display_name || '不明'}: **${ms2time(result.top_vc_time[0]?.vc_time) || 0}**`;
 
             await interaction.reply({ embeds: [basic_embed("各部門TOP", description)] });
 
@@ -139,10 +139,10 @@ module.exports = {
                     },
                     { $sort: { avgLength: -1 } },
                     { $limit: Number(number) },
-                    { $project: { name: 1, avgLength: 1 } }
+                    { $project: { display_name: 1, avgLength: 1 } }
                 ]);
             } else {
-                topUsers = await model.find({}, { name: 1, [sort]: 1 })
+                topUsers = await model.find({}, { display_name: 1, [sort]: 1 })
                     .sort({ [sort]: -1 })
                     .limit(number);
             }
@@ -161,7 +161,7 @@ module.exports = {
                 } else {
                     value = user[sort]?.toLocaleString?.() ?? 0;
                 }
-                description += `**${i + 1}.** ${user.name}: **${value}**\n`;
+                description += `**${i + 1}.** ${user.display_name || "不明"}: **${value}**\n`;
             });
 
             const title = `${sort === 'point' ? 'MSGPoint' : sort === 'all_point' ? 'AllMSGPoint' : sort === 'msgcount' ? 'MSG数' : sort === 'averagemsg' ? 'MSG平均長さ' : sort === 'vc_point' ? 'VCPoint' : sort === 'vc_all_point' ? 'AllVCPoint' : sort === 'vc_time' ? 'VC滞在時間' : "Undefined"}ランキング`;

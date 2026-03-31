@@ -95,6 +95,7 @@ module.exports = {
                         { _id: member.id },
                         {
                             $set: {
+                                display_name: member.displayName,
                                 vc_point: vcPoint + tempPoint,
                                 vc_all_point: vcAllPoint + tempPoint,
                                 vc_time: vcTime + stayTime

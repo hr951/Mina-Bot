@@ -148,6 +148,7 @@ module.exports = {
                     {
                         $set: {
                             name: message.author.username,
+                            display_name: message.member.displayName,
                             content: message.cleanContent,
                             msgcount: msgs + 1,
                             msglength: msg_length + message.content.length,
@@ -183,7 +184,7 @@ module.exports = {
             data.lastTimestamp = spamNow;
 
             if (data.spamCount > 3) {
-                client.channels.cache.get("1380894393611059241").send({ content: `${message.author.tag} が https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} (**${message.cleanContent}**) を起点にスパムの疑いがあります。\n${message.author.tag} にWarningPointを加算しました。\n取り消しは以下のボタンから行ってください。` });
+                client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} が https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} (**${message.cleanContent}**) を起点にスパムの疑いがあります。\n${message.author.tag} にWarningPointを加算しました。\n取り消しは以下のボタンから行ってください。` });
 
                 try {
                     let warnPoint = 0;
@@ -242,8 +243,8 @@ module.exports = {
                     console.error(error);
                 }
 
-                client.channels.cache.get("1380894393611059241").send({ content: `${message.author.tag} の https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} での発言からNGワード(${message.cleanContent})が検出されました。` });
-                
+                client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} の https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} での発言からNGワード(${message.cleanContent})が検出されました。` });
+
                 try {
                     let warnPoint = 0;
                     try {

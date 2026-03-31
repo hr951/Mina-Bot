@@ -98,8 +98,6 @@ module.exports = {
         const sns2 = interaction.options.getString("sns2");
         const sns3 = interaction.options.getString("sns3");
 
-        const user = interaction.user.globalName;
-
         const ig = await loadImage('./images/instagram_icon.png');
         const discord = await loadImage('./images/discord_icon.png');
         const tt = await loadImage('./images/tiktok_icon.png');
@@ -185,9 +183,9 @@ module.exports = {
             context.textBaseline = 'middle'
             context.lineWidth = 15
             context.strokeStyle = '#000000';//色は黒
-            context.strokeText(`${user}`, 360, 180);
+            context.strokeText(interaction.member.displayName, 360, 180);
             context.fillStyle = '#ffffff';//色は白
-            context.fillText(`${user}`, 360, 180);
+            context.fillText(interaction.member.displayName, 360, 180);
 
             context.font = '112px "mojang"';
             context.strokeStyle = '#000000';//色は黒

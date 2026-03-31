@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const msgSchema = new mongoose.Schema({
     _id: { type: String }, // ユーザーID
     name: { type: String }, // ユーザーネーム
+    display_name: { type: String }, // ディスプレイネーム
     content: { type: String }, // MSG内容
     msgcount: { type: Number }, // MSG総数
     point: { type: Number }, // MSGポイント

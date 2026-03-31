@@ -46,10 +46,10 @@ module.exports = {
                 ];
 
                 await interaction.reply({
-                    embeds: [fields_embed(user.nickname || user.globalName + "のポイント", null, fields)]
+                    embeds: [fields_embed(interaction.member.displayName + "のポイント", null, fields)]
                 });
             } catch (error) {
-                interaction.reply({ content: "Cannot access the DataBase", flags: [MessageFlags.Ephemeral] });
+                interaction.reply({ content: "データベースにアクセスできませんでした", flags: [MessageFlags.Ephemeral] });
                 console.error(error);
             }
         } else if (subcommand === "use") {
