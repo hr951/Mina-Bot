@@ -17,6 +17,6 @@ package-lock.json
 *.pem
 
 # 検証用ファイル
-test.js
+test_*
 *.bat
 dev_data/
