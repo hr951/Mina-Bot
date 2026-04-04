@@ -9,5 +9,24 @@
             "4": "https://youtube.com/watch?v=aHNWL7MBXoc",
             "5": "https://youtube.com/watch?v=hK82hfN_ymQ"
         }
+    },
+    "batubyou": {
+        "name": "抜錨",
+        "description": "抜錨",
+        "list": {
+            "1": "https://www.youtube.com/watch?v=QksEOssqe8o",
+            "2": "https://www.youtube.com/watch?v=k1d3E1zeVzI"
+        }
+    },
+    "hoyoverse": {
+        "name": "Hoyoverse",
+        "description": "原神・ZZZの曲",
+        "list": {
+            "1": "https://www.youtube.com/watch?v=gRT0Vb961Pg",
+            "2": "https://www.youtube.com/watch?v=wbjrsP5vke4",
+            "3": "https://www.youtube.com/watch?v=wJA2MBrFNow",
+            "4": "https://www.youtube.com/watch?v=bviZmH3w5ew",
+            "5": "https://www.youtube.com/watch?v=8-che_oqcuw"
+        }
     }
 }
