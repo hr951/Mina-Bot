@@ -185,7 +185,16 @@ const playlist = new SlashCommandBuilder()
 	.setName("playlist")
 	.setDescription("ユーザープレイリストを編集・設定します");
 
-const commands = [ping, top, point, lb, profile, search, nowplaying, queue, skip, loop, stop, info, play, playlist];
+const youtube = new SlashCommandBuilder()
+	.setName('youtube')
+	.setDescription('YouTubeの情報を取得するコマンドです')
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('stats')
+			.setDescription('情報選択画面を表示します')
+	);
+
+const commands = [ping, top, point, lb, profile, search, nowplaying, queue, skip, loop, stop, info, play, playlist, youtube];
 
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()

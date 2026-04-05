@@ -50,7 +50,7 @@ const serverSchema = new mongoose.Schema({
         stop: { type: Number },
         top: { type: Number },
         update_server: { type: Number }
-    } // コマンド使用率
+    } // コマンド使用数
 });
 
 const model = mongoose.model('Messages', msgSchema);

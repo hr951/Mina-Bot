@@ -107,6 +107,17 @@ function fields_embed(title, description, fields) {
     return embed;
 };
 
+function image_url_embed(title, url, image) {
+    const embed = new EmbedBuilder()
+        .setTitle(title)
+        .setURL(url)
+        .setColor(color)
+        .setImage(image)
+        .setTimestamp();
+
+    return embed;
+};
+
 function np_embed(title, url, field1_name, field1_value, field2_name, field2_value, image, footer) {
     const embed = new EmbedBuilder()
         .setTitle(title)
@@ -148,6 +159,7 @@ module.exports = {
     embed_check_offline,
     basic_embed,
     fields_embed,
+    image_url_embed,
     np_embed,
     queue_embed,
     top_embed
