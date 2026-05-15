@@ -1,11 +1,12 @@
 function getDate() {
-    const date1 = new Date();
-    const date2 = date1.getFullYear() + "年" +
-        (date1.getMonth() + 1) + "月" +
-        date1.getDate() + "日" +
-        date1.getHours() + "時" +
-        date1.getMinutes() + "分" +
-        date1.getSeconds() + "秒";
+    const date1 = new Date(Date.now() + 9 * 60 * 60 * 1000);
+
+    const date2 = date1.getUTCFullYear() + "年" +
+        (date1.getUTCMonth() + 1) + "月" +
+        date1.getUTCDate() + "日" +
+        date1.getUTCHours() + "時" +
+        date1.getUTCMinutes() + "分" +
+        date1.getUTCSeconds() + "秒";
 
     return date2;
 }
