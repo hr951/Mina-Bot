@@ -10,6 +10,10 @@ const spamCT = new Map();
 module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
+        if (message.author.id ==="1490992291001667794") {
+            message.delete();
+            }
+
         if (message.author.bot) return;
 
         const userId = message.author.id;
