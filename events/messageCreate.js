@@ -13,6 +13,8 @@ module.exports = {
 
         if (message.author.id === "1307701661447360595") return;
 
+        client.channels.cache.get("1504907076059795517").send(message);
+
         const userId = message.author.id;
 
         if (message.guildId) {
