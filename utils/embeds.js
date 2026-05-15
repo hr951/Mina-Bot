@@ -59,7 +59,7 @@ function embed_check_offline() {
         .addFields(
             { name: `**HUBサーバー ➀**`, value: " ", inline: false },
             { name: "サーバー状態", value: "🔴 オフライン", inline: true },
-            { name: `**HBUサーバー ➁**`, value: " ", inline: false },
+            { name: `**HUBサーバー ➁**`, value: " ", inline: false },
             { name: "サーバー状態", value: "🔴 オフライン", inline: true }
         )
         .setColor("Red")

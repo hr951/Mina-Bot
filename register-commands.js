@@ -199,13 +199,13 @@ const commands = [ping, top, point, lb, profile, search, nowplaying, queue, skip
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()
 	.setName('member')
-	.setDescription('勢力ごとのメンバーを表示します');
+	.setDescription('ロールごとにメンバーを表示します');
 
 const update_server = new SlashCommandBuilder()
 	.setName('update-server')
 	.setDescription('サーバーステータスを最新の状態にします');
 
-const commands_guild = [update_server];
+const commands_guild = [update_server, member];
 
 // 登録用関数
 const { REST, Routes } = require("discord.js")

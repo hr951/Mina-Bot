@@ -31,9 +31,17 @@ module.exports = {
             .setValue(blackWords?.PartialMatch?.join("\n") || " ")
             .setMaxLength(4000)
             .setRequired(true);
+        const TextInput_3 = new TextInputBuilder()
+            .setLabel("送信を制限するユーザーのIDを記述してください")
+            .setCustomId("id")
+            .setStyle("Paragraph")
+            .setValue(blackWords?.Id?.join("\n") || " ")
+            .setMaxLength(4000)
+            .setRequired(true);
         const ActionRow = new ActionRowBuilder().setComponents(TextInput_1);
         const ActionRow_2 = new ActionRowBuilder().setComponents(TextInput_2);
-        modal.setComponents(ActionRow, ActionRow_2);
+        const ActionRow_3 = new ActionRowBuilder().setComponents(TextInput_3);
+        modal.setComponents(ActionRow, ActionRow_2, ActionRow_3);
         return interaction.showModal(modal);
 
     }

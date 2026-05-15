@@ -5,13 +5,16 @@ module.exports = {
     async execute(interaction) {
         const exact = interaction.fields.getTextInputValue("exact");
         const partial = interaction.fields.getTextInputValue("partial");
+        const id = interaction.fields.getTextInputValue("id");
 
         const arrayExact = exact.split('\n');
         const arrayPartial = partial.split('\n');
+        const arrayId = id.split('\n');
 
         const blackWords = JSON.stringify({
             "ExactMatch": arrayExact,
-            "PartialMatch": arrayPartial
+            "PartialMatch": arrayPartial,
+            "Id": arrayId
         });
 
         try {

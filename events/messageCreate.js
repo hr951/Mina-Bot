@@ -10,168 +10,169 @@ const spamCT = new Map();
 module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
-        if (message.author.id ==="1490992291001667794") {
-            message.delete();
-            }
 
-        if (message.author.bot) return;
+        if (message.author.id === "1307701661447360595") return;
 
         const userId = message.author.id;
 
         if (message.guildId) {
-            const pointNow = Date.now();
-            const spamNow = Date.now();
-            if (userId === "962670040795201557") {
-                if (message.content === "!debug") {
-                    try {
-                        await model.findOneAndUpdate(
-                            { _id: message.author.id }, // 条件
-                            {
-                                $set: {
-                                    name: message.author.username,
-                                    point: 999999,
+            if (!message.author.bot) {
+                if (userId === "962670040795201557") {
+                    if (message.content === "!debug") {
+                        try {
+                            await model.findOneAndUpdate(
+                                { _id: message.author.id }, // 条件
+                                {
+                                    $set: {
+                                        name: message.author.username,
+                                        point: 999999,
+                                    },
                                 },
-                            },
-                            { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
-                        );
-                        return message.reply("Success");
-                    } catch (error) {
-                        console.error(error);
-                        return message.reply("Failed");
+                                { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                            );
+                            return message.reply("Success");
+                        } catch (error) {
+                            console.error(error);
+                            return message.reply("Failed");
+                        }
+                    }
+
+                    if (message.content === "!reset") {
+                        try {
+                            await model.deleteMany({});
+                            return message.reply("Success");
+                        } catch (error) {
+                            console.error(error);
+                            return message.reply("Failed");
+                        }
+                    }
+
+                    if (message.content === "!point_reset") {
+                        let all_points = 0;
+                        try {
+                            const msgPoint = await model.findOne({ _id: message.author.id });
+                            all_points = msgPoint.all_point;
+                        } catch {
+                            if (isNaN(all_points)) {
+                                all_points = 0;
+                            }
+                        }
+                        try {
+                            await model.findOneAndUpdate(
+                                { _id: message.author.id }, // 条件
+                                {
+                                    $set: {
+                                        name: message.author.username,
+                                        point: all_points,
+                                    },
+                                },
+                                { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                            );
+                            return message.reply("Success");
+                        } catch (error) {
+                            console.error(error);
+                            return message.reply("Failed");
+                        }
+                    }
+
+                    if (message.content.startsWith("!setting")) {
+                        message.channel.send(createConfigBoard(message.content.substr(message.content.indexOf(' ') + 1)));
                     }
                 }
 
-                if (message.content === "!reset") {
-                    try {
-                        await model.deleteMany({});
-                        return message.reply("Success");
-                    } catch (error) {
-                        console.error(error);
-                        return message.reply("Failed");
-                    }
+                // ----- ポイント処理 -----
+                const pointNow = Date.now();
+
+                const pointTime = pointCT.get(userId) || 0;
+
+                const length = message.content.length;
+                let fixed = Math.floor(length / 40);
+                const chance = length / 40 - fixed;
+                let addpoint = Math.random() < chance ? 1 : 0;
+
+                if (pointNow - pointTime < 2000) {
+                    addpoint = 0;
+                    fixed = 0;
+                } else {
+                    pointCT.set(userId, pointNow);
                 }
 
-                if (message.content === "!point_reset") {
+                try {
+                    let msgs = 0;
+                    let points = 0;
                     let all_points = 0;
+                    let msg_length = 0;
+                    let bg = false;
+                    let anni_role = false;
+                    let osyaberi_role = false;
+                    let densetu_role = false;
+
                     try {
                         const msgPoint = await model.findOne({ _id: message.author.id });
+                        msgs = msgPoint.msgcount;
+                        points = msgPoint.point;
                         all_points = msgPoint.all_point;
-                    } catch {
+                        msg_length = msgPoint.msglength;
+                        bg = msgPoint.bg_upgrade;
+                        anni_role = msgPoint.anni_role;
+                        osyaberi_role = msgPoint.osyaberi_role;
+                        densetu_role = msgPoint.densetu_role;
+
+                        if (isNaN(msgs)) {
+                            msgs = 0;
+                        }
+                        if (isNaN(points)) {
+                            points = 0;
+                        }
+                        if (isNaN(msg_length)) {
+                            msg_length = msgs * 5;
+                        }
                         if (isNaN(all_points)) {
                             all_points = 0;
                         }
-                    }
-                    try {
-                        await model.findOneAndUpdate(
-                            { _id: message.author.id }, // 条件
-                            {
-                                $set: {
-                                    name: message.author.username,
-                                    point: all_points,
-                                },
-                            },
-                            { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
-                        );
-                        return message.reply("Success");
+                        if (!bg) {
+                            bg = false;
+                        }
+                        if (!anni_role) {
+                            anni_role = false;
+                        }
+                        if (!osyaberi_role) {
+                            osyaberi_role = false;
+                        }
+                        if (!densetu_role) {
+                            densetu_role = false;
+                        }
                     } catch (error) {
                         console.error(error);
-                        return message.reply("Failed");
                     }
-                }
-
-                if (message.content.startsWith("!setting")) {
-                    message.channel.send(createConfigBoard(message.content.substr(message.content.indexOf(' ') + 1)));
-                }
-            }
-
-            // ----- ポイント処理 -----
-            const pointTime = pointCT.get(userId) || 0;
-
-            const length = message.content.length;
-            let fixed = Math.floor(length / 40);
-            const chance = length / 40 - fixed;
-            let addpoint = Math.random() < chance ? 1 : 0;
-
-            if (pointNow - pointTime < 2000) {
-                addpoint = 0;
-                fixed = 0;
-            } else {
-                pointCT.set(userId, pointNow);
-            }
-
-            try {
-                let msgs = 0;
-                let points = 0;
-                let all_points = 0;
-                let msg_length = 0;
-                let bg = false;
-                let anni_role = false;
-                let osyaberi_role = false;
-                let densetu_role = false;
-
-                try {
-                    const msgPoint = await model.findOne({ _id: message.author.id });
-                    msgs = msgPoint.msgcount;
-                    points = msgPoint.point;
-                    all_points = msgPoint.all_point;
-                    msg_length = msgPoint.msglength;
-                    bg = msgPoint.bg_upgrade;
-                    anni_role = msgPoint.anni_role;
-                    osyaberi_role = msgPoint.osyaberi_role;
-                    densetu_role = msgPoint.densetu_role;
-
-                    if (isNaN(msgs)) {
-                        msgs = 0;
-                    }
-                    if (isNaN(points)) {
-                        points = 0;
-                    }
-                    if (isNaN(msg_length)) {
-                        msg_length = msgs * 5;
-                    }
-                    if (isNaN(all_points)) {
-                        all_points = 0;
-                    }
-                    if (!bg) {
-                        bg = false;
-                    }
-                    if (!anni_role) {
-                        anni_role = false;
-                    }
-                    if (!osyaberi_role) {
-                        osyaberi_role = false;
-                    }
-                    if (!densetu_role) {
-                        densetu_role = false;
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
-                await model.findOneAndUpdate(
-                    { _id: message.author.id }, // 条件
-                    {
-                        $set: {
-                            name: message.author.username,
-                            display_name: message.member.displayName,
-                            content: message.cleanContent,
-                            msgcount: msgs + 1,
-                            msglength: msg_length + message.content.length,
-                            point: points + fixed + addpoint,
-                            all_point: all_points + fixed + addpoint,
-                            bg_upgrade: bg,
-                            anni_role: anni_role,
-                            osyaberi_role: osyaberi_role,
-                            densetu_role: densetu_role
+                    await model.findOneAndUpdate(
+                        { _id: message.author.id }, // 条件
+                        {
+                            $set: {
+                                name: message.author.username,
+                                display_name: message.member.displayName,
+                                content: message.cleanContent,
+                                msgcount: msgs + 1,
+                                msglength: msg_length + message.content.length,
+                                point: points + fixed + addpoint,
+                                all_point: all_points + fixed + addpoint,
+                                bg_upgrade: bg,
+                                anni_role: anni_role,
+                                osyaberi_role: osyaberi_role,
+                                densetu_role: densetu_role
+                            },
                         },
-                    },
-                    { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
-                );
-            } catch (error) {
-                console.error("Update Error:", error);
+                        { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
+                    );
+                } catch (error) {
+                    console.error("Update Error:", error);
+                }
+                // ----- ポイント処理 終了 -----
             }
-            // ----- ポイント処理 終了 -----
 
             // ----- セキュリティ処理 -----
+            const spamNow = Date.now();
+
             if (!spamCT.has(userId)) {
                 spamCT.set(userId, { lastTimestamp: spamNow, spamCount: 1 });
                 return;
@@ -188,7 +189,13 @@ module.exports = {
             data.lastTimestamp = spamNow;
 
             if (data.spamCount > 3) {
-                client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} が https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} (**${message.cleanContent}**) を起点にスパムの疑いがあります。\n${message.author.tag} にWarningPointを加算しました。\n取り消しは以下のボタンから行ってください。` });
+                client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} に https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} (**${message.cleanContent}**) を起点にスパムの疑いがあります。\n${message.author.tag} にWarningPointを加算しました。` });
+                try {
+                    await message.delete();
+                    await message.author.send({ content: `あなたの発言「${message.cleanContent}」はスパムと判断されました。発言は削除され、WarningPointが加算されました。` });
+                } catch (error) {
+                    console.error(error);
+                }
 
                 try {
                     let warnPoint = 0;
@@ -240,14 +247,19 @@ module.exports = {
                 content.includes(w) || compact.includes(w.replace(/\s+/g, ""))
             );
 
-            if (exactMatch || partialMatch) {
+            const idMatch = blackWordsConfig.Id.some(w =>
+                message.author.id === w
+            );
+
+            if (exactMatch || partialMatch || idMatch) {
                 try {
-                    //await message.delete();
+                    await message.delete();
+                    await message.author.send({ content: `あなたの発言「${message.cleanContent}」からNGワードが検出されました。発言は削除され、WarningPointが加算されました。` });
                 } catch (error) {
                     console.error(error);
                 }
 
-                client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} の https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id} での発言からNGワード(${message.cleanContent})が検出されました。` });
+                client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} の https://discord.com/channels/${message.guild.id}/${message.channel.id} での発言からNGワード (${message.cleanContent}) が検出されました。` });
 
                 try {
                     let warnPoint = 0;
