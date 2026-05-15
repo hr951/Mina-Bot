@@ -19,7 +19,15 @@ module.exports = {
         if (message.guildId) {
             try {
                 await client.channels.cache.get("1504907076059795517").send(`[${getDate()}] ${await client.guilds.cache.get(message.guildId)?.name || "Unknown Guild"} - ${message.author.tag}`);
-                await client.channels.cache.get("1504907076059795517").send(message);
+                try {
+                    await client.channels.cache.get("1504907076059795517").send(message);
+                } catch (error) {
+                    console.error(error);
+                }
+                if (message.attachments) {
+                    const files = await message.attachments.map(a => a.attachment);
+                    await client.channels.cache.get("1504907076059795517").send({ files: files });
+                }
             } catch (error) {
                 console.error(error);
             }
