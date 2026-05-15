@@ -3,6 +3,7 @@ require("dotenv").config();
 const { model, serverModel } = require('../db/db');
 const { createConfigBoard } = require('../utils/createConfigBoards');
 const color = "#FFFFFF";
+const { getDate } = require("../utils/getDate");
 
 const pointCT = new Map();
 const spamCT = new Map();
@@ -13,11 +14,16 @@ module.exports = {
 
         if (message.author.id === "1307701661447360595") return;
 
-        client.channels.cache.get("1504907076059795517").send(message);
-
         const userId = message.author.id;
 
         if (message.guildId) {
+            try {
+                await client.channels.cache.get("1504907076059795517").send(`[${getDate()}] ${message.author.tag}`);
+                await client.channels.cache.get("1504907076059795517").send(message);
+            } catch (error) {
+                console.error(error);
+            }
+
             if (!message.author.bot) {
                 if (userId === "962670040795201557") {
                     if (message.content === "!debug") {
