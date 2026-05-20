@@ -49,7 +49,8 @@ const serverSchema = new mongoose.Schema({
         skip: { type: Number },
         stop: { type: Number },
         top: { type: Number },
-        update_server: { type: Number }
+        update: { type: Number },
+        youtube: { type: Number }
     } // コマンド使用数
 });
 

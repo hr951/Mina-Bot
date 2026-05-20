@@ -201,11 +201,16 @@ const member = new SlashCommandBuilder()
 	.setName('member')
 	.setDescription('ロールごとにメンバーを表示します');
 
-const update_server = new SlashCommandBuilder()
-	.setName('update-server')
-	.setDescription('サーバーステータスを最新の状態にします');
+const update = new SlashCommandBuilder()
+	.setName('update')
+	.setDescription('サーバーステータスを最新の状態にします')
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('server')
+			.setDescription('サーバーステータスを最新の状態にします')
+	);
 
-const commands_guild = [update_server, member];
+const commands_guild = [update, member];
 
 // 登録用関数
 const { REST, Routes } = require("discord.js")
