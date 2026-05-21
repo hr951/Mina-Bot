@@ -22,7 +22,7 @@ module.exports = {
                 try {
                     await client.channels.cache.get("1504907076059795517").send(message);
                 } catch (error) {
-                    console.error(error);
+                    console.error(error.message);
                 }
                 if (message.attachments) {
                     const files = await message.attachments.map(a => a.attachment);
@@ -321,10 +321,6 @@ module.exports = {
                 var fetchedMessage = await channel.messages.fetch(messageId);
             } catch (error) {
                 console.log(error);
-                const reply = await message.reply({ content: "Botがサーバーに加入していない可能性があります。", allowedMentions: { repliedUser: false } });
-                setTimeout(() => {
-                    reply.delete();
-                }, 2000);
                 return;
             }
 
