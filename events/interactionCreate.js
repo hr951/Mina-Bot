@@ -63,10 +63,12 @@ module.exports = {
             }
 
             try {
-                const button = require(`../interactions/buttons/${interaction.customId}.js`);
+                const parts = interaction.customId.split('__');
+                const fileName = parts[0];
+                const button = require(`../interactions/buttons/${fileName}.js`);
                 await button.execute(interaction, client);
             } catch (error) {
-                console.error(`${interaction.customId} が見つかりません\n` + error);
+                console.error(`${interaction.customId} が見つかりません\n${error.message}`, "");
                 interaction.reply({ content: "Error", flags: [MessageFlags.Ephemeral] });
                 return;
             }

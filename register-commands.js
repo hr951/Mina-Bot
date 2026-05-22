@@ -77,7 +77,7 @@ const lb = new SlashCommandBuilder()
 			.setDescription('コマンドの使用率を表示します')
 	);
 
-const profile = new SlashCommandBuilder()
+/*const profile = new SlashCommandBuilder()
 	.setName('profile')
 	.setDescription('プロフィール画像を作成します')
 	.addStringOption(option =>
@@ -131,7 +131,7 @@ const profile = new SlashCommandBuilder()
 				{ name: "Instagram", value: "ig" },
 				{ name: "TikTok", value: "tt" }
 			)
-	);
+	);*/
 
 const search = new SlashCommandBuilder()
 	.setName("search")
@@ -194,7 +194,7 @@ const youtube = new SlashCommandBuilder()
 			.setDescription('情報選択画面を表示します')
 	);
 
-const commands = [ping, top, point, lb, profile, search, nowplaying, queue, skip, loop, stop, info, play, playlist, youtube];
+const commands = [ping, top, point, lb, search, nowplaying, queue, skip, loop, stop, info, play, playlist, youtube];
 
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()

@@ -172,10 +172,18 @@ module.exports = {
             let useCmd = {};
             const serverConfig = await serverModel.findOne({ _id: "1265637138247057428" });
             useCmd = serverConfig.commands_use;
-            const total = useCmd.total;
+            const total = Number(useCmd.total || 0);
 
-            const rankCmd = Object.entries(useCmd).filter(([name]) => name !== "total").sort((a, b) => b[1] - a[1]);
-            const description = `**Total**: ${total}回\n` + rankCmd.map(([name, count], index) => `${index + 1}. **${name}**: ${count || 0}回 (${((count || 0) / total * 100).toFixed(1)}%)`).join('\n');
+            const rankCmd = Object.entries(useCmd)
+                .filter(([name]) => name !== "total")
+                .sort((a, b) => Number(b[1]) - Number(a[1]));
+
+            const description = `**Total**: ${total}回\n` +
+                rankCmd.map(([name, val], index) => {
+                    const count = Number(val) || 0;
+                    const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : "0.0";
+                    return `${index + 1}. **${name}**: ${count}回 (${percentage}%)`;
+                }).join('\n');
 
             const title = `コマンド使用率ランキング`;
 

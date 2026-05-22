@@ -12,13 +12,13 @@ module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
 
-        if (message.author.id === "1307701661447360595") return;
+        if (message.author.id === "1307701661447360595" || message.author.id === "1090176867052564480") return;
 
         const userId = message.author.id;
 
         if (message.guildId) {
             try {
-                await client.channels.cache.get("1504907076059795517").send(`[${getDate()}] ${await client.guilds.cache.get(message.guildId)?.name || "Unknown Guild"} - ${message.author.tag}`);
+                await client.channels.cache.get("1504907076059795517").send(`[${getDate()}] ${await message.channel.name}(${await client.guilds.cache.get(message.guildId)?.name || "Unknown Guild"}) ${message.author.tag}`);
                 try {
                     await client.channels.cache.get("1504907076059795517").send(message);
                 } catch (error) {
