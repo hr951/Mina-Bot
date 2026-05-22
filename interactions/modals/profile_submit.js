@@ -76,20 +76,21 @@ module.exports = {
                 context.strokeText(`Minecraft ID: ${mcid}`, 75, 427.5);
                 context.fillStyle = '#ffffff';//色は白
                 context.fillText(`Minecraft ID: ${mcid}`, 75, 427.5);
+                context.font = '112px "NotoSans"';
                 context.strokeText(`一言`, 75, 570);
                 context.fillText(`一言`, 75, 570);
 
-                context.font = 'bold 90px "NotoSans"';
+                context.font = '90px "NotoSans"';
                 context.strokeText(`所持ポイント: ${points}`, 1100, 570);
                 context.fillText(`所持ポイント: ${points}`, 1100, 570);
                 context.strokeText(`総ポイント: ${all_points}`, 1100, 712.5);
                 context.fillText(`総ポイント: ${all_points}`, 1100, 712.5);
 
-                context.font = 'bold 70px "NotoSans"';
+                context.font = '70px "NotoSans"';
                 context.strokeText(`${newStr}`, 130, 670);
                 context.fillText(`${newStr}`, 130, 670);
 
-                context.font = 'bold 45px "NotoSans"';
+                context.font = '45px "NotoSans"';
                 context.strokeText(`Copyright © 2024 @hi_ro951`, 1305, 1035);
                 context.fillText(`Copyright © 2024 @hi_ro951`, 1305, 1035);
 
