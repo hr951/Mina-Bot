@@ -11,7 +11,7 @@ module.exports = {
 
         await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
-        let url_bg = "../../images/background.png";
+        let url_bg = "https://github.com/hr951/Mina-Bot/blob/main/images/background.png?raw=true";
         let points = 0;
         let all_points = 0;
         let bg_type = 0;
@@ -39,9 +39,9 @@ module.exports = {
             const interact = interaction.channel;
 
             if (bg_type == 0) {
-                url_bg = '../../images/background.png';
+                url_bg = 'https://github.com/hr951/Mina-Bot/blob/main/images/background.png?raw=true';
             } else if (bg_type == 1) {
-                url_bg = '../../images/bg-50.png';
+                url_bg = 'https://github.com/hr951/Mina-Bot/blob/main/images/bg-50.png?raw=true';
             } else if (bg_type == 2) {
                 url_bg = bg_url;
             }
@@ -117,7 +117,7 @@ module.exports = {
                     context.drawImage(iconImage, 37, 37, 300, 300);
                 } catch {
                     try {
-                        const icon = await loadImage('../../images/err-icon.png')
+                        const icon = await loadImage('https://github.com/hr951/Mina-Bot/blob/main/images/err-icon.png?raw=true')
                         context.drawImage(icon, 30, 30, 200, 200);
                     } catch (error) {
                         console.error(error.message);
