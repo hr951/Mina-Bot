@@ -132,7 +132,7 @@ module.exports = {
                     .setEmoji("🗑️");
                 const URL_Button = new ButtonBuilder()
                     .setStyle(ButtonStyle.Link)
-                    .setURL("https://discord.com/channels/1310991516159709255/1310991516159709257/1507392775472021614")
+                    .setURL("https://discord.com/channels/1265637138247057428/1286621332083052544/1507401400265736405")
                     .setLabel("生成する");
 
                 //await interaction.editReply("画像を生成しました！");
