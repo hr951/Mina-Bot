@@ -3,6 +3,7 @@ const { registerFont, createCanvas, loadImage } = require('canvas');
 registerFont('./font/Nosutaru-dotMPlusH-10-Regular.ttf', { family: 'mojang' });
 registerFont('./font/NotoSansJP-VariableFont_wght.ttf', { family: 'NotoSans' });
 const { model } = require("../../db/db");
+const path = require("path");
 
 module.exports = {
     async execute(interaction) {
@@ -11,7 +12,7 @@ module.exports = {
 
         await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
-        let url_bg = "./../images/background.png";
+        let url_bg;
         let points = 0;
         let all_points = 0;
         let bg_type = 0;
@@ -39,9 +40,9 @@ module.exports = {
             const interact = interaction.channel;
 
             if (bg_type == 0) {
-                url_bg = './../images/background.png';
+                url_bg = path.join(__dirname, '..', '..', 'images', 'background.png');
             } else if (bg_type == 1) {
-                url_bg = './../images/bg-50.png';
+                url_bg = path.join(__dirname, '..', '..', 'images', 'bg-50.png');
             } else if (bg_type == 2) {
                 url_bg = bg_url;
             }
@@ -117,7 +118,7 @@ module.exports = {
                     context.drawImage(iconImage, 37, 37, 300, 300);
                 } catch {
                     try {
-                        const icon = await loadImage('./../images/err-icon.png')
+                        const icon = await loadImage(path.join(__dirname, '..', '..', 'images', 'err-icon.png'));
                         context.drawImage(icon, 30, 30, 200, 200);
                     } catch (error) {
                         console.error(error.message);

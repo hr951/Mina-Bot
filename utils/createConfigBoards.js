@@ -58,7 +58,7 @@ function createConfigBoard(option) {
             .addFields(
                 {
                     name: "プロフィールの生成",
-                    value: 'プロフィール画像を生成できます。\n設定できる内容は以下の通りです。\n - MCID...MinecraftのIDです。\n - コメント...一言コメントを入力できます。\n※背景画像は`/point_use`から変更できます。',
+                    value: 'プロフィール画像を生成できます。\n設定できる内容は以下の通りです。\n - MCID...MinecraftのIDです。\n - コメント...一言コメントを入力できます。\n※背景画像は`/point use`から変更できます。',
                     inline: true
                 },
             )
