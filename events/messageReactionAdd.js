@@ -5,7 +5,7 @@ module.exports = {
     async execute(reaction, user, client) {
         const react_message = reaction.message;
         react_message.guild.members.resolve(user);
-        console.log(`${reaction.message.guild} で ${user.displayName} が ${reaction.emoji.name} をリアクションしました`);
+        custom.log(`${reaction.message.guild} で ${user.displayName} が ${reaction.emoji.name} をリアクションしました`);
         /*if (user.id === "1225452488237514763" || user.id === "962670040795201557") return;
         if (reaction.emoji.name === '🖕') {
             react_message.reactions.cache.get('🖕').remove();

@@ -8,7 +8,7 @@ module.exports = {
             const msgPoint = await model.findOne({ _id: interaction.user.id });
             points = msgPoint.point;
         } catch (error) {
-            console.error(error);
+            custom.error(error);
             if (isNaN(points)) {
                 points = 0;
             }
@@ -30,7 +30,7 @@ module.exports = {
             );
             interaction.reply({ content: `Coming Soon!\n更新をお待ちください!`, flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error("Update Error:", error);
+            custom.error(error);
         }
     }
 };

@@ -8,7 +8,7 @@ registerFont('./font/NotoSansJP-VariableFont_wght.ttf', { family: 'NotoSans' });
  */
 function createGraph(historyData, videoTitle) {
     if (!historyData || historyData.length < 2) {
-        console.log("❌ データが足りないためグラフを描画できません。");
+        custom.log("❌ データが足りないためグラフを描画できません。");
         return;
     }
 

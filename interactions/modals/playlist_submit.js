@@ -35,7 +35,7 @@ module.exports = {
             );
             interaction.reply({ content: `ユーザープレイリストを更新しました`, flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error(error);
+            custom.error(error);
             interaction.reply({ content: `ユーザープレイリストの更新に失敗しました`, flags: [MessageFlags.Ephemeral] });
         }
     },

@@ -21,7 +21,7 @@ module.exports = {
 
                 if (global.customQueue && global.customQueue.has(guildId)) {
                     global.customQueue.delete(guildId);
-                    console.log(`[VoiceState] ボットが切断されたため、キューを強制クリアしました。`);
+                    custom.log(`[VoiceState] ボットが切断されたため、キューを強制クリアしました。`);
                 }
             }
         }
@@ -31,7 +31,7 @@ module.exports = {
 
         if (oldState.selfMute !== newState.selfMute) {
             const status = newState.selfMute ? "ミュート中" : "解除";
-            console.log(`${newState.member.displayName} がマイクを ${status} にしました`);
+            custom.log(`${newState.member.displayName} がマイクを ${status} にしました`);
             if (!oldState.selfMute && newState.selfMute) {
                 muteTimes.set(member.id, Date.now());
             }
@@ -46,7 +46,7 @@ module.exports = {
 
         if (oldState.selfDeaf !== newState.selfDeaf) {
             const status = newState.selfDeaf ? "OFF" : "ON";
-            console.log(`${newState.member.displayName} がスピーカーを ${status} にしました`);
+            custom.log(`${newState.member.displayName} がスピーカーを ${status} にしました`);
         }
 
         if (!oldState.channelId && newState.channelId) {
@@ -89,7 +89,7 @@ module.exports = {
                             vcAllPoint = 0;
                         }
                     } catch (error) {
-                        console.error(error);
+                        custom.error(error);
                     }
                     await model.findOneAndUpdate(
                         { _id: member.id },
@@ -104,7 +104,7 @@ module.exports = {
                         { upsert: true, new: true }
                     );
                 } catch (error) {
-                    console.error(error);
+                    custom.error(error);
                 }
             }
         }

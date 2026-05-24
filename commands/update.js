@@ -51,7 +51,7 @@ module.exports = {
                     "hub_2_be": port_hub_2_be
                 };
             } catch (error) {
-                console.error(error);
+                custom.error(error);
             }
 
             const channel = await interaction.client.channels.cache.get('1410517358459486308');

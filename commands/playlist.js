@@ -16,7 +16,7 @@ module.exports = {
                 userPlayList = null;
             }
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
 
         const modal = new ModalBuilder()

@@ -26,7 +26,7 @@ module.exports = {
                 process.exit(0);
             }, 1000);
         } catch (error) {
-            console.error(error);
+            custom.error(error);
             interaction.reply({ content: `サーバー情報の更新に失敗しました`, flags: [MessageFlags.Ephemeral] });
         }
     }

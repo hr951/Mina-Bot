@@ -60,10 +60,10 @@ module.exports = {
 
                 image_url = image.attachments.first().attachment;
 
-                console.log(image_url)
+                custom.log(image_url)
 
             } catch (error) {
-                console.log(error);
+                custom.error(error);
                 await interaction.followUp("60秒以内に画像が送信されませんでした");
             }
         } else {
@@ -75,7 +75,7 @@ module.exports = {
             try {
                 await model.findOne({ _id: interaction.user.id });
             } catch (error) {
-                console.error(error);
+                custom.error(error);
             }
             await model.findOneAndUpdate(
                 { _id: interaction.user.id }, // 条件
@@ -91,9 +91,9 @@ module.exports = {
             if (value != 3) {
                 await interaction.reply(`プロフィール背景を**${name[value - 1]}**に設定しました`);
             }
-            //console.log("Update the DataBase:", msgData);
+            //custom.log("Update the DataBase:", msgData);
         } catch (error) {
-            console.error("Update Error:", error);
+            custom.error("Update Error:", error);
         }
 
     }

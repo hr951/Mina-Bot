@@ -17,7 +17,7 @@ module.exports = {
                 densetu_role = false;
             }
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
         if (densetu_role) {
             await interaction.reply({ content: `すでに有効化されています。`, flags: [MessageFlags.Ephemeral] });
@@ -46,7 +46,7 @@ module.exports = {
 
             interaction.reply({ content: `Mina鯖の伝説話者ロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error("Update Error:", error);
+            custom.error(error);
         }
     }
 };

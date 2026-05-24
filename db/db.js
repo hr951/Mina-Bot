@@ -12,6 +12,7 @@ const msgSchema = new mongoose.Schema({
     bg_type: { type: Number }, // 0...デフォルト、1...既定アップグレード, 2...自由画像
     bg_url: { type: String }, // 自由画像URL
     anni_role: { type: Boolean },
+    anni_role_2: { type: Boolean },
     osyaberi_role: { type: Boolean },
     densetu_role: { type: Boolean },
     playlist: { type: String }, // ユーザープレイリスト

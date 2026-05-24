@@ -14,9 +14,9 @@ async function addChannel(channelId) {
             action: 'addChannel',
             channelId: channelId
         });
-        console.log('✅ 成功:', response.data);
+        custom.log(`✅ 成功: ${JSON.stringify(response.data)}`);
     } catch (error) {
-        console.error('❌ 追加エラー:', error.message);
+        custom.error(error);
     }
 }
 
@@ -24,7 +24,7 @@ async function addChannel(channelId) {
 // 2. 記録されている動画のタイトルとIDの一覧を取得する
 async function getVideoList() {
     const res = await axios.post(GAS_URL, { action: 'getVideoList' });
-    //console.log("📺 記録されている動画一覧:");
+    //custom.log("📺 記録されている動画一覧:");
     //console.table(res.data);
     return res.data;
 }
@@ -37,10 +37,10 @@ async function getVideoHistory(videoId) {
         videoId: videoId
     });
 
-    /*console.log(`📈 動画 [${videoId}] の推移データ:`);
+    /*custom.log(`📈 動画 [${videoId}] の推移データ:`);
     // 取得日時, 動画ID, タイトル, 再生数, 高評価数, 高評価率 の順で表示される
     res.data.forEach(row => {
-        console.log(`${new Date(row[0]).toLocaleString()} | 再生数: ${row[3]} | 高評価: ${row[4]}`);
+        custom.log(`${new Date(row[0]).toLocaleString()} | 再生数: ${row[3]} | 高評価: ${row[4]}`);
     });*/
     return res.data;
 }

@@ -44,7 +44,7 @@ module.exports = {
                 "hub_2_be": port_hub_2_be
             };
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
         setInterval(() => {
             client.user.setPresence({
@@ -58,7 +58,7 @@ module.exports = {
             });
         }, 5_000);
 
-        console.log(`Logged in as ${client.user.tag}`);
+        custom.log(`Logged in as ${client.user.tag}`);
 
         setInterval(async () => {
             const channel = await client.channels.cache.get('1410517358459486308');

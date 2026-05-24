@@ -26,7 +26,7 @@ module.exports = {
             playListData = { ...playListData, ...dbDataFormatted };
 
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
 
         const playList = playListData[value];
@@ -89,7 +89,7 @@ async function playNext(player, kazagumo) {
             }
         }
     } catch (error) {
-        console.error("自宅サーバーからの情報取得に失敗:", error.message);
+        custom.error(error);
     }
 
     if (!track) {
@@ -98,7 +98,7 @@ async function playNext(player, kazagumo) {
         const ytResult = await yts(current.query).catch(() => null);
 
         if (!ytResult || !ytResult.videos.length) {
-            console.log("YouTube情報なし");
+            custom.log("YouTube情報なし");
             queue.shift();
             playNext(player, kazagumo);
         }
@@ -111,7 +111,7 @@ async function playNext(player, kazagumo) {
         const res = await kazagumo.search(searchTitle, { engine: "soundcloud" });
 
         if (!res.tracks.length) {
-            console.log("SoundCloud情報なし");
+            custom.log("SoundCloud情報なし");
             queue.shift();
             playNext(player, kazagumo);
             return;
@@ -127,7 +127,7 @@ async function playNext(player, kazagumo) {
         const ytResult = await yts(current.query).catch(() => null);
 
         if (!ytResult || !ytResult.videos.length) {
-            console.log("YouTube情報なし");
+            custom.log("YouTube情報なし");
             queue.shift();
             playNext(player, kazagumo);
         }
@@ -140,7 +140,7 @@ async function playNext(player, kazagumo) {
         const res = await kazagumo.search(searchTitle, { engine: "soundcloud" });
 
         if (!res.tracks.length) {
-            console.log("SoundCloud情報なし");
+            custom.log("SoundCloud情報なし");
             queue.shift();
             playNext(player, kazagumo);
             return;

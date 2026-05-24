@@ -18,7 +18,7 @@ module.exports = {
 
             await interaction.editReply({ embeds: [embed], files: [img], flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
     }
 };

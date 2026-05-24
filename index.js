@@ -5,6 +5,7 @@ const { Connectors } = require('shoukaku');
 const { Kazagumo } = require('kazagumo');
 const mongoose = require('mongoose');
 require("dotenv").config();
+require('./utils/createLogs.js');
 
 require("./server.js");
 
@@ -60,12 +61,12 @@ kazagumo.on("playerEnd", async (player) => {
 
     // --- ループモードによる配列操作 ---
     if (loopMode === "track") {
-        console.log(`[Loop] 1曲リピート中: ${queue[0].query}`);
+        custom.log(`[Loop] 1曲リピート中: ${queue[0].query}`);
     }
     else if (loopMode === "queue") {
         const finishedItem = queue.shift();
         queue.push(finishedItem);
-        console.log(`[Loop] 全曲ループ: ${finishedItem.query} を最後尾に移動`);
+        custom.log(`[Loop] 全曲ループ: ${finishedItem.query} を最後尾に移動`);
     }
     else {
         queue.shift();
@@ -91,7 +92,7 @@ kazagumo.on("playerDestroy", (player) => {
 
     if (global.customQueue && global.customQueue.has(guildId)) {
         global.customQueue.delete(guildId);
-        console.log(`[Cleanup] Guild: ${guildId} - ボットが退出したためキューを削除しました。`);
+        custom.log(`[Cleanup] Guild: ${guildId} - ボットが退出したためキューを削除しました。`);
     }
 
     if (global.loopSettings && global.loopSettings.has(guildId)) {
@@ -100,37 +101,37 @@ kazagumo.on("playerDestroy", (player) => {
 });
 
 client.kazagumo = kazagumo;
-client.kazagumo.shoukaku.on('ready', (name) => console.log(`Connected Lavalink - ${name}`));
+client.kazagumo.shoukaku.on('ready', (name) => custom.log(`Connected Lavalink - ${name}`));
 // ----- Kazagumo初期化終了 -----
 
 // ----- エラーハンドリング -----
 // Shoukaku (接続層) のエラーをキャッチ
 kazagumo.shoukaku.on('error', (name, error) => {
-    console.error(`Lavalink [${name}] でエラーが発生しました:`, error);
+    custom.error(`Lavalink [${name}] でエラーが発生しました: ${error.message}`);
 });
 
 // Kazagumo (プレイヤー層) のエラーをキャッチ
 kazagumo.on('error', (name, error) => {
-    console.error(`Kazagumo [${name}] でエラーが発生しました:`, error);
+    custom.error(`Kazagumo [${name}] でエラーが発生しました: ${error.message}`);
 });
 
 // 予期せぬエラーでプロセスを落とさないための保険
 process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    custom.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
 });
 
-process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception:', err);
+process.on('uncaughtException', (error) => {
+    custom.error(`Uncaught Exception: ${error.message}`);
 });
 // ----- エラーハンドリング終了 -----
 
 mongoose
     .connect(uri)
     .then(() => {
-        console.log('Connected DataBase - index.js');
+        custom.log('Connected DataBase - index.js');
     })
     .catch((error) => {
-        console.log(error);
+        custom.error(error);
     });
 
 // ---- ここまでBot設定 ----
@@ -147,7 +148,7 @@ for (const file of commandFiles) {
     if ('data' in command && 'execute' in command) {
         client.commands.set(command.data.name, command);
     } else {
-        console.log(`${filePath} に必要な "data" か "execute" がありません。`);
+        custom.error(`${filePath} に必要な "data" か "execute" がありません。`);
     }
 }
 

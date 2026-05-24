@@ -30,7 +30,7 @@ module.exports = {
             playListData = { ...playListData, ...dbDataFormatted };
 
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
 
         const options = Object.entries(playListData).map(([id, content]) => {

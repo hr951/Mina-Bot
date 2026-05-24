@@ -14,7 +14,7 @@ module.exports = {
             ip_hub_2_be = server_config.ip_hub_2_be;
             port_hub_2_be = server_config.port_hub_2_be;
         } catch (error) {
-            console.log(error);
+            custom.error(error);
         }
 
         const modal = new ModalBuilder()

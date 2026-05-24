@@ -11,7 +11,7 @@ module.exports = {
                 blackWords = null;
             }
         } catch (error) {
-            console.log(error);
+            custom.log(error);
         }
 
         const modal = new ModalBuilder()

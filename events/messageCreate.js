@@ -1,36 +1,25 @@
 const { EmbedBuilder } = require("discord.js");
 require("dotenv").config();
 const { model, serverModel } = require('../db/db');
-const { createConfigBoard } = require('../utils/createConfigBoards');
+const { createConfigBoard, editConfigBoard } = require('../utils/configBoards');
 const color = "#FFFFFF";
-const { getDate } = require("../utils/getDate");
+const { sendMessage } = require('../utils/sendMessages');
 
 const pointCT = new Map();
 const spamCT = new Map();
+
+const clientId = "1307701661447360595";
 
 module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
 
-        if (message.author.id === "1307701661447360595" || message.author.id === "1090176867052564480") return;
+        if (message.author.id === clientId || message.author.id === "1090176867052564480") return;
 
         const userId = message.author.id;
 
         if (message.guildId) {
-            try {
-                await client.channels.cache.get("1504907076059795517").send(`[${getDate()}] ${await message.channel.name}(${await client.guilds.cache.get(message.guildId)?.name || "Unknown Guild"}) ${message.author.tag}`);
-                try {
-                    await client.channels.cache.get("1504907076059795517").send(message);
-                } catch (error) {
-                    console.error(error.message);
-                }
-                if (message.attachments) {
-                    const files = await message.attachments.map(a => a.attachment);
-                    await client.channels.cache.get("1504907076059795517").send({ files: files });
-                }
-            } catch (error) {
-                console.error(error);
-            }
+            await sendMessage(message);
 
             if (!message.author.bot) {
                 if (userId === "962670040795201557") {
@@ -48,7 +37,7 @@ module.exports = {
                             );
                             return message.reply("Success");
                         } catch (error) {
-                            console.error(error);
+                            custom.error(error);
                             return message.reply("Failed");
                         }
                     }
@@ -58,7 +47,7 @@ module.exports = {
                             await model.deleteMany({});
                             return message.reply("Success");
                         } catch (error) {
-                            console.error(error);
+                            custom.error(error);
                             return message.reply("Failed");
                         }
                     }
@@ -86,13 +75,20 @@ module.exports = {
                             );
                             return message.reply("Success");
                         } catch (error) {
-                            console.error(error);
+                            custom.error(error);
                             return message.reply("Failed");
                         }
                     }
 
                     if (message.content.startsWith("!setting")) {
                         message.channel.send(createConfigBoard(message.content.substr(message.content.indexOf(' ') + 1)));
+                    }
+
+                    if (message.content.startsWith("!edit")) {
+                        const repliedMessage = await message.fetchReference();
+                        if (repliedMessage.author.id === clientId) {
+                            repliedMessage.edit(editConfigBoard(message.content.substr(message.content.indexOf(' ') + 1)));
+                        }
                     }
                 }
 
@@ -159,7 +155,7 @@ module.exports = {
                             densetu_role = false;
                         }
                     } catch (error) {
-                        console.error(error);
+                        custom.error(error);
                     }
                     await model.findOneAndUpdate(
                         { _id: message.author.id }, // 条件
@@ -181,7 +177,7 @@ module.exports = {
                         { upsert: true, new: true } // 無ければ作成、更新後のデータを返す
                     );
                 } catch (error) {
-                    console.error("Update Error:", error);
+                    custom.error("Update Error:", error);
                 }
                 // ----- ポイント処理 終了 -----
             }
@@ -210,7 +206,7 @@ module.exports = {
                     await message.delete();
                     await message.author.send({ content: `あなたの発言「${message.cleanContent}」はスパムと判断されました。発言は削除され、WarningPointが加算されました。` });
                 } catch (error) {
-                    console.error(error);
+                    custom.error(error);
                 }
 
                 try {
@@ -222,7 +218,7 @@ module.exports = {
                             warnPoint = 0;
                         }
                     } catch (error) {
-                        console.error(error);
+                        custom.error(error);
                     }
                     await model.findOneAndUpdate(
                         { _id: message.author.id },
@@ -234,7 +230,7 @@ module.exports = {
                         { upsert: true, new: true }
                     );
                 } catch (error) {
-                    console.error(error);
+                    custom.error(error);
                 }
             }
 
@@ -248,7 +244,7 @@ module.exports = {
                     blackWordsConfig = null;
                 }
             } catch (error) {
-                console.error(error);
+                custom.error(error);
             }
 
             const content = message.content.toLowerCase().normalize("NFKC");
@@ -272,7 +268,7 @@ module.exports = {
                     await message.delete();
                     await message.author.send({ content: `あなたの発言「${message.cleanContent}」からNGワードが検出されました。発言は削除され、WarningPointが加算されました。` });
                 } catch (error) {
-                    console.error(error);
+                    custom.error(error);
                 }
 
                 client.channels.cache.get("1380894393611059241").send({ content: `${message.member.displayName} の https://discord.com/channels/${message.guild.id}/${message.channel.id} での発言からNGワード (${message.cleanContent}) が検出されました。` });
@@ -286,7 +282,7 @@ module.exports = {
                             warnPoint = 0;
                         }
                     } catch (error) {
-                        console.error(error);
+                        custom.error(error);
                     }
                     await model.findOneAndUpdate(
                         { _id: message.author.id },
@@ -298,7 +294,7 @@ module.exports = {
                         { upsert: true, new: true }
                     );
                 } catch (error) {
-                    console.error(error);
+                    custom.error(error);
                 }
             }
 
@@ -320,7 +316,7 @@ module.exports = {
                 var channel = await client.channels.fetch(channelId);
                 var fetchedMessage = await channel.messages.fetch(messageId);
             } catch (error) {
-                console.log(error);
+                custom.log(error);
                 return;
             }
 

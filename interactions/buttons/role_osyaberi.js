@@ -17,7 +17,7 @@ module.exports = {
                 osyaberi_role = false;
             }
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
         if (osyaberi_role) {
             await interaction.reply({ content: `すでに有効化されています。`, flags: [MessageFlags.Ephemeral] });
@@ -46,7 +46,7 @@ module.exports = {
 
             await interaction.reply({ content: `Mina鯖のおしゃべりロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error("Update Error:", error);
+            custom.error(error);
         }
     }
 };

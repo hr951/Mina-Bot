@@ -17,13 +17,13 @@ module.exports = {
                 anni_role = false;
             }
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
         if (anni_role) {
             await interaction.reply({ content: `すでに有効化されています。`, flags: [MessageFlags.Ephemeral] });
             return;
-        } else if (points < 1) {
-            await interaction.reply({ content: `**${1 - points}**ポイント分不足しています。`, flags: [MessageFlags.Ephemeral] });
+        } else if (points < 0) {
+            await interaction.reply({ content: `**${0 - points}**ポイント分不足しています。`, flags: [MessageFlags.Ephemeral] });
             return;
         }
         try {
@@ -32,7 +32,7 @@ module.exports = {
                 {
                     $set: {
                         name: interaction.user.username,
-                        point: points - 1,
+                        point: points - 0,
                         anni_role: true
                     },
                 },
@@ -44,9 +44,9 @@ module.exports = {
             const member = await guild.members.fetch(interaction.user.id);
             await member.roles.add(role);
 
-            interaction.reply({ content: `運用1周年記念ロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
+            interaction.reply({ content: `Mina鯖1周年記念ロールを付与しました。`, flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error("Update Error:", error);
+            custom.error(error);
         }
     }
 };

@@ -17,7 +17,7 @@ module.exports = {
                     flags: [MessageFlags.Ephemeral]
                 });
             } catch (error) {
-                console.error(error.message, "");
+                custom.error(error);
                 await interaction.reply({
                     content: "ロールの付与に失敗しました。",
                     flags: [MessageFlags.Ephemeral]

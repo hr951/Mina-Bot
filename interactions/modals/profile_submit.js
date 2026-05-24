@@ -32,7 +32,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
 
         await interaction.editReply({ content: "画像を生成しています...\nエラーが発生した場合は画像が生成されません。", flags: [MessageFlags.Ephemeral] });
@@ -121,7 +121,7 @@ module.exports = {
                         const icon = await loadImage(path.join(__dirname, '..', '..', 'images', 'err-icon.png'));
                         context.drawImage(icon, 30, 30, 200, 200);
                     } catch (error) {
-                        console.error(error.message);
+                        custom.error(error);
                     }
                 }
 
@@ -141,7 +141,7 @@ module.exports = {
                 await make_img.edit({ content: "", files: [attachment], components: [new ActionRowBuilder().setComponents(Del_Button, URL_Button)] });
 
             } catch (error) {
-                console.error(error);
+                custom.error(error);
 
                 const Button = new ButtonBuilder()
                     .setCustomId(`${interaction.user.id}`)
@@ -152,7 +152,7 @@ module.exports = {
                 await make_img.edit({ content: "画像の生成に失敗しました。", components: [new ActionRowBuilder().setComponents(Button)] });
             }
         } catch (error) {
-            console.error(error.message);
+            custom.error(error);
             await interaction.editReply("カスタム背景を取得できませんでした。\n恐れ入りますが、再度カスタム背景を設定してください。")
         }
     },

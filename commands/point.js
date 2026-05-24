@@ -50,7 +50,7 @@ module.exports = {
                 });
             } catch (error) {
                 interaction.reply({ content: "データベースにアクセスできませんでした", flags: [MessageFlags.Ephemeral] });
-                console.error(error);
+                custom.error(error);
             }
         } else if (subcommand === "use") {
             try {
@@ -79,7 +79,7 @@ module.exports = {
                         bg = false;
                     }
                 } catch (error) {
-                    console.error(error);
+                    custom.error(error);
                 }
 
                 /*
@@ -92,44 +92,32 @@ module.exports = {
 
                 const _1 = new ButtonBuilder()
                     .setCustomId(`bg_upgrade`)
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Secondary)
                     .setEmoji("1️⃣");
 
                 const _2 = new ButtonBuilder()
                     .setCustomId(`role_1st_anni`)
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Secondary)
                     .setEmoji("2️⃣");
 
                 const _3 = new ButtonBuilder()
-                    .setCustomId(`coming_soon`)
-                    .setStyle(ButtonStyle.Danger)
+                    .setCustomId(`role_2nd_anni`)
+                    .setStyle(ButtonStyle.Secondary)
                     .setEmoji("3️⃣");
-
-                const _4 = new ButtonBuilder()
-                    .setCustomId(`role_osyaberi`)
-                    .setStyle(ButtonStyle.Primary)
-                    .setEmoji("4️⃣");
-
-                const _5 = new ButtonBuilder()
-                    .setCustomId(`role_densetu`)
-                    .setStyle(ButtonStyle.Primary)
-                    .setEmoji("5️⃣");
 
                 const fields = [
                     { name: "1️⃣ プロフィール背景アップグレード", value: `必要ポイント: **200**` },
-                    { name: "2️⃣ 運用1周年記念ロール", value: `必要ポイント: **1**` },
-                    { name: "3️⃣ 進捗機能開放", value: `必要ポイント: **100**` },
-                    { name: "4️⃣ Mina鯖のおしゃべりロール", value: `必要ポイント: **500**` },
-                    { name: "5️⃣ Mina鯖の伝説話者ロール", value: `必要ポイント: **10000**` }
+                    { name: "2️⃣ Mina鯖1周年記念ロール", value: `必要ポイント: **0**` },
+                    { name: "3️⃣ Mina鯖2周年記念ロール", value: `必要ポイント: **0**` },
                 ];
 
                 await interaction.user.send({
                     embeds: [fields_embed("ポイント使用フォーム", `ポイントを使用できるフォームです。\n基本的にMinachan鯖内でのみの特典です。\nあなたが所持しているポイント: **${points}**`, fields)],
-                    components: [new ActionRowBuilder().addComponents(_1, _2, _3, _4, _5)]
+                    components: [new ActionRowBuilder().addComponents(_1, _2, _3)]
                 });
                 interaction.reply({ content: "DMにフォームを送信しました。\nDMを確認して下さい。", flags: [MessageFlags.Ephemeral] });
             } catch (error) {
-                console.error(error);
+                custom.error(error);
                 interaction.reply({ content: "DMを送信できませんでした。\nDMを開放しているか確認してください。", flags: [MessageFlags.Ephemeral] });
             }
         }

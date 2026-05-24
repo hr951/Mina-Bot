@@ -16,7 +16,7 @@ module.exports = {
                 bg = false;
             }
         } catch (error) {
-            console.error(error);
+            custom.error(error);
         }
         if (bg) {
             const menu = new StringSelectMenuBuilder()
@@ -88,7 +88,7 @@ module.exports = {
             });
 
         } catch (error) {
-            console.error("Update Error:", error);
+            custom.error(error);
         }
     }
 };

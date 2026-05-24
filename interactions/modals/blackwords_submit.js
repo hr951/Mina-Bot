@@ -29,7 +29,7 @@ module.exports = {
             );
             interaction.reply({ content: `NGワードを更新しました`, flags: [MessageFlags.Ephemeral] });
         } catch (error) {
-            console.error(error);
+            custom.error(error);
             interaction.reply({ content: `NGワードの更新に失敗しました`, flags: [MessageFlags.Ephemeral] });
         }
     }
