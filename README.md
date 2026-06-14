@@ -5,7 +5,8 @@
 > ```
 > npm init -y
 > npm install --save-dev eslint
-> npx eslint --init```
+> npx eslint --init
+> ```
 ### AWS Setup
 **ステップ1：AWSアカウントの作成**
 <ol type="1">
