@@ -307,7 +307,7 @@ module.exports = {
             client.channels.cache.get("1380894393611059241").send(`${message.author.tag} が ${message.channel} で 「**${message.cleanContent}**」 と発言しました。`);
         }*/
 
-        const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
+        /*const MESSAGE_URL_REGEX = /https?:\/\/discord\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
         const matches = MESSAGE_URL_REGEX.exec(message.content);
         if (matches) {
             const [_, guildId, channelId, messageId] = matches;
@@ -341,6 +341,6 @@ module.exports = {
                 const texts = await fetchedMessage.content;
                 message.reply({ content: texts, files: files, allowedMentions: { repliedUser: false } });
             }
-        }
+        }*/
     },
 };
