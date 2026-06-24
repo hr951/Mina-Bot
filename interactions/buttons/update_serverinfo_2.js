@@ -18,10 +18,10 @@ module.exports = {
         }
 
         const modal = new ModalBuilder()
-            .setTitle("HUBサーバー ➁ 情報更新")
+            .setTitle("サーバー 2 情報更新")
             .setCustomId("hub_2_submit");
         const TextInput_1 = new TextInputBuilder()
-            .setLabel("HUBサーバー ➁ (JE)のIPアドレスを入力してください")
+            .setLabel("サーバー 2 (JE)のIPアドレスを入力してください")
             .setCustomId("ip_hub_2_je")
             .setStyle("Short")
             .setValue(ip_hub_2_je || "undefined")
@@ -29,7 +29,7 @@ module.exports = {
             .setMinLength(2)
             .setRequired(true);
         const TextInput_2 = new TextInputBuilder()
-            .setLabel("HUBサーバー ➁ (JE)のポートを入力してください")
+            .setLabel("サーバー 2 (JE)のポートを入力してください")
             .setCustomId("port_hub_2_je")
             .setStyle("Short")
             .setValue(`${port_hub_2_je}` || "undefined")
@@ -37,7 +37,7 @@ module.exports = {
             .setMinLength(2)
             .setRequired(true);
         const TextInput_3 = new TextInputBuilder()
-            .setLabel("HUBサーバー ➁ (BE)のIPアドレスを入力してください")
+            .setLabel("サーバー 2 (BE)のIPアドレスを入力してください")
             .setCustomId("ip_hub_2_be")
             .setStyle("Short")
             .setValue(ip_hub_2_be || "undefined")
@@ -45,7 +45,7 @@ module.exports = {
             .setMinLength(2)
             .setRequired(true);
         const TextInput_4 = new TextInputBuilder()
-            .setLabel("HUBサーバー ➁ (BE)のポートを入力してください")
+            .setLabel("サーバー 2 (BE)のポートを入力してください")
             .setCustomId("port_hub_2_be")
             .setStyle("Short")
             .setValue(`${port_hub_2_be}` || "undefined")
