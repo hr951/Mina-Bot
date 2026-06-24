@@ -106,7 +106,7 @@ function editConfigBoard(option) {
             .addFields(
                 {
                     name: "サーバー情報の更新",
-                    value: `ステータスに表示するサーバーの情報を更新できます。\n設定できる内容は以下の通りです。\n - HUBサーバー ➀のIP(JE&BE)\n - HUBサーバー ➀のポート(JE&BE)\n - HUBサーバー ➁のIP(JE&BE)\n - HUBサーバー ➁のポート(JE&BE)\n※デフォルトで最新の情報が自動的に入力されています。`,
+                    value: `ステータスに表示するサーバーの情報を更新できます。\n設定できる内容は以下の通りです。\n - サーバー 1のIP(JE&BE)\n - サーバー 1のポート(JE&BE)\n - サーバー 2のIP(JE&BE)\n - サーバー 2のポート(JE&BE)\n※デフォルトで最新の情報が自動的に入力されています。`,
                     inline: true
                 },
             )
