@@ -131,7 +131,7 @@ const lb = new SlashCommandBuilder()
 				{ name: "Instagram", value: "ig" },
 				{ name: "TikTok", value: "tt" }
 			)
-	);*/
+	);
 
 const search = new SlashCommandBuilder()
 	.setName("search")
@@ -171,19 +171,19 @@ const loop = new SlashCommandBuilder()
 
 const stop = new SlashCommandBuilder()
 	.setName("stop")
-	.setDescription("曲を停止し、VCから退出します");
+	.setDescription("曲を停止し、VCから退出します");*/
 
 const info = new SlashCommandBuilder()
 	.setName("info")
 	.setDescription("Mina鯖 Botの情報を表示します");
 
-const play = new SlashCommandBuilder()
+/*const play = new SlashCommandBuilder()
 	.setName("play")
 	.setDescription("プレイリストから再生します");
 
 const playlist = new SlashCommandBuilder()
 	.setName("playlist")
-	.setDescription("ユーザープレイリストを編集・設定します");
+	.setDescription("ユーザープレイリストを編集・設定します");*/
 
 const youtube = new SlashCommandBuilder()
 	.setName('youtube')
@@ -194,7 +194,7 @@ const youtube = new SlashCommandBuilder()
 			.setDescription('情報選択画面を表示します')
 	);
 
-const commands = [ping, top, point, lb, search, nowplaying, queue, skip, loop, stop, info, play, playlist, youtube];
+const commands = [ping, top, point, lb, info, youtube];
 
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()
