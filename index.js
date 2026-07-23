@@ -1,8 +1,8 @@
 const { Client, GatewayIntentBits, Collection, Partials } = require("discord.js");
 const fs = require('node:fs');
 const path = require('node:path');
-const { Connectors } = require('shoukaku');
-const { Kazagumo } = require('kazagumo');
+// const { Connectors } = require('shoukaku');
+// const { Kazagumo } = require('kazagumo');
 const mongoose = require('mongoose');
 require("dotenv").config();
 require('./utils/createLogs.js');
@@ -34,7 +34,7 @@ const uri = process.env.DB;
 if (!global.loopSettings) global.loopSettings = new Map();
 if (!global.customQueue) global.customQueue = new Map();
 
-const Nodes = [
+/*const Nodes = [
     {
         name: 'Render-Node',
         url: process.env.LAVA_LINK_URL, // URL (PORT -> 443)
@@ -122,7 +122,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 process.on('uncaughtException', (error) => {
     custom.error(`Uncaught Exception: ${error.message}`);
-});
+});*/
 // ----- エラーハンドリング終了 -----
 
 mongoose
