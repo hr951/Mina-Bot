@@ -1,4 +1,4 @@
-const { getDate } = require("./getDate");
+const { transfer_embed } = require("../utils/embeds");
 
 async function sendMessage(message, type) {
     if (!message.content && (!message.embeds || message.embeds.length === 0) && (!message.attachments || message.attachments.size === 0)) {
@@ -10,14 +10,23 @@ async function sendMessage(message, type) {
 
         if (!targetChannel) return;
 
+        const footer = type === "update" ? `Edited from ID: ${message.id}` : `Sent ID: ${message.id}`;
+
         const guildName = message.client.guilds.cache.get(message.guildId)?.name || "Unknown Guild";
         const channelName = message.channel.name;
-        const header = type === "update" ? `[${getDate()}] ${channelName}(${guildName}) ${message.author.tag}\n**Edited from ID: ${message.id}**` : `[${getDate()}] ${channelName}(${guildName}) ${message.author.tag}\n**Sent ID: ${message.id}**`;
-        const contentText = message.content ? `${header}\n${message.content}` : header;
+        const channelUrl = `https://discord.com/channels/${message.guildId}/${message.channel.id}`;
+
+        const embed = await transfer_embed(
+            message.member.displayName,
+            message.author.displayAvatarURL(),
+            `#${channelName} (${guildName})`,
+            channelUrl,
+            message.content ? message.content : '```ansi\n[2;35m[System][0m 添付ファイルのみのメッセージです```',
+            footer,
+            message.createdTimestamp);
 
         const sendOptions = {
-            content: contentText,
-            embeds: message.embeds
+            embeds: message.embeds.length > 0 ? message.embeds : [embed]
         };
 
         if (message.attachments && message.attachments.size > 0) {

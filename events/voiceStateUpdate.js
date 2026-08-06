@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { model } = require("../db/db");
 
 const joinTimes = new Map();
@@ -8,21 +7,35 @@ const mutingTimes = new Map();
 module.exports = {
     name: 'voiceStateUpdate',
     async execute(oldState, newState, client) {
-        const player = client.kazagumo.players.get(oldState.guild.id);
-        if (player) {
+        client.serverQueue = client.queues.get(oldState.guild.id);
 
-            const voiceChannel = client.channels.cache.get(player.voiceId);
+        if (client.serverQueue) {
+
+            // Botが接続しているボイスチャンネルを取得
+            const botVoiceChannelId = client.serverQueue.connection.joinConfig.channelId;
+            const voiceChannel = oldState.guild.channels.cache.get(botVoiceChannelId);
+
+            // 1. ボイスチャンネル内にBot以外の人間が誰もいなくなった場合、自動退出
             if (voiceChannel && voiceChannel.members.filter(m => !m.user.bot).size === 0) {
-                player.destroy();
+                client.serverQueue.connection.destroy();
+                client.queues.delete(oldState.guild.id);
+
+                const textChannel = oldState.guild.channels.cache.get(client.serverQueue.textChannelId);
+                if (textChannel) {
+                    textChannel.send('ボイスチャンネルに誰もいなくなったため、自動切断しました。');
+                }
+                return;
             }
 
+            // 2. Bot自身が切断された（キックや手動切断など）場合、キューと接続情報をクリア
             if (oldState.member.id === client.user.id && !newState.channelId) {
-                const guildId = oldState.guild.id;
-
-                if (global.customQueue && global.customQueue.has(guildId)) {
-                    global.customQueue.delete(guildId);
-                    custom.log(`[VoiceState] ボットが切断されたため、キューを強制クリアしました。`);
+                try {
+                    client.serverQueue.connection.destroy();
+                } catch (error) {
+                    custom.error(error);
                 }
+                client.queues.delete(oldState.guild.id);
+                custom.log(`[VoiceState] Botが切断されたため、キューを強制クリアしました。`);
             }
         }
 

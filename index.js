@@ -34,6 +34,8 @@ const uri = process.env.DB;
 if (!global.loopSettings) global.loopSettings = new Map();
 if (!global.customQueue) global.customQueue = new Map();
 
+client.queues = new Map();
+
 /*const Nodes = [
     {
         name: 'Render-Node',
@@ -113,7 +115,7 @@ kazagumo.shoukaku.on('error', (name, error) => {
 // Kazagumo (プレイヤー層) のエラーをキャッチ
 kazagumo.on('error', (name, error) => {
     custom.error(`Kazagumo [${name}] でエラーが発生しました: ${error.message}`);
-});
+});*/
 
 // 予期せぬエラーでプロセスを落とさないための保険
 process.on('unhandledRejection', (reason, promise) => {
@@ -122,7 +124,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 process.on('uncaughtException', (error) => {
     custom.error(`Uncaught Exception: ${error.message}`);
-});*/
+});
 // ----- エラーハンドリング終了 -----
 
 mongoose

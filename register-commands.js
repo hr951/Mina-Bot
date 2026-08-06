@@ -194,7 +194,44 @@ const youtube = new SlashCommandBuilder()
 			.setDescription('情報選択画面を表示します')
 	);
 
-const commands = [ping, top, point, lb, info, youtube];
+const join = new SlashCommandBuilder()
+	.setName("join")
+	.setDescription("VCに参加します");
+
+const leave = new SlashCommandBuilder()
+	.setName("leave")
+	.setDescription("VCから退出します");
+
+const setting = new SlashCommandBuilder()
+	.setName("setting")
+	.setDescription("各種設定です")
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('voice')
+			.setDescription('読み上げ音声の設定をします')
+			.addStringOption((option) =>
+				option
+					.setName("speed")
+					.setDescription("読み上げの速度を変更できます")
+					.setRequired(true) //trueで必須、falseで任意
+					.addChoices(
+						{ name: "ふつう", value: "normal" },
+						{ name: "ゆっくり", value: "slow" }
+					)
+			)
+			.addStringOption((option) =>
+				option
+					.setName("lang")
+					.setDescription("読み上げの言語を変更できます")
+					.setRequired(true) //trueで必須、falseで任意
+					.addChoices(
+						{ name: "日本語", value: "ja" },
+						{ name: "英語", value: "en" }
+					)
+			)
+	);
+
+const commands = [ping, top, point, lb, info, youtube, join, leave, setting];
 
 // ----- ギルド専用コマンドここから-----
 const member = new SlashCommandBuilder()

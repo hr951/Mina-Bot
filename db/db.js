@@ -19,7 +19,12 @@ const msgSchema = new mongoose.Schema({
     warn: { type: Number }, // 警告数
     vc_point: { type: Number }, // VCポイント
     vc_all_point: { type: Number }, // VC累計ポイント
-    vc_time: { type: Number } // UNIX
+    vc_time: { type: Number }, // UNIX
+    vc_voice_setting: {
+        lang: { type: String, default: 'ja' }, // 言語コード (ja, en など)
+        slow: { type: Boolean, default: false }, // 低速フラグ
+        speedScale: { type: Number, default: 1.0 } // 識別用（通常: 1.0, 低速: 0.5）
+    }
 });
 
 const serverSchema = new mongoose.Schema({
@@ -51,7 +56,10 @@ const serverSchema = new mongoose.Schema({
         stop: { type: Number },
         top: { type: Number },
         update: { type: Number },
-        youtube: { type: Number }
+        youtube: { type: Number },
+        join: { type: Number },
+        leave: { type: Number },
+        settingvoice: { type: Number },
     } // コマンド使用数
 });
 

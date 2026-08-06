@@ -2,7 +2,6 @@ const { version } = require('discord.js');
 const os = require('os');
 const { getCPUUsage, getRAMUsage, getDBUsage } = require('./getUsage.js');
 const { ms2time } = require('./ms2time.js');
-const { portChecker } = require('./port_checker.js');
 const { basic_embed, fields_embed } = require('./embeds.js');
 require("dotenv").config();
 
@@ -18,21 +17,6 @@ function page2(interaction) {
 };
 
 async function page3(interaction) {
-    const kazagumo = interaction.client.kazagumo;
-    const YT_API_URL = process.env.HOME_API_URL;
-
-    const host = YT_API_URL.substring(0, YT_API_URL.lastIndexOf(':'));
-    const port = Number(YT_API_URL.substring(YT_API_URL.lastIndexOf(':') + 1));
-
-    let playSource;
-    if (await portChecker(host, port)) {
-        playSource = "YouTube";
-    } else if (kazagumo.shoukaku.nodes.size) {
-        playSource = "SoundCloud";
-    } else {
-        playSource = "再生サーバー未接続";
-    }
-
     const uptime = await ms2time(interaction.client.uptime);
     const nodeVer = process.version;
     const djsVer = version;
@@ -49,7 +33,6 @@ async function page3(interaction) {
         { name: "CPU使用率", value: `${cpuUsage}%` },
         { name: "RAM使用率", value: `${ramUsage.percentage}%` },
         { name: "DB使用量", value: `${dbUsage.used}MB` },
-        { name: "再生ソース", value: playSource },
         { name: "discord.js", value: `v${djsVer}` },
         { name: "Node.js", value: nodeVer }
     ];

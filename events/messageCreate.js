@@ -4,6 +4,7 @@ const { model, serverModel } = require('../db/db');
 const { createConfigBoard, editConfigBoard } = require('../utils/configBoards');
 const color = "#FFFFFF";
 const { sendMessage } = require('../utils/sendMessages');
+const { processQueue } = require('../ttsManager');
 
 const pointCT = new Map();
 const spamCT = new Map();
@@ -180,9 +181,31 @@ module.exports = {
                     custom.error("Update Error:", error);
                 }
                 // ----- ポイント処理 終了 -----
+
+                // ----- VC読み上げ -----
+                client.serverQueue = client.queues.get(message.guild.id);
+
+                if (client.serverQueue && message.channel.id === client.serverQueue.textChannelId) {
+                    let textToRead = message.content
+                        .replace(/https?:\/\/\S+/g, 'URL省略')
+                        .replace(/<a?:.+?:(\d+)>/g, 'カスタム絵文字省略') // カスタム絵文字除去
+                        .trim();
+
+                    if (textToRead.length > 100) {
+                        textToRead = textToRead.substring(0, 100) + ' 以下略';
+                    }
+
+                    if (textToRead.length > 0) {
+                        client.serverQueue.queue.push({ text: textToRead, userId });
+                        processQueue(client.serverQueue);
+                    }
+                }
+                // ----- VC読み上げ 終了 -----
             }
 
             // ----- セキュリティ処理 -----
+            if (message.guild.id === "1040937611390353408") return;
+
             const spamNow = Date.now();
 
             if (!spamCT.has(userId)) {

@@ -152,6 +152,24 @@ function top_embed(title, url) {
     return embed;
 };
 
+async function transfer_embed(authorName, authorIcon, title, url, description, sendId, time) {
+    const embed = new EmbedBuilder()
+        .setAuthor({
+            name: authorName,
+            iconURL: authorIcon,
+        })
+        .setTitle(title)
+        .setURL(url)
+        .setDescription(description)
+        .setColor(color)
+        .setFooter({
+            text: sendId,
+        })
+        .setTimestamp(time);
+
+    return await embed;
+}
+
 module.exports = {
     embed_check_ac,
     embed_check_hub_1,
@@ -162,5 +180,6 @@ module.exports = {
     image_url_embed,
     np_embed,
     queue_embed,
-    top_embed
+    top_embed,
+    transfer_embed
 };
