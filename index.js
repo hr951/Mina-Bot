@@ -1,8 +1,8 @@
 const { Client, GatewayIntentBits, Collection, Partials } = require("discord.js");
 const fs = require('node:fs');
 const path = require('node:path');
-// const { Connectors } = require('shoukaku');
-// const { Kazagumo } = require('kazagumo');
+const { Connectors } = require('shoukaku');
+const { Kazagumo } = require('kazagumo');
 const mongoose = require('mongoose');
 require("dotenv").config();
 require('./utils/createLogs.js');
@@ -36,7 +36,7 @@ if (!global.customQueue) global.customQueue = new Map();
 
 client.queues = new Map();
 
-/*const Nodes = [
+const Nodes = [
     {
         name: 'Render-Node',
         url: process.env.LAVA_LINK_URL, // URL (PORT -> 443)
@@ -115,7 +115,7 @@ kazagumo.shoukaku.on('error', (name, error) => {
 // Kazagumo (プレイヤー層) のエラーをキャッチ
 kazagumo.on('error', (name, error) => {
     custom.error(`Kazagumo [${name}] でエラーが発生しました: ${error.message}`);
-});*/
+});
 
 // 予期せぬエラーでプロセスを落とさないための保険
 process.on('unhandledRejection', (reason, promise) => {
