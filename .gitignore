@@ -15,6 +15,7 @@ Thumbs.db
 .env
 package-lock.json
 *.pem
+credentials.json
 
 # 検証用ファイル
 test_*

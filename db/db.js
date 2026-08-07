@@ -11,6 +11,7 @@ const msgSchema = new mongoose.Schema({
     bg_upgrade: { type: Boolean }, // 背景変化
     bg_type: { type: Number }, // 0...デフォルト、1...既定アップグレード, 2...自由画像
     bg_url: { type: String }, // 自由画像URL
+    bg_drive_id: { type: String }, // 自由画像GoogleDriveID
     anni_role: { type: Boolean },
     anni_role_2: { type: Boolean },
     osyaberi_role: { type: Boolean },
