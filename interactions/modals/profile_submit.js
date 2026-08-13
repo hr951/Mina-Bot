@@ -45,6 +45,8 @@ module.exports = {
                 url_bg = path.join(__dirname, '..', '..', 'images', 'bg-50.png');
             } else if (bg_type == 2) {
                 url_bg = bg_url;
+            } else {
+                url_bg = path.join(__dirname, '..', '..', 'images', 'background.png');
             }
             const backgroundImage = await loadImage(url_bg);
 
