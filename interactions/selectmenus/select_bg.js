@@ -139,7 +139,7 @@ module.exports = {
                 { _id: interaction.user.id },
                 {
                     $set: {
-                        bg_type: 2,
+                        bg_type: value - 1,
                         bg_url: image_url,     // 表示用直リンク
                         bg_drive_id: fileId,        // 削除・管理用のGoogle Drive ID
                     },
