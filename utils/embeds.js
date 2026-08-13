@@ -1,73 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const color = "#ffffff";
 
-function embed_check_ac(hub_1_je, hub_1_be, hub_2_je, hub_2_be) {
-
-    const embed_check_ac = new EmbedBuilder()
-        .addFields(
-            { name: `**サーバー 1**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-            { name: "参加人数", value: `${hub_1_je.players.online} / ${hub_1_je.players.max}`, inline: true },
-            { name: "バージョン", value: "JE: **" + hub_1_je.version.name.replace("Velocity ", "") + "**\nBE: **" + hub_1_be.version.name + "**" || "undefined" },
-            { name: `**サーバー 2**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-            { name: "参加人数", value: `${hub_2_je.players.online} / ${hub_2_je.players.max}`, inline: true },
-            { name: "バージョン", value: "JE: **" + hub_2_je.version.name.replace("Velocity ", "") + "**\nBE: **" + hub_2_be.version.name + "**" || "undefined" }
-        )
-        .setColor("Green")
-        .setTimestamp();
-
-    return embed_check_ac;
-};
-
-function embed_check_hub_1(hub_1_je, hub_1_be) {
-
-    const embed_check_hub_1 = new EmbedBuilder()
-        .addFields(
-            { name: `**サーバー 1**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-            { name: "参加人数", value: `${hub_1_je.players.online} / ${hub_1_je.players.max}`, inline: true },
-            { name: "バージョン", value: "JE: **" + hub_1_je.version.name.replace("Velocity ", "") + "**\nBE: **" + hub_1_be.version.name + "**" || "undefined" },
-            { name: `**サーバー 2**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🔴 オフライン", inline: true }
-        )
-        .setColor("Green")
-        .setTimestamp();
-
-    return embed_check_hub_1;
-};
-
-function embed_check_hub_2(hub_2_je, hub_2_be) {
-
-    const embed_check_hub_2 = new EmbedBuilder()
-        .addFields(
-            { name: `**サーバー 1**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🔴 オフライン", inline: true },
-            { name: `**サーバー 2**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🟢 オンライン", inline: true },
-            { name: "参加人数", value: `${hub_2_je.players.online} / ${hub_2_je.players.max}`, inline: true },
-            { name: "バージョン", value: "JE: **" + hub_2_je.version.name.replace("Velocity ", "") + "**\nBE: **" + hub_2_be.version.name + "**" || "undefined" }
-        )
-        .setColor("Green")
-        .setTimestamp();
-
-    return embed_check_hub_2;
-};
-
-function embed_check_offline() {
-    const embed_check_offline = new EmbedBuilder()
-        .addFields(
-            { name: `**サーバー 1**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🔴 オフライン", inline: true },
-            { name: `**サーバー 2**`, value: " ", inline: false },
-            { name: "サーバー状態", value: "🔴 オフライン", inline: true }
-        )
-        .setColor("Red")
-        .setTimestamp();
-
-    return embed_check_offline;
-};
-
 function basic_embed(title, description) {
     const embed = new EmbedBuilder()
         .setTitle(title)
@@ -171,10 +104,6 @@ async function transfer_embed(authorName, authorIcon, title, url, description, s
 }
 
 module.exports = {
-    embed_check_ac,
-    embed_check_hub_1,
-    embed_check_hub_2,
-    embed_check_offline,
     basic_embed,
     fields_embed,
     image_url_embed,
