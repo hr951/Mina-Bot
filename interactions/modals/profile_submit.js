@@ -40,9 +40,9 @@ module.exports = {
             const interact = interaction.channel;
 
             if (bg_type == 0) {
-                url_bg = "https://github.com/hr951/Mina-Bot/blob/main/images/background.png";
+                url_bg = "https://github.com/hr951/Mina-Bot/blob/main/images/background.png?raw=true";
             } else if (bg_type == 1) {
-                url_bg = "https://github.com/hr951/Mina-Bot/blob/main/images/bg-50.png";
+                url_bg = "https://github.com/hr951/Mina-Bot/blob/main/images/bg-50.png?raw=true";
             } else if (bg_type == 2) {
                 url_bg = bg_url;
             }

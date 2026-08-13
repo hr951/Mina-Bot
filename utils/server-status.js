@@ -10,24 +10,16 @@ async function check(ip, port) {
 
     try {
         hub_1_je = await util.status(ip.hub_1_je, port.hub_1_je);
-    } catch (error) {
-        custom.error(error);
-    }
+    } catch (error) { }
     try {
         hub_1_be = await util.statusBedrock(ip.hub_1_be, port.hub_1_be);
-    } catch (error) {
-        custom.error(error);
-    }
+    } catch (error) { }
     try {
         hub_2_je = await util.status(ip.hub_2_je, port.hub_2_je);
-    } catch (error) {
-        custom.error(error);
-    }
+    } catch (error) { }
     try {
         hub_2_be = await util.statusBedrock(ip.hub_2_be, port.hub_2_be);
-    } catch (error) {
-        custom.error(error);
-    }
+    } catch (error) { }
 
     let color = "Green";
 
