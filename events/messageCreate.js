@@ -15,7 +15,7 @@ module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
 
-        if (message.author.id === clientId || message.author.id === "1090176867052564480") return;
+        if (message.author.id === clientId || message.author.id === "1090176867052564480" || message.author.id === "1488577463251636376") return;
 
         const userId = message.author.id;
 
