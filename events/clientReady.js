@@ -1,6 +1,7 @@
 const { ActivityType, PresenceUpdateStatus } = require("discord.js");
 require("dotenv").config();
 const { check } = require("../utils/server-status");
+const { sendHeartbeat } = require("../utils/dashboards/sendHeartbeat");
 
 const { serverModel } = require('../db/db');
 
@@ -46,7 +47,7 @@ module.exports = {
         } catch (error) {
             custom.error(error);
         }
-        setInterval(() => {
+        setInterval(async () => {
             client.user.setPresence({
                 activities: [
                     {
@@ -64,6 +65,7 @@ module.exports = {
             const channel = await client.channels.cache.get('1410517358459486308');
             const msg = await channel.messages.fetch('1410517899122053281');
             msg.edit({ embeds: [await check(ip, port)] });
+            await sendHeartbeat(client);
         }, 60_000);
     },
 };
