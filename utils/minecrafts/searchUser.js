@@ -32,11 +32,6 @@ async function searchMinecraftPlayer(gamertag) {
         edition = "both";
     }
 
-    console.log({
-        "edition": edition,
-        "name": mcid
-    })
-
     return {
         "edition": edition,
         "name": mcid
