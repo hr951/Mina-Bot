@@ -6,7 +6,7 @@ module.exports = {
         if (id === "yes") {
             const modal = new ModalBuilder()
                 .setTitle("ID照合 フォーム")
-                .setCustomId("report_submit");
+                .setCustomId("acceptrules_submit");
             const TextInput_1 = new TextInputBuilder()
                 .setLabel("Minecraft IDを入力してください。")
                 .setCustomId("mcid")
