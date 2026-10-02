@@ -18,7 +18,7 @@ module.exports = {
 
         if (result.edition === "none") {
             await interaction.editReply({
-                content: "MinecraftのIDが見つかりませんでした。\nもう一度確認して入力してください。",
+                content: "MinecraftのIDが見つかりませんでした。\nもう一度確認して入力するか、しばらく時間を空けてから再度お試しください。",
                 flags: [MessageFlags.Ephemeral]
             });
             return;
