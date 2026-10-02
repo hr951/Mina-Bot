@@ -6,12 +6,13 @@ module.exports = {
         const id = interaction.fields.getTextInputValue("mcid");
         const nickName = interaction.fields.getTextInputValue("nickName");
 
+        await interaction.reply({
+            content: "MinecraftのIDを照合中です。\nしばらくお待ちください。",
+            flags: [MessageFlags.Ephemeral]
+        });
+
         setTimeout(async () => {
-            await interaction.reply({
-                content: "MinecraftのIDを照合中です。\nしばらくお待ちください。",
-                flags: [MessageFlags.Ephemeral]
-            });
-        }, 1000);
+        }, 2_000);
 
         const result = await searchMinecraftPlayer(id);
 
