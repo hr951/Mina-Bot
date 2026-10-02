@@ -1,5 +1,7 @@
 async function searchMinecraftPlayer(gamertag) {
-    const beUrl = `https://playerdb.co/api/player/xbox/${encodeURIComponent(gamertag)}`;
+    const formattedGamertag = gamertag.replace(/\s+/g, '_');
+
+    const beUrl = `https://playerdb.co/api/player/xbox/${encodeURIComponent(formattedGamertag)}`;
     const javaUrl = `https://playerdb.co/api/player/minecraft/${encodeURIComponent(gamertag)}`;
 
     const beResponse = await fetch(beUrl);
