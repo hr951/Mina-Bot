@@ -168,16 +168,17 @@ function editConfigBoard(option) {
         const Button = new ButtonBuilder()
             .setCustomId("config_acceptrules__yes")
             .setStyle(ButtonStyle.Secondary)
-            .setLabel("誓う")
+            .setLabel("はい")
             .setEmoji("✅");
         const Button2 = new ButtonBuilder()
             .setCustomId("config_acceptrules__no")
             .setStyle(ButtonStyle.Secondary)
-            .setLabel("誓わない")
+            .setLabel("いいえ")
             .setEmoji("❌");
 
         const embed = new EmbedBuilder()
             .setTitle("参加する上で、ルールや鯖主・管理者に従うことを誓いますか？")
+            .setDescription("はいを選択した場合はMinecraftのIDを照合するため、MinecraftのIDを送信していただきます。")
             .setColor(color);
 
         return {
