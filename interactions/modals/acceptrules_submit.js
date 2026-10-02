@@ -1,12 +1,12 @@
 const { MessageFlags } = require("discord.js");
-const { searchMinecraftUser } = require("../../utils/minecrafts/searchUser");
+const { searchMinecraftPlayer } = require("../../utils/minecrafts/searchUser");
 
 module.exports = {
     async execute(interaction) {
         const id = interaction.fields.getTextInputValue("mcid");
         const nickName = interaction.fields.getTextInputValue("nickName");
 
-        const result = await searchMinecraftUser(id);
+        const result = await searchMinecraftPlayer(id);
 
         if (result.edition === "none") {
             await interaction.reply({
