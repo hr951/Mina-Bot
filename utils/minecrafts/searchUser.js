@@ -20,7 +20,7 @@ async function searchMinecraftPlayer(gamertag) {
 
     if (beResponse.ok) {
         edition = "bedrock";
-        mcid = [...mcid, beData.data.player.uniqueModernGamertag];
+        mcid = [...mcid, beData.data.player.username];
     }
 
     if (javaResponse.ok) {
