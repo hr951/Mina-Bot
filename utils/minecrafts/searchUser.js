@@ -2,8 +2,10 @@ async function searchMinecraftPlayer(gamertag) {
     const beUrl = `https://playerdb.co/api/player/xbox/${encodeURIComponent(gamertag)}`;
     const javaUrl = `https://playerdb.co/api/player/minecraft/${encodeURIComponent(gamertag)}`;
 
+    try {
     const beResponse = await fetch(beUrl);
     const javaResponse = await fetch(javaUrl);
+    } catch (error ) { console.error(error)}
 
     if (!beResponse.ok && !javaResponse.ok) {
         return {
