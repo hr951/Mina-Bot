@@ -6,10 +6,12 @@ module.exports = {
         const id = interaction.fields.getTextInputValue("mcid");
         const nickName = interaction.fields.getTextInputValue("nickName");
 
+        interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
+
         const result = await searchMinecraftPlayer(id);
 
         if (result.edition === "none") {
-            await interaction.reply({
+            await interaction.editReply({
                 content: "MinecraftのIDが見つかりませんでした。\nもう一度確認して入力してください。",
                 flags: [MessageFlags.Ephemeral]
             });
@@ -41,13 +43,13 @@ module.exports = {
 
             await member.setNickname(setNick);
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: "認証されました。\nご協力ありがとうございます。",
                 flags: [MessageFlags.Ephemeral]
             });
         } catch (error) {
             custom.error(error);
-            await interaction.reply({
+            await interaction.editReply({
                 content: "ロールの付与に失敗しました。",
                 flags: [MessageFlags.Ephemeral]
             });
