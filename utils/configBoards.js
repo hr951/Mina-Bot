@@ -178,7 +178,7 @@ function editConfigBoard(option) {
 
         const embed = new EmbedBuilder()
             .setTitle("参加する上で、ルールや鯖主・管理者に従うことを誓いますか？")
-            .setDescription("はいを選択した場合はMinecraftのIDを照合するため、MinecraftのIDを送信していただきます。")
+            .setDescription("はいを選択した場合はニックネームを送信していただきます。")
             .setColor(color);
 
         return {
