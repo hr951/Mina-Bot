@@ -7,21 +7,21 @@ module.exports = {
             const modal = new ModalBuilder()
                 .setTitle("ID照合 フォーム")
                 .setCustomId("acceptrules_submit");
-            const TextInput_1 = new TextInputBuilder()
+            /* const TextInput_1 = new TextInputBuilder()
                 .setLabel("Minecraft IDを入力してください。")
                 .setCustomId("mcid")
                 .setStyle("Short")
                 .setMaxLength(100)
-                .setRequired(true);
+                .setRequired(true);*/
             const TextInput_2 = new TextInputBuilder()
                 .setLabel("ニックネームを入力してください。(任意)")
                 .setCustomId("nickName")
                 .setStyle("Short")
                 .setMaxLength(100)
                 .setRequired(false);
-            const ActionRow = new ActionRowBuilder().setComponents(TextInput_1);
+            // const ActionRow = new ActionRowBuilder().setComponents(TextInput_1);
             const ActionRow_2 = new ActionRowBuilder().setComponents(TextInput_2);
-            modal.setComponents(ActionRow, ActionRow_2);
+            modal.setComponents(/*ActionRow,*/ ActionRow_2);
             return interaction.showModal(modal);
 
         } else if (id === "no") {

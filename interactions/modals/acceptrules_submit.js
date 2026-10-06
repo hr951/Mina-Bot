@@ -1,12 +1,12 @@
 const { MessageFlags } = require("discord.js");
-const { searchMinecraftPlayer } = require("../../utils/minecrafts/searchUser");
+// const { searchMinecraftPlayer } = require("../../utils/minecrafts/searchUser");
 
 module.exports = {
     async execute(interaction) {
-        const id = interaction.fields.getTextInputValue("mcid");
+        // const id = interaction.fields.getTextInputValue("mcid");
         const nickName = interaction.fields.getTextInputValue("nickName");
 
-        await interaction.reply({
+        /*await interaction.reply({
             content: "MinecraftのIDを照合中です。\nしばらくお待ちください。",
             flags: [MessageFlags.Ephemeral]
         });
@@ -36,7 +36,7 @@ module.exports = {
             setNick = `${result.name[0]} (BE)${NickTemp}`;
         } else if (result.edition === "java") {
             setNick = `${result.name[0]}${NickTemp}`;
-        }
+        }*/
 
         try {
             const role = await interaction.guild.roles.fetch("1356110722571964592");
@@ -47,7 +47,7 @@ module.exports = {
             await member.roles.add(role_2);
             await member.roles.remove(role_3);
 
-            await member.setNickname(setNick);
+            await member.setNickname(nickName);
 
             await interaction.editReply({
                 content: "認証されました。\nご協力ありがとうございます。",
