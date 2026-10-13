@@ -1,4 +1,5 @@
 const { MessageFlags } = require("discord.js");
+const config_data = require('../../data/config.json');
 // const { searchMinecraftPlayer } = require("../../utils/minecrafts/searchUser");
 
 module.exports = {
@@ -49,13 +50,21 @@ module.exports = {
 
             await member.setNickname(nickName);
 
-            await interaction.editReply({
+            const createVc = await interaction.guild.channels.create({
+                name: `🔊│${nickName}の部屋`,
+                type: 2,
+                parent: interaction.guild.channels.cache.get(config_data.CreateVCCategoryId)
+            });
+
+            await createVc.lockPermissions();
+
+            await interaction.reply({
                 content: "認証されました。\nご協力ありがとうございます。",
                 flags: [MessageFlags.Ephemeral]
             });
         } catch (error) {
             custom.error(error);
-            await interaction.editReply({
+            await interaction.reply({
                 content: "ロールの付与に失敗しました。",
                 flags: [MessageFlags.Ephemeral]
             });
