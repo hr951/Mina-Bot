@@ -25,7 +25,7 @@
     "yt-search": "^2.13.1"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=26"
   },
   "repository": {
     "url": "https://github.com/hr951/Mina-Bot"
